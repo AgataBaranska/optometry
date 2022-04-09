@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Patient } from '../common/patient';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -13,11 +13,11 @@ export class PatientService {
   public getPatientList(): Observable<Patient[]> {
     return this.httpClient
       .get<GetResponse>(this.baseUrl)
-      .pipe(map((response) => response._embeded.patients));
+      .pipe(map((response) => response._embedded.patients));
   }
 }
 interface GetResponse {
-  _embeded: {
+  _embedded: {
     patients: Patient[];
   };
 }
