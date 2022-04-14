@@ -11,9 +11,22 @@ export class PatientService {
   constructor(private httpClient: HttpClient) {}
 
   public getPatientList(): Observable<Patient[]> {
+    return this.getPatients(this.baseUrl);
+  }
+
+  private getPatients(url: string): Observable<Patient[]> {
     return this.httpClient
-      .get<GetResponse>(this.baseUrl)
+      .get<GetResponse>(url)
       .pipe(map((response) => response._embedded.patients));
+  }
+  getPatient(theId: number): Observable<Patient> {
+    const patientUrl = `${this.baseUrl}/${theId}`;
+    return this.httpClient.get<Patient>(patientUrl);
+  }
+
+  searchPatient(lastName: string): Observable<Patient[]> {
+    const searchUrl: string = `${this.baseUrl}/search/findByLastNameContaining?lastName=${lastName}`;
+    return this.getPatients(searchUrl);
   }
 }
 interface GetResponse {

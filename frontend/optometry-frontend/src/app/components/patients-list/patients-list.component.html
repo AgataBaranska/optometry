@@ -1,3 +1,26 @@
-<p *ngFor="let tempPatient of patients">
-  {{ tempPatient.firstName }} : {{ tempPatient.lastName }}
-</p>
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="patient-box">
+          <div
+            class="list-group-item list-group-item-action"
+            *ngFor="let tempPatient of patients"
+          >
+            <a routerLink="/patients/{{ tempPatient.id }}">
+              <h1>{{ tempPatient.firstName }} : {{ tempPatient.lastName }}</h1>
+            </a>
+          </div>
+        </div>
+
+        <div
+          *ngIf="patients?.length == 0"
+          class="alert alert-warning col-md-12"
+          role="alert"
+        >
+          No patients found
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
