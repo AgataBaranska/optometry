@@ -8,10 +8,18 @@ import { map } from 'rxjs';
 })
 export class PatientService {
   private baseUrl = 'http://localhost:8080/api/patients';
+
   constructor(private httpClient: HttpClient) {}
 
   public getPatientList(): Observable<Patient[]> {
     return this.getPatients(this.baseUrl);
+  }
+  public getPatientListPaginate(
+    thePage: number,
+    thePageSize: number
+  ): Observable<GetResponse> {
+    const url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<GetResponse>(url);
   }
 
   private getPatients(url: string): Observable<Patient[]> {
@@ -19,6 +27,7 @@ export class PatientService {
       .get<GetResponse>(url)
       .pipe(map((response) => response._embedded.patients));
   }
+
   getPatient(theId: number): Observable<Patient> {
     const patientUrl = `${this.baseUrl}/${theId}`;
     return this.httpClient.get<Patient>(patientUrl);
@@ -32,5 +41,11 @@ export class PatientService {
 interface GetResponse {
   _embedded: {
     patients: Patient[];
+  };
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
   };
 }

@@ -6,7 +6,7 @@ nav {
   background-color: white;
 }
 .search-form {
-  width: 50%;
+  width: 70%;
 }
 #sidebar {
   position: fixed;
@@ -31,9 +31,7 @@ nav {
   color: #0d6efd;
 }
 
-.vertical-nav {
-  margin-top: 20vh;
-}
+
 
 .logo {
   max-height: 30px;

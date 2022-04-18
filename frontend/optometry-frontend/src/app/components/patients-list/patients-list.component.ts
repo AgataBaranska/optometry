@@ -11,6 +11,10 @@ import { PatientService } from 'src/app/services/patient.service';
 export class PatientsListComponent implements OnInit {
   patients: Patient[] = [];
   searchMode: boolean = false;
+  //pagination properties
+  thePageSize: number = 2;
+  thePageNumber: number = 1;
+  theTotalElements: number = 0;
 
   constructor(
     private patientService: PatientService,
@@ -30,8 +34,16 @@ export class PatientsListComponent implements OnInit {
       });
     } else {
       this.patientService
-        .getPatientList()
-        .subscribe((data) => (this.patients = data));
+        .getPatientListPaginate(this.thePageNumber - 1, this.thePageSize)
+        .subscribe(this.processResult());
     }
+  }
+  processResult() {
+    return (data: any) => {
+      this.patients = data._embedded.patients;
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+    };
   }
 }

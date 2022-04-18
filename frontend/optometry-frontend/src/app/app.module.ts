@@ -12,6 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AppointmentsComponent } from './components/appointments/appointments.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: 'search/:keyword', component: PatientsListComponent },
@@ -33,7 +34,7 @@ const routes: Routes = [
     AppointmentsComponent,
     PatientDetailsComponent,
   ],
-  imports: [RouterModule.forRoot(routes), BrowserModule, HttpClientModule],
+  imports: [RouterModule.forRoot(routes), BrowserModule, HttpClientModule, NgbModule],
   providers: [PatientService],
   bootstrap: [AppComponent],
 })

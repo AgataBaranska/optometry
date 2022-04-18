@@ -1,24 +1,59 @@
-<div class="main-content">
-  <div class="section-content section-content-p30">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="patient-box">
+<div class="row">
+  <div class="patient-box my-5">
+    <table class="table">
+      <thead>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Telefon</th>
+        <th></th>
+      </thead>
+      <tbody *ngFor="let tempPatient of patients">
+        <td>{{ tempPatient.firstName }}</td>
+        <td>{{ tempPatient.lastName }}</td>
+        <td>{{ tempPatient.telephone }}</td>
+        <td>
           <div
-            class="list-group-item list-group-item-action"
-            *ngFor="let tempPatient of patients"
+            class="btn-group"
+            role="group"
+            aria-label="Basic outlined example"
           >
-            <a routerLink="/patients/{{ tempPatient.id }}">
-              <h1>{{ tempPatient.firstName }} : {{ tempPatient.lastName }}</h1>
-            </a>
+            <button type="button" class="btn btn-outline-primary">
+              Appointments
+            </button>
+            <button
+              routerLink="/patients/{{ tempPatient.id }}"
+              type="button"
+              class="btn btn-outline-secondary"
+            >
+              Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger">Delete</button>
           </div>
-        </div>
+        </td>
+      </tbody>
+    </table>
 
-        <div
-          *ngIf="patients?.length == 0"
-          class="alert alert-warning col-md-12"
-          role="alert"
-        >
-          No patients found
+    <div
+      *ngIf="patients?.length == 0"
+      class="alert alert-warning col-md-12"
+      role="alert"
+    >
+      No patients found
+    </div>
+    <div class="d-flex">
+      <button class="btn btn-success">Add patient</button>
+    </div>
+
+    <div class="pagination">
+      <div class="row">
+        <div class="col-md-6">
+          <ngb-pagination
+            [(page)]="thePageNumber"
+            [pageSize]="thePageSize"
+            [collectionSize]="theTotalElements"
+            (pageChange)="listPatients()"
+          >
+          </ngb-pagination>
         </div>
       </div>
     </div>
