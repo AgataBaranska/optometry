@@ -15,6 +15,7 @@ export class PatientsListComponent implements OnInit {
   thePageSize: number = 2;
   thePageNumber: number = 1;
   theTotalElements: number = 0;
+  previousKeyword: string = '';
 
   constructor(
     private patientService: PatientService,
@@ -27,11 +28,20 @@ export class PatientsListComponent implements OnInit {
 
   listPatients() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
+    if (this.previousKeyword != theKeyword) {
+      this.thePageNumber = 1;
+    }
+    this.previousKeyword = theKeyword;
+
     if (theKeyword) {
       //search using keyword
-      this.patientService.searchPatient(theKeyword).subscribe((data) => {
-        this.patients = data;
-      });
+      this.patientService
+        .searchPatientPaginate(
+          theKeyword,
+          this.thePageNumber - 1,
+          this.thePageSize
+        )
+        .subscribe(this.processResult());
     } else {
       this.patientService
         .getPatientListPaginate(this.thePageNumber - 1, this.thePageSize)

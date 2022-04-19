@@ -37,6 +37,15 @@ export class PatientService {
     const searchUrl: string = `${this.baseUrl}/search/findByLastNameContaining?lastName=${lastName}`;
     return this.getPatients(searchUrl);
   }
+
+  public searchPatientPaginate(
+    lastName: string,
+    thePage: number,
+    thePageSize: number
+  ): Observable<GetResponse> {
+    const url = `${this.baseUrl}/search/findByLastNameContaining?lastName=${lastName}&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<GetResponse>(url);
+  }
 }
 interface GetResponse {
   _embedded: {
