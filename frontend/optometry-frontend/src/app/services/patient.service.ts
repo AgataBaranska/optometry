@@ -3,11 +3,12 @@ import { Observable } from 'rxjs';
 import { Patient } from '../common/patient';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { API_URL } from '../app.constants';
 @Injectable({
   providedIn: 'root',
 })
 export class PatientService {
-  private baseUrl = 'http://localhost:8080/api/patients';
+  private baseUrl = `${API_URL}/api/patients`;
 
   constructor(private httpClient: HttpClient) {}
 
