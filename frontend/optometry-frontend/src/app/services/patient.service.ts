@@ -8,7 +8,7 @@ import { API_URL } from '../app.constants';
   providedIn: 'root',
 })
 export class PatientService {
-  private baseUrl = `${API_URL}/api/patients`;
+  private baseUrl = `${API_URL}/patients`;
 
   constructor(private httpClient: HttpClient) {}
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BasicAuthenticationService } from 'src/app/services/basic-authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -14,25 +14,23 @@ export class LoginComponent implements OnInit {
   invalidLogin = false;
 
   constructor(
-    private basicAuthenticationService: BasicAuthenticationService,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit(): void {}
 
-  handleLogin() {
-    this.basicAuthenticationService
-      .executeAuthenticationService(this.username, this.password)
-      .subscribe(
-        (data) => {
-          console.log('handle login data: ' + data);
-          this.router.navigateByUrl('/patients');
-          this.invalidLogin = false;
-        },
-        (error) => {
-          console.log(error);
-          this.invalidLogin = true;
-        }
-      );
+  login() {
+    this.authenticationService.login(this.username, this.password).subscribe(
+      (data) => {
+        console.log('handle login data: ' + data);
+        this.router.navigateByUrl('/patients');
+        this.invalidLogin = false;
+      },
+      (error) => {
+        console.log(error);
+        this.invalidLogin = true;
+      }
+    );
   }
 }

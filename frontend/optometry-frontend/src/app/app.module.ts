@@ -13,10 +13,10 @@ import { AppointmentsComponent } from './components/appointments/appointments.co
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpIntercepterBasicAuthService } from './services/http-intercepter-basic-auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { AuthorizationInterceptor } from './helpers/authorization-interceptor';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -50,11 +50,7 @@ const routes: Routes = [
   ],
   providers: [
     PatientService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpIntercepterBasicAuthService,
-      multi: true,
-    },
+    [{ HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }],
   ],
   bootstrap: [AppComponent],
 })
