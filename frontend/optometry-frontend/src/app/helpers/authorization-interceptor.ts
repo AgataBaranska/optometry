@@ -27,6 +27,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
       'Access-Control-Allow-Origin': 'http://localhost:4200',
       'Access-Control-Allow-Credentials': 'true',
+      'Content-Type': 'application/x-www-form-urlencoded',
     });
     if (token != null) {
       authorizationRequest = req.clone({

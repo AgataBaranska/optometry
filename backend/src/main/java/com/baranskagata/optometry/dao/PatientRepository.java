@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+
 public interface PatientRepository extends JpaRepository<Patient,Integer> {
 
    Page<Patient> findByLastNameContaining(@RequestParam("lastName") String lastName, Pageable pageable);
