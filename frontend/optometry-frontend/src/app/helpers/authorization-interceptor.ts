@@ -1,6 +1,7 @@
 import {
   HttpEvent,
   HttpHandler,
+  HttpHeaders,
   HttpInterceptor,
   HttpRequest,
   HTTP_INTERCEPTORS,
@@ -20,9 +21,16 @@ export class AuthorizationInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const token = this.sessionStorageService.getToken();
     let authorizationRequest = req;
+
+    let header = new HttpHeaders({
+      TOKEN_HEADER_KEY: 'Bearer ' + token,
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Origin': 'http://localhost:4200',
+      'Access-Control-Allow-Credentials': 'true',
+    });
     if (token != null) {
       authorizationRequest = req.clone({
-        headers: req.headers.set(TOKEN_HEADER_KEY, 'Basic ' + token),
+        headers: header,
       });
     }
     return next.handle(authorizationRequest);
