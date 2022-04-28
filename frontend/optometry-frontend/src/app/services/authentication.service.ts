@@ -3,8 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from '../app.constants';
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'x-www-form-urlencoded' }),
+  headers: new HttpHeaders().set(
+    'Content-Type',
+    'application/x-www-form-urlencoded'
+  ),
 };
+
 @Injectable({
   providedIn: 'root',
 })
@@ -15,6 +19,7 @@ export class AuthenticationService {
     let body = new URLSearchParams();
     body.set('username', username);
     body.set('password', password);
+
     return this.httpClient.post(
       API_URL + '/api/login',
       body.toString(),
