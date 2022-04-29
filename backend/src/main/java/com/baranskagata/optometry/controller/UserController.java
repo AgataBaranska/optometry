@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Role;
+import com.baranskagata.optometry.dto.Registration;
 import com.baranskagata.optometry.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -13,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +40,7 @@ public class UserController {
     private final UserService userService;
 
 
+
     @GetMapping("/users")
     public ResponseEntity<Page<AppUser>> getUsers(Pageable pageable) {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
@@ -51,12 +51,20 @@ public class UserController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
+    @PostMapping("/users/registration")
+    public ResponseEntity<AppUser> saveUser(@RequestBody Registration registration) {
+
+        //save user
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/registration").toUriString());
+        return ResponseEntity.created(uri).body(userService.saveRegistration(registration));
+    }
 
     @PostMapping("/roles/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
+
 
     @PostMapping("/roles/addToUser")
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleUserForm roleUserForm) {
@@ -113,3 +121,5 @@ class RoleUserForm {
     private String username;
     private String roleName;
 }
+
+

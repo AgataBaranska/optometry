@@ -1,7 +1,10 @@
 package com.baranskagata.optometry.service;
 
+import com.baranskagata.optometry.dao.AddressRepository;
 import com.baranskagata.optometry.dao.RoleRepository;
 import com.baranskagata.optometry.dao.UserRepository;
+import com.baranskagata.optometry.dto.Registration;
+import com.baranskagata.optometry.entity.Address;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Role;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import java.util.Collection;
 @Slf4j
 public class UserServiceImpl implements  UserService, UserDetailsService {
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -53,6 +57,23 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
         //encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    @Override
+    public AppUser saveRegistration(Registration registration) {
+        log.info("Saving new registration to db {}",registration);
+        //TODO check if already exists in db, exception if not found
+
+
+       //create new user based on registration
+        AppUser user = registration.getUser();
+        Address address = registration.getAddress();
+        //set users address
+        user.setAddress(address);
+        //encode password
+        registration.getUser().setPassword(passwordEncoder.encode(registration.getUser().getPassword()));
+        return userRepository.save(user);
+
     }
 
     @Override

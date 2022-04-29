@@ -1,12 +1,20 @@
-<H1>Login</H1>
-
-<div class="container">
-  <div class="alert alert-warning" *ngIf="invalidLogin">{{ errorMessage }}</div>
-
-  <div>
-    User Name :
-    <input type="text" name="username" [(ngModel)]="username" /> Password :
-    <input type="password" name="password" [(ngModel)]="password" />
-    <button (click)="login()" class="btn btn-success">Login</button>
+<main class="form-register" (submit)="login()">
+  <div class="container-fluid">
+    <form [formGroup]="loginFormGroup" class="form-area">
+      <h1 class="h3 mb-3 fw-normal">Please login</h1>
+      <div class="row">
+        <div class="col-md-2">
+          <label>Username</label>
+          <input formControlName="username" type="text" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>Password</label>
+          <input formControlName="password" type="password" />
+        </div>
+      </div>
+      <button class="btn btn-lg btn-primary" type="submit">Submit</button>
+    </form>
   </div>
-</div>
+</main>

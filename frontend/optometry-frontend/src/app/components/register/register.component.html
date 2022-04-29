@@ -1,32 +1,95 @@
-<main class="form-signin" (submit)="register()">
-  <form [formGroup]="form">
-    <h1 class="h3 mb-3 fw-normal">Please register</h1>
+<main class="form-register" (submit)="register()">
+  <div class="container-fluid">
+    <form [formGroup]="registerFormGroup">
+      <h1 class="h3 mb-3 fw-normal">Please register</h1>
 
-    <div class="form-floating">
-      <input formControlName="name" class="form-control" placeholder="Name" />
-      <label>Name</label>
-    </div>
+      <div formGroupName="user" class="form-area">
+        <h3>User</h3>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Username</label>
+            <input formControlName="username" type="text" />
+            <div
+              *ngIf="
+                username?.invalid && (username?.dirty || username?.touched)
+              "
+              class="alert alert-danger mt-1"
+            >
+              <div *ngIf="username!.errors!['required']">
+                Username is required
+              </div>
+              <div *ngIf="username!.errors!['minlength']">
+                Username must be at least 3 characters
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Password</label>
+            <input formControlName="password" type="password" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>First name</label>
+            <input formControlName="firstName" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Last name</label>
+            <input formControlName="lastName" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Pesel</label>
+            <input formControlName="pesel" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Email</label>
+            <input formControlName="email" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Telephone</label>
+            <input formControlName="telephone" type="text" />
+          </div>
+        </div>
+      </div>
+      <div formGroupName="address" class="form-area">
+        <h3>Address</h3>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Street</label>
+            <input formControlName="street" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>City</label>
+            <input formControlName="city" type="password" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Country</label>
+            <input formControlName="country" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label>Zip code</label>
+            <input formControlName="zipCode" type="text" />
+          </div>
+        </div>
+      </div>
 
-    <div class="form-floating">
-      <input
-        formControlName="email"
-        type="email"
-        class="form-control"
-        placeholder="name@example.com"
-      />
-      <label>Email address</label>
-    </div>
-
-    <div class="form-floating">
-      <input
-        formControlName="password"
-        type="password"
-        class="form-control"
-        placeholder="Password"
-      />
-      <label>Password</label>
-    </div>
-
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
-  </form>
+      <button class="btn btn-lg btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
 </main>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -8,29 +9,35 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  username = 'admin';
-  password = '';
-  errorMessage = 'Invalid Login Credentials';
-  invalidLogin = false;
+  loginFormGroup!: FormGroup;
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private formBuilder: FormBuilder
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loginFormGroup = this.formBuilder.group({
+      username: [''],
+      password: [''],
+    });
+  }
 
   login() {
-    this.authenticationService.login(this.username, this.password).subscribe(
-      (data) => {
-        console.log('handle login data: ' + data);
-        this.router.navigateByUrl('/patients');
-        this.invalidLogin = false;
-      },
-      (error) => {
-        console.log(error);
-        this.invalidLogin = true;
-      }
-    );
+    this.authenticationService
+      .login(
+        this.loginFormGroup.get('username')?.value,
+        this.loginFormGroup.get('password')?.value
+      )
+      .subscribe(
+        (data) => {
+          console.log('handle login data: ' + data);
+          this.router.navigateByUrl('/patients');
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }
