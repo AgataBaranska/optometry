@@ -19,29 +19,29 @@ public class OptometryApplication {
         SpringApplication.run(OptometryApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner run(UserService userService) {
-        return args -> {
-            userService.saveRole(new Role(null, "ROLE_PATIENT"));
-            userService.saveRole(new Role(null, "ROLE_OPTOMETRIST"));
-            userService.saveRole(new Role(null, "ROLE_ADMIN"));
-            userService.saveRole(new Role(null, "ROLE_RECEPTION"));
+//    @Bean
+//    CommandLineRunner run(UserService userService) {
+//        return args -> {
+//            userService.saveRole(new Role(null, "PATIENT"));
+//            userService.saveRole(new Role(null, "OPTOMETRIST"));
+//            userService.saveRole(new Role(null, "ADMIN"));
+//            userService.saveRole(new Role(null, "RECEPTION"));
+//
+//            userService.saveUser((new AppUser(null, "john doe", "johnd", "1234", new ArrayList<>())));
+//            userService.saveUser((new AppUser(null, "ola bąk", "olab", "1234", new ArrayList<>())));
+//            userService.saveUser((new AppUser(null, "olek dąb", "olekd", "1234", new ArrayList<>())));
+//            userService.saveUser((new AppUser(null, "dori cyk", "doric", "1234", new ArrayList<>())));
+//
+//            userService.addRoleToUser("johnd", "ADMIN");
+//            userService.addRoleToUser("olab", "ADMIN");
+//            userService.addRoleToUser("olekd", "ADMIN");
+//            userService.addRoleToUser("doric", "ADMIN");
+//
+//
+//
+//        };
 
-            userService.saveUser((new AppUser(null, "john doe", "johnd", "1234", new ArrayList<>())));
-            userService.saveUser((new AppUser(null, "ola bąk", "olab", "1234", new ArrayList<>())));
-            userService.saveUser((new AppUser(null, "olek dąb", "olekd", "1234", new ArrayList<>())));
-            userService.saveUser((new AppUser(null, "dori cyk", "doric", "1234", new ArrayList<>())));
-
-            userService.addRoleToUser("johnd", "ROLE_ADMIN");
-            userService.addRoleToUser("olab", "ROLE_OPTOMETRIST");
-            userService.addRoleToUser("olekd", "ROLE_RECEPTION");
-            userService.addRoleToUser("doric", "ROLE_PATIENT");
-            userService.addRoleToUser("doric", "ROLE_RECEPTION");
-
-
-        };
-
-    }
+//    }
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

@@ -14,12 +14,14 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { AuthorizationInterceptor } from './helpers/authorization-interceptor';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'search/:keyword', component: PatientsListComponent },
   { path: 'patients/:id', component: PatientDetailsComponent },
   { path: 'home', component: HomeComponent },
@@ -40,6 +42,7 @@ const routes: Routes = [
     PatientDetailsComponent,
     LoginComponent,
     TopBarComponent,
+    RegisterComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -47,6 +50,7 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     PatientService,

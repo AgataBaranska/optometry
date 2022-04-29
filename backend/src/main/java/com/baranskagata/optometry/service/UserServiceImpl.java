@@ -39,14 +39,17 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
             log.info("User found in the database: {}",username);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
+        log.info("User {} authorities: {}", username,authorities.toString());
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
     }
     @Override
     public AppUser saveUser(AppUser user) {
         log.info("Saving new user to db {}",user);
+        //check if user already exists in db
         //encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
