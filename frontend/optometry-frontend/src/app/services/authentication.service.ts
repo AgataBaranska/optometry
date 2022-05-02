@@ -3,10 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL } from '../app.constants';
 const httpOptions = {
-  headers: new HttpHeaders().set(
-    'Content-Type',
-    'application/x-www-form-urlencoded'
-  ),
+  headers: new HttpHeaders().set('Content-Type', 'application/json'),
 };
 
 @Injectable({
@@ -16,14 +13,16 @@ export class AuthenticationService {
   constructor(private httpClient: HttpClient) {}
 
   login(username: string, password: string): Observable<any> {
-    let body = new URLSearchParams();
-    body.set('username', username);
-    body.set('password', password);
-
     return this.httpClient.post(
       API_URL + '/api/login',
-      body.toString(),
+      { username: username, password: password },
       httpOptions
     );
+  }
+  refreshToken(token: string) {
+    return this.httpClient.post(API_URL + '/token/refresh', {
+      refreshToken: token,
+      httpOptions,
+    });
   }
 }

@@ -16,8 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
-import { AuthorizationInterceptor } from './helpers/authorization-interceptor';
 import { RegisterComponent } from './components/register/register.component';
+import { Interceptor } from './helpers/interceptor';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -54,7 +54,13 @@ const routes: Routes = [
   ],
   providers: [
     PatientService,
-    [{ HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }],
+    [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: Interceptor,
+        multi: true,
+      },
+    ],
   ],
   bootstrap: [AppComponent],
 })
