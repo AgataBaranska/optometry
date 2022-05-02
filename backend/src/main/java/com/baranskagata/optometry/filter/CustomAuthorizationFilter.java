@@ -43,6 +43,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
                 try {
+                    log.info("authHeader in authorization: "+ authorizationHeader);
                     String token = authorizationHeader.substring("Bearer ".length());
                     //TODO utility class for secret and algorithm
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

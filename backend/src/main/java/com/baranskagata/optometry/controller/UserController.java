@@ -11,6 +11,7 @@ import com.baranskagata.optometry.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
-
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -72,13 +73,16 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/token/refresh")
+    @PostMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
             try {
-                String refresh_token = authorizationHeader.substring("Bearer ".length());
+//                log.info("authorization header in refresh token: "+ authorizationHeader);
+//                String refresh_token = authorizationHeader.substring("Bearer ".length());
+                String refresh_token = request.getParameter("refresh-token");
+                log.info("In refresh token: " + refresh_token);
                 //TODO utlity class for secret and alhorithm
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();

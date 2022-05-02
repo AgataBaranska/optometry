@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
 
-        http.cors().configurationSource(corsConfigurationSource());
+       http.cors().configurationSource(corsConfigurationSource());
 
         CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         authenticationFilter.setFilterProcessesUrl("/login");
@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.sessionManagement().sessionCreationPolicy(STATELESS);
+        http.authorizeRequests().anyRequest().permitAll();
         http.authorizeRequests().antMatchers("/login","/token/refresh/**","/users/registration/**").permitAll();
         http.authorizeRequests().antMatchers( "/patients/**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated();

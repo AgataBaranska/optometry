@@ -19,10 +19,16 @@ export class AuthenticationService {
       httpOptions
     );
   }
+  logOut() {
+    console.log('logging out');
+  }
   refreshToken(token: string) {
-    return this.httpClient.post(API_URL + '/token/refresh', {
-      refreshToken: token,
-      httpOptions,
-    });
+    return this.httpClient.post(
+      API_URL + '/token/refresh',
+      {
+        'refresh-token': token,
+      },
+      httpOptions
+    );
   }
 }
