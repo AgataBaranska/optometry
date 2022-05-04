@@ -33,7 +33,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        //check if login path
+
         if (request.getServletPath().equals("/login") || request.getServletPath().equals( "/token/refresh") ||
                 request.getServletPath().equals( "/users/registration")) {
             //do nothing
@@ -52,7 +52,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     String username = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     //set in authentication context
-                    //conversion because security is expecting something that extands GrantedAuthority
+                    //conversion because security is expecting something that extends GrantedAuthority
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {
                         authorities

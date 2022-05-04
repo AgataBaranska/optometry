@@ -15,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +34,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
+@CrossOrigin("http://localhost:4200/")
 public class UserController {
     private final UserService userService;
 
@@ -75,12 +73,8 @@ public class UserController {
 
     @PostMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-
             try {
-//                log.info("authorization header in refresh token: "+ authorizationHeader);
-//                String refresh_token = authorizationHeader.substring("Bearer ".length());
+
                 String refresh_token = request.getParameter("refresh-token");
                 log.info("In refresh token: " + refresh_token);
                 //TODO utlity class for secret and alhorithm
@@ -113,9 +107,7 @@ public class UserController {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
-        } else {
-            throw new RuntimeException("Refresh token is missing");
-        }
+
     }
 }
 
