@@ -1,4 +1,4 @@
-body {
+/* body {
   background: #f6f6f6;
   height: 100vh;
 }
@@ -62,4 +62,25 @@ a.navbar-brand {
   z-index:23;
   display:inline-block
 }
+ */
 
+ fieldset {
+  border: 1px solid #000;
+}
+.form-area{
+  background:#fffefe;
+  position:relative;
+  margin-bottom:25px;
+  padding:50px 20px;
+  border:3px solid #ccc
+}
+.form-area h3{
+  position:absolute;
+  top:-26px;
+  left:13px;
+  background:#fefefe;
+  padding:10px 20px;
+  font-weight:500;
+  z-index:23;
+  display:inline-block
+}
