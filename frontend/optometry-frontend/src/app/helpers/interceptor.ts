@@ -17,31 +17,28 @@ import {
   throwError,
 } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
-import { TokenStorageService } from '../services/token-storage.service';
-
-const TOKEN_HEADER_KEY = 'authorization';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
-  private isRefreshing = false; //flag
+  private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );
 
-  constructor(
-    private tokenService: TokenStorageService,
-    private authService: AuthenticationService
-  ) {}
+  constructor(private authService: AuthenticationService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token = this.tokenService.getToken();
+    const token = this.authService.getToken();
+    console.log('Token in interceptor:' + token);
+
     let request = req;
     if (token) {
-      request = this.addTokenHeader(req, token);
+      request = this.addTokensHeader(req, token);
     }
+
     return next.handle(request).pipe(
       catchError((error) => {
         if (
@@ -60,25 +57,24 @@ export class Interceptor implements HttpInterceptor {
       //refreshing has not yet started
       this.isRefreshing = true; //refreshing started
       this.refreshTokenSubject.next(null); //populate next value of null, will block another request
-      const refresh_token = this.tokenService.getRefreshToken();
+      const refresh_token = this.authService.getRefreshToken();
       console.log('refresh token : ' + refresh_token);
       if (refresh_token) {
         return this.authService.refreshToken(refresh_token).pipe(
           switchMap((data: any) => {
             this.isRefreshing = false;
             console.log('New token: ' + data.access_token);
-            this.tokenService.saveToken(data.access_token);
-
+            this.authService.saveToken(data.access_token);
             this.refreshTokenSubject.next(data.access_token);
             //continue the request which initialized the method with new token
             return next.handle(
-              this.addTokenHeader(request, this.tokenService.getToken()!)
+              this.addTokensHeader(request, this.authService.getToken()!)
             );
           }),
 
           catchError((err) => {
             this.isRefreshing = false;
-            this.authService.logOut();
+            this.authService.logout();
             return throwError(err);
           })
         );
@@ -90,17 +86,17 @@ export class Interceptor implements HttpInterceptor {
       //transform to observable which will finish after taking one event from subject
       take(1),
       //release that query
-      switchMap((token) => next.handle(this.addTokenHeader(request, token)))
+      switchMap((token) => next.handle(this.addTokensHeader(request, token)))
     );
   }
 
-  private addTokenHeader(request: HttpRequest<any>, token: string) {
-    console.log('Interceptor - adding token to header');
+  private addTokensHeader(request: HttpRequest<any>, token: string) {
     if (request.url.includes('/refresh')) {
       return request;
     }
+
     return request.clone({
-      headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token),
+      setHeaders: { Authorization: 'Bearer ' + token },
     });
   }
 }

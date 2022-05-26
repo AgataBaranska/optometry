@@ -23,7 +23,7 @@ import java.util.Collections;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -40,20 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
-        http.cors().configurationSource(corsConfigurationSource());
-
         CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         authenticationFilter.setFilterProcessesUrl("/login");
 
-        http.csrf().disable();
+        http.csrf().disable().sessionManagement().sessionCreationPolicy(STATELESS).and()
+                .addFilter(authenticationFilter)
+                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .cors().configurationSource(corsConfigurationSource())
+                .and().authorizeRequests().antMatchers("/login", "/token/refresh/**", "/users/registration/**").permitAll()
+                .and().authorizeRequests().antMatchers("/patients/**").hasAnyAuthority("ADMIN")
+                .and().authorizeRequests().anyRequest().authenticated();
 
-        http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/login","/token/refresh/**","/users/registration/**").permitAll();
-        http.authorizeRequests().antMatchers( "/patients/**").hasAnyAuthority("ADMIN");
-        http.authorizeRequests().anyRequest().authenticated();
-        http.addFilter(authenticationFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 
@@ -67,6 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "PATCH"));
+        configuration.setAllowCredentials(true);
+
+        //headers that are allowed for browsers to access
+        configuration.setExposedHeaders(Collections.singletonList("*"));//"Authorization"
+        //used in response to a preflight request to indicate which HTTP headers can be used when making the actual request
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

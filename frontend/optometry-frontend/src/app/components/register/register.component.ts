@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Registration } from 'src/app/common/registration';
-import { RegisterService } from 'src/app/services/register.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private registerService: RegisterService,
+    private authService: AuthenticationService,
     private router: Router
   ) {}
 
@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit {
     let registration = new Registration();
     registration.user = this.registerFormGroup.controls['user'].value;
     registration.address = this.registerFormGroup.controls['address'].value;
-    this.registerService.register(registration).subscribe({
+    this.authService.register(registration).subscribe({
       next: (response) => {
         alert('New user registered succesfully');
         this.resetForm();

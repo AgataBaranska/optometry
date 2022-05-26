@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Role;
-import com.baranskagata.optometry.dto.Registration;
 import com.baranskagata.optometry.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -27,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -37,8 +35,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin("http://localhost:4200/")
 public class UserController {
     private final UserService userService;
-
-
 
     @GetMapping("/users")
     public ResponseEntity<Page<AppUser>> getUsers(Pageable pageable) {
@@ -50,13 +46,7 @@ public class UserController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
-    @PostMapping("/users/registration")
-    public ResponseEntity<AppUser> saveUser(@RequestBody Registration registration) {
 
-        //save user
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/registration").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRegistration(registration));
-    }
 
     @PostMapping("/roles/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
@@ -73,40 +63,44 @@ public class UserController {
 
     @PostMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            try {
+        try {
 
-                String refresh_token = request.getParameter("refresh-token");
-                log.info("In refresh token: " + refresh_token);
-                //TODO utlity class for secret and alhorithm
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refresh_token);
-                String username = decodedJWT.getSubject();
-                AppUser user = userService.getUser(username);
-
-                String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-
-                String access_token = JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                        .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                        .sign(algorithm);
+            Map<String, String> requestMap = new ObjectMapper().readValue(request.getInputStream(), Map.class);
+            String refresh_token = requestMap.get("refresh_token");
+            log.info("In refresh token: " + refresh_token);
 
 
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+            //TODO utlity class for secret and alhorithm
+            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT decodedJWT = verifier.verify(refresh_token);
+            String username = decodedJWT.getSubject();
+            AppUser user = userService.getUser(username);
 
-            } catch (Exception exception) {
-                response.setHeader("error", exception.getMessage());
-                //  response.sendError(FORBIDDEN.value());
-                response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", exception.getMessage());
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-            }
+            String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+
+            String access_token = JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                    .withIssuer(request.getRequestURL().toString())
+                    .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                    .sign(algorithm);
+
+
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("access_token", access_token);
+            tokens.put("refresh_token", refresh_token);
+            response.setContentType(APPLICATION_JSON_VALUE);
+            
+            new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+        } catch (Exception exception) {
+            response.setHeader("error", exception.getMessage());
+            //  response.sendError(FORBIDDEN.value());
+            response.setStatus(FORBIDDEN.value());
+            Map<String, String> error = new HashMap<>();
+            error.put("error_message", exception.getMessage());
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), error);
+        }
 
     }
 }

@@ -18,6 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { Interceptor } from './helpers/interceptor';
+import { AuthenticationService } from './services/authentication.service';
+import { WeatherComponent } from './components/weather/weather.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,8 +30,8 @@ const routes: Routes = [
   { path: 'patients', component: PatientsListComponent },
   { path: 'appointments', component: AppointmentsComponent },
   { path: 'statistics', component: StatisticsComponent },
-  { path: '', redirectTo: '/patients', pathMatch: 'full' },
-  { path: '**', redirectTo: '/patients', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({
@@ -43,6 +45,9 @@ const routes: Routes = [
     LoginComponent,
     TopBarComponent,
     RegisterComponent,
+    WeatherComponent,
+    HomeComponent,
+    StatisticsComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -54,6 +59,7 @@ const routes: Routes = [
   ],
   providers: [
     PatientService,
+    AuthenticationService,
     [
       {
         provide: HTTP_INTERCEPTORS,

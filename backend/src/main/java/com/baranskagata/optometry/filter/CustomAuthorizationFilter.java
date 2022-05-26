@@ -33,7 +33,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-
         if (request.getServletPath().equals("/login") || request.getServletPath().equals( "/token/refresh") ||
                 request.getServletPath().equals( "/users/registration")) {
             //do nothing
@@ -45,14 +44,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 try {
                     log.info("authHeader in authorization: "+ authorizationHeader);
                     String token = authorizationHeader.substring("Bearer ".length());
-                    //TODO utility class for secret and algorithm
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-                    //set in authentication context
-                    //conversion because security is expecting something that extends GrantedAuthority
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {
                         authorities

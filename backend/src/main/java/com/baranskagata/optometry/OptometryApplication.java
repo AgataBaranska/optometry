@@ -19,33 +19,32 @@ public class OptometryApplication {
         SpringApplication.run(OptometryApplication.class, args);
     }
 
-//    @Bean
-//    CommandLineRunner run(UserService userService) {
-//        return args -> {
+    @Bean
+    CommandLineRunner run(UserService userService) {
+        return args -> {
 //            userService.saveRole(new Role(null, "PATIENT"));
 //            userService.saveRole(new Role(null, "OPTOMETRIST"));
 //            userService.saveRole(new Role(null, "ADMIN"));
 //            userService.saveRole(new Role(null, "RECEPTION"));
 //
-//            userService.saveUser((new AppUser(null, "john doe", "johnd", "1234", new ArrayList<>())));
-//            userService.saveUser((new AppUser(null, "ola bąk", "olab", "1234", new ArrayList<>())));
-//            userService.saveUser((new AppUser(null, "olek dąb", "olekd", "1234", new ArrayList<>())));
-//            userService.saveUser((new AppUser(null, "dori cyk", "doric", "1234", new ArrayList<>())));
 //
-//            userService.addRoleToUser("johnd", "ADMIN");
-//            userService.addRoleToUser("olab", "ADMIN");
-//            userService.addRoleToUser("olekd", "ADMIN");
-//            userService.addRoleToUser("doric", "ADMIN");
+//            userService.saveUser(new AppUser(null, "johnd", "1234",
+//                    "John", "Doe", "1214234141", "345234233",
+//                    "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
+//            userService.saveUser(new AppUser(null, "olab", "1234", "John", "Doe", "1214234141", "345234233", "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
+//            userService.saveUser(new AppUser(null, "doric", "1234", "John", "Doe", "1214234141", "345234233", "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
+//            userService.saveUser(new AppUser(null, "optim", "1234", "John", "Doe", "1214234141", "345234233", "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
 //
-//
-//
-//        };
+//            userService.addRoleToUser("johnd","ADMIN");
+//            userService.addRoleToUser("olab","PATIENT");
+//            userService.addRoleToUser("doric","RECEPTION");
+//            userService.addRoleToUser("optim","OPTOMETRIST");
+        };
+  }
+        @Bean
+        PasswordEncoder passwordEncoder () {
+            return new BCryptPasswordEncoder();
+        }
 
-//    }
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+
     }
-
-
-}

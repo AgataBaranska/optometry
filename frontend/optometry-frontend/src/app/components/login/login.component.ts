@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private tokenStorage: TokenStorageService
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +25,9 @@ export class LoginComponent implements OnInit {
       password: [''],
     });
 
-    // if (this.tokenStorage.getToken()) {
-    //   this.isLoggedIn = true;
-    // }
+    if (this.authService.getToken()) {
+      this.isLoggedIn = true;
+    }
   }
 
   login() {
@@ -37,26 +36,21 @@ export class LoginComponent implements OnInit {
         this.loginFormGroup.get('username')?.value,
         this.loginFormGroup.get('password')?.value
       )
-      .subscribe(
-        (data) => {
-          this.tokenStorage.saveToken(data.access_token);
-          this.tokenStorage.saveRefreshToken(data.refresh_token);
+      .subscribe({
+        next: (response) => {
+          this.authService.saveToken(response.access_token);
+          this.authService.saveRefreshToken(response.refresh_token);
+          console.log('saving token ' + this.authService.getToken());
           console.log(
-            'access token from storage: ' + this.tokenStorage.getToken()
+            'saving refresh token ' + this.authService.getRefreshToken()
           );
-          console.log(
-            'refresh token from storage: ' + this.tokenStorage.getRefreshToken()
-          );
-          // this.isLoggedIn = true;
-          //  window.location.reload();
-
-          console.log('handle login data: ' + data);
-          this.router.navigateByUrl('/patients');
+          this.isLoggedIn = true;
+          this.router.navigateByUrl('/home');
         },
-        (error) => {
+
+        error: (err) => {
           this.isLoggedIn = false;
-          console.log(error);
-        }
-      );
+        },
+      });
   }
 }

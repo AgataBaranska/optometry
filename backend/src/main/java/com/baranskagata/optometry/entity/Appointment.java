@@ -1,66 +1,47 @@
 package com.baranskagata.optometry.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="appointment")
+@Table(name = "appointment")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "appointment_date")
-    private LocalDateTime appointmentDate;
+    @Column(name = "start")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime start;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinColumn(name="patient_id")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Column(name = "end")
+    private LocalDateTime end;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private AppointmentStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "id_work")
+    private Work work;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinColumn(name="optometrist_id")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "optometrist_id")
     private Optometrist optometrist;
 
-    public Appointment() {
-    }
 
-    public Appointment(int id, LocalDateTime appointmentDate, Patient patient, Optometrist optometrist) {
-        this.id = id;
-        this.appointmentDate = appointmentDate;
-        this.patient = patient;
-        this.optometrist = optometrist;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(LocalDateTime appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Optometrist getOptometrist() {
-        return optometrist;
-    }
-
-    public void setOptometrist(Optometrist optometrist) {
-        this.optometrist = optometrist;
-    }
 }
