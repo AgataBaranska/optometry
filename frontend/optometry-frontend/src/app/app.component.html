@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <!-- Top Nav -->
 
-  <app-top-bar *ngIf="showHead"></app-top-bar>
+  <app-top-bar *ngIf="authenticationService.isLoggedIn$ | async"></app-top-bar>
 
   <!-- End Top Nav   -->
 
@@ -10,7 +10,9 @@
       <div class="col-1">
         <!-- Menu side nav -->
 
-        <app-vertical-nav-bar *ngIf="showHead"></app-vertical-nav-bar>
+        <app-vertical-nav-bar
+          *ngIf="authenticationService.isLoggedIn$ | async"
+        ></app-vertical-nav-bar>
 
         <!-- END Menu side nav -->
       </div>

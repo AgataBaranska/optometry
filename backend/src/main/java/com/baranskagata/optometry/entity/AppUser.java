@@ -44,10 +44,42 @@ public class AppUser {
     @Basic
     private String country;
 
-@JsonIgnore
+    public AppUser(Long id, String username, String password, String firstName, String lastName, String pesel, String telephone,
+                   String email, String street, String city, String postalCode, String country, Collection<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pesel = pesel;
+        this.telephone = telephone;
+        this.email = email;
+        this.street = street;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
+        this.roles = roles;
+    }
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+
+    @OneToOne(mappedBy = "appUser")
+    private Optometrist optometrist;
+
+
+    @OneToOne(mappedBy = "appUser")
+    private Patient patient;
+
+
+    @OneToOne(mappedBy = "appUser")
+    private Admin admin;
+
+    @OneToOne(mappedBy = "appUser")
+    private Receptionist receptionist;
 
 
 }

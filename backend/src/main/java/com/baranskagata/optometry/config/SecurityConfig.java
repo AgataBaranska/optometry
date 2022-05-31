@@ -49,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource())
                 .and().authorizeRequests().antMatchers("/login", "/token/refresh/**", "/users/registration/**").permitAll()
                 .and().authorizeRequests().antMatchers("/patients/**").hasAnyAuthority("ADMIN")
+                .and().authorizeRequests().antMatchers("/appointments/**").permitAll()
+
                 .and().authorizeRequests().anyRequest().authenticated();
 
     }

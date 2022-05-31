@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { JWTUser } from 'src/app/common/JWTUser.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -10,8 +11,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   loginFormGroup!: FormGroup;
-  isLoggedIn = false;
-
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
@@ -25,9 +24,9 @@ export class LoginComponent implements OnInit {
       password: [''],
     });
 
-    if (this.authService.getToken()) {
-      this.isLoggedIn = true;
-    }
+    // if (this.authService.getToken()) {
+    //   this.isLoggedIn = true;
+    // }
   }
 
   login() {
@@ -38,18 +37,7 @@ export class LoginComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.authService.saveToken(response.access_token);
-          this.authService.saveRefreshToken(response.refresh_token);
-          console.log('saving token ' + this.authService.getToken());
-          console.log(
-            'saving refresh token ' + this.authService.getRefreshToken()
-          );
-          this.isLoggedIn = true;
           this.router.navigateByUrl('/home');
-        },
-
-        error: (err) => {
-          this.isLoggedIn = false;
         },
       });
   }

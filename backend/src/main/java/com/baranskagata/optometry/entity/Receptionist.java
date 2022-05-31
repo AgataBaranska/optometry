@@ -12,15 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Patient {
+public class Receptionist{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Long id;
 
-    @OneToMany(mappedBy ="patient", cascade = CascadeType.ALL)
-    private List<Appointment> appointmentList;
 
     @OneToOne()
     @JoinColumn(name="user_id")

@@ -11,22 +11,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Optometrist{
+
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Long id;
 
-    @Column(name = "optometrist_number")
-    private String optometristNumber;
-
-    @OneToMany(mappedBy = "optometrist", cascade = CascadeType.ALL)
-    private List<Appointment> appointmentList;
-
-    @ManyToMany
-    @JoinTable(name = "works_providers", joinColumns = @JoinColumn(name = "id_optometrist"), inverseJoinColumns = @JoinColumn(name = "id_work"))
-    private List<Work> works;
 
     @OneToOne
     @JoinColumn(name="user_id")

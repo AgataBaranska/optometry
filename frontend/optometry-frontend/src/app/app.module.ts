@@ -20,6 +20,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { Interceptor } from './helpers/interceptor';
 import { AuthenticationService } from './services/authentication.service';
 import { WeatherComponent } from './components/weather/weather.component';
+import { HasRoleGuard } from './has-role.guard';
+import { IsAuthenticatedGuard } from './is-authenticated.guard';
+import { AppoitmentDetailsComponent } from './components/appoitment-details/appoitment-details.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,11 +30,18 @@ const routes: Routes = [
   { path: 'search/:keyword', component: PatientsListComponent },
   { path: 'patients/:id', component: PatientDetailsComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'patients', component: PatientsListComponent },
+  {
+    path: 'patients',
+    component: PatientsListComponent,
+    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
+    data: { role: ['ADMIN'] },
+  },
   { path: 'appointments', component: AppointmentsComponent },
+  { path: 'appointments/:id', component: AppoitmentDetailsComponent },
+
   { path: 'statistics', component: StatisticsComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({

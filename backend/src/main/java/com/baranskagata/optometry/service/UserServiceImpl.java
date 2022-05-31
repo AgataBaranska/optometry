@@ -1,11 +1,9 @@
 package com.baranskagata.optometry.service;
 
 
-import com.baranskagata.optometry.dao.RoleRepository;
-import com.baranskagata.optometry.dao.UserRepository;
+import com.baranskagata.optometry.dao.*;
 
-import com.baranskagata.optometry.entity.AppUser;
-import com.baranskagata.optometry.entity.Role;
+import com.baranskagata.optometry.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +27,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PatientRepository patientRepository;
+    private final OptometristRepository optometristrepository;
+    private final ReceptionistRepository receptionistRepository;
+    private final AdminRepository adminRepository;
 
     //from UserDetailsService
     @Override
@@ -72,6 +74,41 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         AppUser user = userRepository.findByUsername(username);
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
+        switch(roleName){
+            case "PATIENT":{
+                Patient patient = new Patient();
+
+                user.setPatient(patient);
+                patient.setAppUser(user);
+                patientRepository.save(patient);
+            }
+            break;
+            case "ADMIN":{
+                Admin admin = new Admin();
+                user.setAdmin(admin);
+                admin.setAppUser(user);
+                adminRepository.save(admin);
+
+
+            }
+            break;
+            case "RECEPTIONIST":{
+                Receptionist receptionist = new Receptionist();
+                user.setReceptionist(receptionist);
+                receptionist.setAppUser(user);
+                receptionistRepository.save(receptionist);
+            }
+            break;
+            case "OPTOMETRIST":{
+                Optometrist optometrist = new Optometrist();
+                user.setOptometrist(optometrist);
+                optometrist.setAppUser(user);
+                optometristrepository.save(optometrist);
+            }
+            break;
+
+        }
+
     }
 
     @Override

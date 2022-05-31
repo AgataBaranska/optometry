@@ -1,12 +1,13 @@
 package com.baranskagata.optometry.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "appointment")
@@ -14,10 +15,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Appointment {
+
+    public Appointment(Long id, LocalDateTime start, LocalDateTime end, AppointmentStatus status, Work work, Patient patient, Optometrist optometrist) {
+
+        this.id = id;
+        this.start = start;
+        this.end = end;
+        this.status = status;
+        this.work = work;
+        this.patient = patient;
+        this.optometrist = optometrist;
+        this.setDuration();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "start")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -35,7 +49,7 @@ public class Appointment {
     @JoinColumn(name = "id_work")
     private Work work;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH} )
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
@@ -44,4 +58,19 @@ public class Appointment {
     private Optometrist optometrist;
 
 
+   @Transient
+    private Duration duration;
+
+    public Duration getDuration() {
+        Instant startInstant = start.toInstant(ZoneOffset.UTC);
+        Instant endInstant = end.toInstant(ZoneOffset.UTC);
+
+        return Duration.between(start, end);
+    }
+
+    public void setDuration() {
+        Instant startInstant = start.toInstant(ZoneOffset.UTC);
+        Instant endInstant = end.toInstant(ZoneOffset.UTC);
+        Duration.between(start, end);
+    }
 }
