@@ -10,15 +10,19 @@ import java.util.List;
 public interface WorkService {
     Work getWorkById(Long id);
 
-    Page<Work> getWorks(Pageable pageable);
+    List<Work> getWorks();
 
-    List<Optometrist> getOptometristForWorkId(Long workId);
+    Work saveWork(Work work);
 
-    Work updateWork(Long workId,Work updateWorkData);
+
+    Work updateWork(Long workId, Work updateWorkData);
 
     void deleteWorkById(Long workId);
 
-    List<Work> getWorkByOptometristId(Long optometristId);
 
-    Work saveWork(Work work);
+    Page<Optometrist> getOptometristForWorkId(Long workId, Pageable pageable);
+
+
+
+
 }

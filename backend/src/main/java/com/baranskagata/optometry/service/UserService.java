@@ -6,13 +6,22 @@ import com.baranskagata.optometry.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 public interface UserService {
     Page<AppUser> getUsers(Pageable pageable);
 
     AppUser saveUser(AppUser user);
 
-    Role saveRole(Role role);
+    AppUser updateUser(Long id, AppUser userData);
+
+    void deleteUser(Long id);
+
+
+
+    List<Role>  getUserRoles(String username);
+
 
     void addRoleToUser(String username, String roleName);
 
@@ -20,5 +29,8 @@ public interface UserService {
 
     Optometrist getOptometristById(Long id);
 
-    AppUser updateUser(Long id, AppUser userData);
+
+
+
+    void removeRoleFromUser(String username, String roleName);
 }

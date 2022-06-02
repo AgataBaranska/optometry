@@ -6,6 +6,7 @@ import com.baranskagata.optometry.dao.*;
 import com.baranskagata.optometry.entity.*;
 import com.baranskagata.optometry.exception.RoleAlreadyExistsException;
 import com.baranskagata.optometry.exception.RoleNotFoundException;
+import com.baranskagata.optometry.exception.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,8 +56,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public AppUser saveUser(AppUser user) {
-        AppUser appUser = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+user.getUsername()));
-        //encode password
+        Optional<AppUser> appUser = userRepository.findByUsername(user.getUsername());
+        if(appUser.isPresent()){
+            throw new UsernameAlreadyExistsException("Username already taken: "+user.getUsername());
+
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -64,10 +70,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public AppUser updateUser(Long id, AppUser userData) {
         AppUser appUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id:"+id));
 
-
         appUser.setFirstName(userData.getFirstName());
         appUser.setLastName(userData.getLastName());
-        appUser.setPassword(userData.getPassword());
+        appUser.setPassword(passwordEncoder.encode(userData.getPassword()));
         appUser.setCity(userData.getCity());
         appUser.setCountry(userData.getCountry());
         appUser.setEmail(userData.getEmail());
@@ -75,34 +80,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return null;
     }
 
-    public boolean hasRole(String roleName) {
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        for (GrantedAuthority grantedAuthority : user.getAuthorities()) {
-            if (grantedAuthority.getAuthority().equals(roleName)) {
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public void deleteUser(Long id) {
+        AppUser user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id: "+ id));
+        userRepository.delete(user);
     }
-
-
-    public Optometrist getOptometristById(Long id) {
-        return optometristRepository.getById(id);
-    }
-
 
     @Override
-    public Role saveRole(Role role) {
-        Role dbRole = roleRepository.getByName(role.getName()).orElseThrow(()->new RoleAlreadyExistsException("Role already exists eith name:"+ role.getName()));
-        log.info("Saving new role to db {}", role);
-        return roleRepository.save(role);
+    public List<Role> getUserRoles(String username) {
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+username));
+        return user.getRoles();
     }
 
 
     @Override
     public void addRoleToUser(String username, String roleName) {
         log.info("Adding role {} to user {}", roleName, username);
-        //TODO validation
+
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+username));
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: "+ roleName));;
         user.getRoles().add(role);
@@ -148,9 +142,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public AppUser getUser(String username) {
+    public void removeRoleFromUser(String username, String roleName) {
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+username));
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: "+ roleName));;
+        user.getRoles().remove(role);
+    }
 
-        return userRepository.findByUsername(username).orElseThrow();
+    public boolean hasRole(String roleName) {
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        for (GrantedAuthority grantedAuthority : user.getAuthorities()) {
+            if (grantedAuthority.getAuthority().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public Optometrist getOptometristById(Long id) {
+        return optometristRepository.getById(id);
+    }
+
+
+
+
+
+    @Override
+    public AppUser getUser(String username) {
+        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found with username: "+ username));
     }
 
 

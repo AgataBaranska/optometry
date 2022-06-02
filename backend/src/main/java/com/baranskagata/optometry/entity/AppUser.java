@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 @Table(name = "user")
@@ -44,7 +46,7 @@ public class AppUser {
     private String country;
 
     public AppUser(Long id, String username, String password, String firstName, String lastName, String pesel, String telephone,
-                   String email, String street, String city, String postalCode, String country, Collection<Role> roles) {
+                   String email, String street, String city, String postalCode, String country) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -57,13 +59,14 @@ public class AppUser {
         this.city = city;
         this.postalCode = postalCode;
         this.country = country;
-        this.roles = roles;
+        this.roles = new ArrayList<>();
+
     }
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private List<Role> roles;
 
 
     @OneToOne(mappedBy = "appUser")

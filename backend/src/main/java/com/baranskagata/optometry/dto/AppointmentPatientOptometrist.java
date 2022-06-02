@@ -2,7 +2,6 @@ package com.baranskagata.optometry.dto;
 
 
 import com.baranskagata.optometry.entity.AppointmentStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
