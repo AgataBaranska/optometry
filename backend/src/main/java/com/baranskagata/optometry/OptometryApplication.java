@@ -21,7 +21,7 @@ public class OptometryApplication {
         SpringApplication.run(OptometryApplication.class, args);
     }
 
-   // @Bean
+//    @Bean
 //    CommandLineRunner run(UserService userService, AppointmentService appointmentService, WorkRepository workRepository) {
 //        return args -> {
 //            userService.saveRole(new Role(null, "PATIENT"));
@@ -41,16 +41,16 @@ public class OptometryApplication {
 //            userService.addRoleToUser("olab","PATIENT");
 //            userService.addRoleToUser("doric","RECEPTION");
 //            userService.addRoleToUser("optim","OPTOMETRIST");
-
-
-//            Work work = new Work(null,"Contact lenses","contacts fitting",120,null);
+//
+//
+//            Work work = new Work(null,"Contact lenses","contacts fitting",150,40,new ArrayList<>());
 //            Appointment appointment = new Appointment(null,LocalDateTime.parse("2022-06-12T12:00:00"), LocalDateTime.parse("2022-06-12T12:30:00"), AppointmentStatus.SCHEDULED,work,null,null);
 //           workRepository.save(work);
 //            appointmentService.saveAppointment(appointment);
 //        };
 
 
-//  }
+  //}
         @Bean
         PasswordEncoder passwordEncoder () {
             return new BCryptPasswordEncoder();

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Duration;
+
 import java.util.List;
 
 @Entity
@@ -28,10 +28,26 @@ public class Work {
     @Basic
     private double price;
 
+    //in minutes
+    @Basic
+    private int duration;
+
 
     @ManyToMany
-    @JoinTable(name = "works_providers", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_optometrist"))
-    private List<Optometrist> providers;
+    @JoinTable(name = "optometrist_work", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_optometrist"))
+    private List<Optometrist> optometrists;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Work)) return false;
+        Work work = (Work) o;
+        return id.equals(work.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 
 }

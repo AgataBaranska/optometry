@@ -1,12 +1,15 @@
 package com.baranskagata.optometry.service;
 
 import com.baranskagata.optometry.entity.AppUser;
+import com.baranskagata.optometry.entity.Optometrist;
 import com.baranskagata.optometry.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
 public interface UserService {
+    Page<AppUser> getUsers(Pageable pageable);
+
     AppUser saveUser(AppUser user);
 
     Role saveRole(Role role);
@@ -15,5 +18,7 @@ public interface UserService {
 
     AppUser getUser(String username);
 
-    Page<AppUser> getUsers(Pageable pageable);
+    Optometrist getOptometristById(Long id);
+
+    AppUser updateUser(Long id, AppUser userData);
 }

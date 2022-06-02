@@ -33,24 +33,34 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Slf4j
 @CrossOrigin("http://localhost:4200/")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/users")
-    public ResponseEntity<Page<AppUser>> getUsers(Pageable pageable) {
+    @GetMapping()
+    public ResponseEntity<Page<AppUser>> getAllUsers(Pageable pageable) {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
-
-    @PostMapping("/users/save")
+    
+    @PostMapping()
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
+    @PutMapping({"id"})
+    public ResponseEntity<AppUser> updateUser(@PathVariable Long id, @RequestBody AppUser userData){
+        return ResponseEntity.ok().body(userService.updateUser(id, userData));
+    }
 
-    @PostMapping("/roles/save")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles/save").toUriString());
+
+
+
+
+
+    @PostMapping("/roles")
+    public ResponseEntity<Role> createNewRole(@RequestBody Role role) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/roles").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
