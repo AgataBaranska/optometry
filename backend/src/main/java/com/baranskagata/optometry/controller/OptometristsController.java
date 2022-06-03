@@ -1,6 +1,7 @@
 package com.baranskagata.optometry.controller;
 
 import com.baranskagata.optometry.dto.AppUserOptometrist;
+import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
 import com.baranskagata.optometry.entity.Optometrist;
 import com.baranskagata.optometry.entity.Work;
 import com.baranskagata.optometry.service.OptometristService;
@@ -34,13 +35,18 @@ public class OptometristsController {
         return ResponseEntity.ok().body(optometristService.getOptometristByOptometristNumber(optometristNumber));
     }
 
-    @PutMapping("{id}")
-    ResponseEntity<Optometrist> updateOptometrist(@PathVariable Long id, @RequestBody Optometrist optometristData) {
-        return ResponseEntity.ok().body(optometristService.updateOptometrist(id, optometristData));
+    @PutMapping("{appUserId}")
+    ResponseEntity<AppUserOptometrist> updateAppUserOptometrist(@PathVariable Long appUserId, @RequestBody AppUserOptometrist userOptometristData) {
+        return ResponseEntity.ok().body(optometristService.updateAppUserOptometrist(appUserId, userOptometristData));
     }
 
-    @PostMapping("/works")
-    ResponseEntity<List<Work>> addWorkByNameToOptometrist(@RequestParam Long appUserId, @RequestParam String name) {
+    @PutMapping("{optometristId}/optometristNumber")
+    ResponseEntity<Optometrist> updateOptometrist(@PathVariable Long optometristId, @RequestBody Optometrist optometristData) {
+        return ResponseEntity.ok().body(optometristService.updateOptometrist(optometristId, optometristData));
+    }
+
+    @PostMapping("{appUserId}/works")
+    ResponseEntity<List<Work>> addWorkByNameToOptometrist(@PathVariable Long appUserId, @RequestParam String name) {
         return ResponseEntity.ok().body(optometristService.addWork(appUserId, name));
     }
 
@@ -49,13 +55,11 @@ public class OptometristsController {
         optometristService.removeWork(appUserId, workName);
         return ResponseEntity.noContent().build();
     }
-    /*
 
-
-    List<Work> getWorkByOptometristId(Long optometristId);
-
-
-
-     */
+    @GetMapping("{appUserId}/works")
+    ResponseEntity<List<Work>> getOptometristWorks(@PathVariable Long appUserId){
+        return ResponseEntity.ok().body(optometristService.getAllWorks(appUserId));
+    }
+    
 
 }

@@ -3,6 +3,8 @@ package com.baranskagata.optometry.service;
 import com.baranskagata.optometry.dao.AppointmentRepository;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
 import com.baranskagata.optometry.entity.*;
+import com.baranskagata.optometry.exception.AppointmentAvailabilityChangedException;
+import com.baranskagata.optometry.exception.AppointmentNotFoundException;
 import com.baranskagata.optometry.model.DayPlan;
 import com.baranskagata.optometry.model.TimePeriod;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +27,37 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserService userService;
     private final WorkService workService;
 
+
     @Override
-    public Page<AppointmentPatientOptometrist> loadAppointmentsPatient(Pageable page) {
-        return appointmentRepository.loadAppointments(page);
+    public Page<AppointmentPatientOptometrist> getAppointments(Pageable page) {
+        return appointmentRepository.findAllAppointments(page);
     }
 
     @Override
-    public AppointmentPatientOptometrist getAppointmentById(Long id) {
-        return appointmentRepository.getAppointmentById(id);
+    public AppointmentPatientOptometrist getAppointmentById(Long appointmentId) {
+        return appointmentRepository.getAppointmentById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + appointmentId));
     }
 
     @Override
     public Appointment saveAppointment(Appointment appointment) {
-        log.info("Saving new appoitment to db {}", appointment);
-        //validation
+        log.info("Saving new appointment to db {}", appointment);
+        //check again if time period available
+        List<TimePeriod> availableTimePeriods = getAvailableTimePeriodsForWork(appointment.getOptometrist().getId(), appointment.getPatient().getId()
+                , appointment.getWork().getId(), appointment.getStart().toLocalDate());
 
+        TimePeriod appointmentTimePeriod = new TimePeriod(appointment.getStart().toLocalTime(), appointment.getEnd().toLocalTime());
+        boolean isAvailable = availableTimePeriods.contains(appointmentTimePeriod);
+
+        if (!isAvailable) {
+            throw new AppointmentAvailabilityChangedException("Availability of a time period changed: " + appointmentTimePeriod + " status: " + false);
+        }
         return appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void deleteAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + appointmentId));
+        appointmentRepository.delete(appointment);
     }
 
     @Override
@@ -91,7 +108,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         for (Appointment appointment : appointments) {
             for (TimePeriod period : periods) {
-                if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || (appointment.getStart().toLocalTime().equals(period.getStart())) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())));
+                if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || (appointment.getStart().toLocalTime().equals(period.getStart())) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())))
+                    ;
                 {
                     period.setStart(appointment.getEnd().toLocalTime());
                 }

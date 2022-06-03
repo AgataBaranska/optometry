@@ -69,18 +69,18 @@ public class AppUser {
     private List<Role> roles;
 
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Optometrist optometrist;
 
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Patient patient;
 
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Admin admin;
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Receptionist receptionist;
 
 

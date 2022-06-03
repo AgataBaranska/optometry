@@ -25,7 +25,7 @@ public class Appointment {
         this.work = work;
         this.patient = patient;
         this.optometrist = optometrist;
-        this.setDuration();
+
     }
 
     @Id
@@ -58,19 +58,5 @@ public class Appointment {
     private Optometrist optometrist;
 
 
-   @Transient
-    private Duration duration;
 
-    public Duration getDuration() {
-        Instant startInstant = start.toInstant(ZoneOffset.UTC);
-        Instant endInstant = end.toInstant(ZoneOffset.UTC);
-
-        return Duration.between(start, end);
-    }
-
-    public void setDuration() {
-        Instant startInstant = start.toInstant(ZoneOffset.UTC);
-        Instant endInstant = end.toInstant(ZoneOffset.UTC);
-        Duration.between(start, end);
-    }
 }

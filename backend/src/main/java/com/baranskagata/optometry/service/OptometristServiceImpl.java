@@ -4,6 +4,7 @@ import com.baranskagata.optometry.dao.OptometristRepository;
 import com.baranskagata.optometry.dao.UserRepository;
 import com.baranskagata.optometry.dao.WorkRepository;
 import com.baranskagata.optometry.dto.AppUserOptometrist;
+import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Optometrist;
 import com.baranskagata.optometry.entity.Work;
@@ -38,11 +39,11 @@ public class OptometristServiceImpl implements OptometristService {
         return optometristRepository.findByOptometristNumber(optometristNumber).orElseThrow(() -> new OptometristNotFoundException("Optometrist not found with optometristNumber: " + optometristNumber));
     }
 
-    public AppUserOptometrist updateOptometrist(AppUserOptometrist userOptometristData) {
-        AppUser appUser = userRepository.getById(userOptometristData.getId());
+    public AppUserOptometrist updateAppUserOptometrist(Long appUserId,AppUserOptometrist userOptometristData) {
+        AppUser appUser = userRepository.getById(appUserId);
         Optometrist optometrist = appUser.getOptometrist();
         if (optometrist == null) {
-            throw new OptometristNotFoundException("App user does not have optometrist role with appUser id: " + userOptometristData.getId());
+            throw new OptometristNotFoundException("App user does not have optometrist role with appUser id: " + appUserId);
         }
         appUser.setFirstName(userOptometristData.getFirstName());
         appUser.setLastName(userOptometristData.getLastName());
@@ -63,6 +64,16 @@ public class OptometristServiceImpl implements OptometristService {
         optometrist.setOptometristNumber(optometristData.getOptometristNumber());
         optometristRepository.save(optometrist);
         return optometrist;
+    }
+
+    @Override
+    public List<Work> getAllWorks(Long appUserId) {
+        AppUser appUser = userRepository.findById(appUserId).orElseThrow(() -> new UsernameNotFoundException("Optometrist not found with the appUserId:" + appUserId));
+        Optometrist optometrist = appUser.getOptometrist();
+        if (optometrist == null) {
+            throw new OptometristNotFoundException("App user does not have optometrist role with appUser id: " + appUserId);
+        }
+        return optometrist.getWorks();
     }
 
     @Override
@@ -92,4 +103,6 @@ public class OptometristServiceImpl implements OptometristService {
         optometristRepository.save(optometrist);
         workRepository.save(work);
     }
+
+
 }

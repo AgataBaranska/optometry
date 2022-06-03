@@ -12,12 +12,13 @@ import java.util.List;
 public interface AppointmentService {
 
 
-    Page<AppointmentPatientOptometrist> loadAppointmentsPatient(Pageable page);
+    Page<AppointmentPatientOptometrist> getAppointments(Pageable page);
 
-    AppointmentPatientOptometrist getAppointmentById(Long id);
+    AppointmentPatientOptometrist getAppointmentById(Long appointmentId);
 
-   Appointment saveAppointment(Appointment appointment);
+    Appointment saveAppointment(Appointment appointment);
 
+    void deleteAppointment(Long appointmentId);
 
     List<TimePeriod> getAvailableTimePeriodsForWork(Long optometristId, Long patientId, Long workId, LocalDate date);
 
@@ -26,4 +27,6 @@ public interface AppointmentService {
     List<Appointment> getPatientAppointmentsAtDay(Long patientId, LocalDate day);
 
     List<TimePeriod> excludeAppointmentsFromTimePeriods(List<TimePeriod> periods, List<Appointment> appointments);
+
+
 }

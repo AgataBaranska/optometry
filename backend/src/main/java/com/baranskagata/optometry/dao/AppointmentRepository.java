@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
@@ -17,14 +18,14 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "(a.id,a.start,a.end,up.firstName,up.lastName,uo.firstName," +
             "uo.lastName,a.status,w.name)" +
             " FROM Appointment a  join a.patient p join a.optometrist o join a.work w join o.appUser uo join p.appUser up")
-    Page<AppointmentPatientOptometrist> loadAppointments(Pageable pageable);
+    Page<AppointmentPatientOptometrist> findAllAppointments(Pageable pageable);
 
 
     @Query(value = "SELECT new com.baranskagata.optometry.dto.AppointmentPatientOptometrist" +
             "(a.id,a.start,a.end,up.firstName,up.lastName,uo.firstName," +
             "uo.lastName,a.status,w.name)" +
             "FROM Appointment a  join a.patient p join a.optometrist o join a.work w join o.appUser uo join p.appUser up WHERE a.id= :id")
-    AppointmentPatientOptometrist getAppointmentById(@Param("id") Long id);
+    Optional<AppointmentPatientOptometrist> getAppointmentById(@Param("id") Long id);
 
     @Query(value = "SELECT a FROM Appointment a WHERE a.optometrist =:optometristId and a.start>=:startPeriod and a.end<=:endPeriod")
     List<Appointment> findByOptometristIdInPeriod(@Param("optometristId") Long optometristId, @Param("startPeriod") LocalDateTime startPeriod, @Param("endPeriod") LocalDateTime endPeriod);

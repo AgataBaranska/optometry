@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,25 +27,33 @@ public class AppointmentsController {
 
     @GetMapping()
     public ResponseEntity<Page<AppointmentPatientOptometrist>> getAllAppointments(Pageable pageable) {
-        return ResponseEntity.ok().body(appointmentService.loadAppointmentsPatient(pageable));
+        return ResponseEntity.ok().body(appointmentService.getAppointments(pageable));
     }
 
-    @GetMapping("/appointments/{id}")
-    public ResponseEntity<AppointmentPatientOptometrist> getAppointments(@PathVariable Long id) {
-        return ResponseEntity.ok().body(appointmentService.getAppointmentById(id)
+    @GetMapping("{appointmentId}")
+    public ResponseEntity<AppointmentPatientOptometrist> getAppointment(@PathVariable Long appointmentId) {
+        return ResponseEntity.ok().body(appointmentService.getAppointmentById(appointmentId)
         );
     }
 
-    @GetMapping("appointments/availableHours/{optometristId}/{patientId}/{workId}/{date}")
-    public ResponseEntity<List<TimePeriod>> getAvailableTimePeriods(@PathVariable Long optometristId, @PathVariable Long patientId, @PathVariable Long workId, @PathVariable String date) {
+    @PostMapping()
+    public ResponseEntity<Appointment> saveAppointment(@RequestBody Appointment appointment) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("").toUriString());
+        return ResponseEntity.created(uri).body(appointmentService.saveAppointment(appointment));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deleteAppointment(@PathVariable Long id){
+        appointmentService.deleteAppointment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("commonAvailableHours/{optometristId}/{patientId}/{workId}/{date}")
+    public ResponseEntity<List<TimePeriod>> getAvailableTimePeriods(@RequestParam Long optometristId, @RequestParam Long patientId, @RequestParam Long workId, @RequestParam String date) {
         return ResponseEntity.ok().body(appointmentService.getAvailableTimePeriodsForWork(optometristId, patientId, workId, LocalDate.parse(date)));
     }
 
-    @PostMapping("/appointments/save")
-    public ResponseEntity<Appointment> saveNewAppointment(@RequestBody Appointment appointment) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/appointments/save").toUriString());
-        return ResponseEntity.created(uri).body(appointmentService.saveAppointment(appointment));
-    }
+
 
 
 }
