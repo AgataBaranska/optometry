@@ -4,11 +4,11 @@ import { Patient } from 'src/app/common/patient';
 import { PatientService } from 'src/app/services/patient.service';
 
 @Component({
-  selector: 'app-patients-list',
-  templateUrl: './patients-list.component.html',
-  styleUrls: ['./patients-list.component.css'],
+  selector: 'app-patients',
+  templateUrl: './patients.component.html',
+  styleUrls: ['./patients.component.css'],
 })
-export class PatientsListComponent implements OnInit {
+export class PatientsComponent implements OnInit {
   patients: Patient[] = [];
   searchMode: boolean = false;
   //pagination properties

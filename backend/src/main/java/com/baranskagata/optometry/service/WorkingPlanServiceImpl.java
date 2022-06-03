@@ -4,7 +4,6 @@ import com.baranskagata.optometry.dao.WorkingPlanRepository;
 import com.baranskagata.optometry.entity.Optometrist;
 import com.baranskagata.optometry.entity.WorkingPlan;
 import com.baranskagata.optometry.exception.WorkNotFoundException;
-import com.baranskagata.optometry.exception.WorkingPlanNotFoundException;
 import com.baranskagata.optometry.model.TimePeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
 
     @Override
     public WorkingPlan addBreakToWorkingPlan(TimePeriod breakPeriod, Long optometristId, String dayOfWeek) {
-        Optometrist optometrist = optometristService.getOptometristById(optometristId);
+        Optometrist optometrist = optometristService.getById(optometristId);
         WorkingPlan workingPlan = workingPlanRepository.findByOptometristId(optometrist.getId());
         workingPlan.getDayPlan(dayOfWeek).getBreaks().add(breakPeriod);
         workingPlanRepository.save(workingPlan);
@@ -51,10 +50,9 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
 
     @Override
     public void deleteBreakFromWorkingPlan(TimePeriod breakPeriod, Long optometristId, String dayOfWeek) {
-        Optometrist optometrist = optometristService.getOptometristById(optometristId);
+        Optometrist optometrist = optometristService.getById(optometristId);
         WorkingPlan workingPlan = workingPlanRepository.findByOptometristId(optometrist.getId());
         workingPlan.getDayPlan(dayOfWeek).getBreaks().remove(breakPeriod);
         workingPlanRepository.save(workingPlan);
     }
-
 }

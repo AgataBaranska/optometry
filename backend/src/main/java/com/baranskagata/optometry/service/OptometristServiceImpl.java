@@ -35,6 +35,11 @@ public class OptometristServiceImpl implements OptometristService {
     }
 
     @Override
+    public Optometrist getById(Long optometristId) {
+        return optometristRepository.findById(optometristId).orElseThrow(()->new OptometristNotFoundException("Optometrist not found with id: "+ optometristId));
+    }
+
+    @Override
     public AppUserOptometrist getOptometristByOptometristNumber(String optometristNumber) {
         return optometristRepository.findByOptometristNumber(optometristNumber).orElseThrow(() -> new OptometristNotFoundException("Optometrist not found with optometristNumber: " + optometristNumber));
     }

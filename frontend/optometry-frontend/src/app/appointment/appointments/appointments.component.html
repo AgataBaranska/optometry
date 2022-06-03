@@ -28,7 +28,7 @@
         <div class="btn-group" role="group" aria-label="Basic outlined example">
           <button type="button" class="btn btn-outline-primary">Start</button>
           <button
-            routerLink="/appointments/{{ tempAppointment.id }}"
+            routerLink="/{{ tempAppointment.id }}"
             type="button"
             class="btn btn-outline-secondary"
           >
@@ -54,13 +54,13 @@
   <div class="pagination">
     <div class="row">
       <div class="col-md-6">
-        <ngb-pagination
+        <!-- <ngb-pagination
           [(page)]="thePageNumber"
           [pageSize]="thePageSize"
           [collectionSize]="theTotalElements"
           (pageChange)="listAppointments()"
         >
-        </ngb-pagination>
+        </ngb-pagination> -->
       </div>
     </div>
   </div>

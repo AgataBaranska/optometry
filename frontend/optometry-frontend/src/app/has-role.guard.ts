@@ -28,10 +28,10 @@ export class HasRoleGuard implements CanActivate {
     const routeRoles = route.data['role'];
     console.log(routeRoles?.toString());
 
-    const roleMatchesIndex = userRoles?.findIndex(
+    let roleMatchesIndex = -1;
+    roleMatchesIndex = userRoles?.findIndex(
       (role) => routeRoles.indexOf(role) != -1
     );
-    console.log(roleMatchesIndex.toString());
     let isAuthorized = roleMatchesIndex >= 0;
 
     if (!isAuthorized) {

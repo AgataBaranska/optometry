@@ -4,11 +4,11 @@ import { Appointment } from 'src/app/common/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
-  selector: 'app-appoitment-details',
-  templateUrl: './appoitment-details.component.html',
-  styleUrls: ['./appoitment-details.component.css'],
+  selector: 'app-appointment-details',
+  templateUrl: './appointment-details.component.html',
+  styleUrls: ['./appointment-details.component.css'],
 })
-export class AppoitmentDetailsComponent implements OnInit {
+export class AppointmentDetailsComponent implements OnInit {
   appointment!: Appointment;
   constructor(
     private appointmentService: AppointmentService,

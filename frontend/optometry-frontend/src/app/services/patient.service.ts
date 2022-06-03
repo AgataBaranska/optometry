@@ -19,7 +19,7 @@ export class PatientService {
     thePage: number,
     thePageSize: number
   ): Observable<GetResponse> {
-    const url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
+    const url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}&sort=lastName`;
     return this.httpClient.get<GetResponse>(url);
   }
 

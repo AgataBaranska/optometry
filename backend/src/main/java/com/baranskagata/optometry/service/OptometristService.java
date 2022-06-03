@@ -12,6 +12,8 @@ import java.util.List;
 public interface OptometristService {
     Page<AppUserOptometrist> getAllOptometrists(Pageable pageable);
 
+    Optometrist  getById(Long optometristId);
+
     AppUserOptometrist getOptometristByOptometristNumber(String optometristNumber);
 
     AppUserOptometrist updateAppUserOptometrist(Long appUserId, AppUserOptometrist userOptometristData);

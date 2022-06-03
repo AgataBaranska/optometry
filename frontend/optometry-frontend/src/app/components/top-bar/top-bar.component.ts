@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -6,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./top-bar.component.css'],
 })
 export class TopBarComponent implements OnInit {
-  constructor() {}
+  constructor(private authService: AuthenticationService) {}
 
   ngOnInit(): void {}
+  logout() {
+    this.authService.logout();
+  }
 }

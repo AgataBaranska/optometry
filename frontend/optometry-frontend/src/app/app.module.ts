@@ -2,16 +2,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { PatientsListComponent } from './components/patients-list/patients-list.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PatientService } from './services/patient.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SearchComponent } from './components/search/search.component';
-import { VerticalNavBarComponent } from './components/vertical-nav-bar/vertical-nav-bar.component';
-import { HomeComponent } from './components/home/home.component';
-import { AppointmentsComponent } from './components/appointments/appointments.component';
-import { StatisticsComponent } from './components/statistics/statistics.component';
-import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,45 +13,69 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { Interceptor } from './helpers/interceptor';
 import { AuthenticationService } from './services/authentication.service';
-import { WeatherComponent } from './components/weather/weather.component';
 import { HasRoleGuard } from './has-role.guard';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
-import { AppoitmentDetailsComponent } from './components/appoitment-details/appoitment-details.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { UserModule } from './user/user.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AppointmentModule } from './appointment/appointment.module';
+import { AppointmentsComponent } from './appointment/appointments/appointments.component';
+import { PatientModule } from './patient/patient.module';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'search/:keyword', component: PatientsListComponent },
-  { path: 'patients/:id', component: PatientDetailsComponent },
-  { path: 'home', component: HomeComponent },
+  // { path: 'search/:keyword', component: PatientsListComponent },
+
   {
-    path: 'patients',
-    component: PatientsListComponent,
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
     data: { role: ['ADMIN'] },
   },
-  { path: 'appointments', component: AppointmentsComponent },
-  { path: 'appointments/:id', component: AppoitmentDetailsComponent },
+  {
+    path: 'users',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
+    data: { role: ['ADMIN'] },
+  },
+  {
+    path: 'appointments',
+    loadChildren: () =>
+      import('./appointment/appointment.module').then(
+        (m) => m.AppointmentModule
+      ),
+    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
+    data: { role: ['ADMIN'] },
+  },
 
-  { path: 'statistics', component: StatisticsComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: 'patients',
+    loadChildren: () =>
+      import('./patient/patient.module').then((m) => m.PatientModule),
+    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
+    data: { role: ['ADMIN'] },
+  },
+  {
+    path: 'statistics',
+    loadChildren: () =>
+      import('./statistics/statistics.module').then((m) => m.StatisticsModule),
+    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
+    data: { role: ['ADMIN'] },
+  },
+  { path: '**', component: PageNotFoundComponent, pathMatch: 'full' },
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    PatientsListComponent,
     SearchComponent,
-    VerticalNavBarComponent,
-    AppointmentsComponent,
-    PatientDetailsComponent,
+    NavBarComponent,
     LoginComponent,
     TopBarComponent,
     RegisterComponent,
-    WeatherComponent,
-    HomeComponent,
-    StatisticsComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -66,6 +84,9 @@ const routes: Routes = [
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    UserModule,
+    AppointmentModule,
+    PatientModule,
   ],
   providers: [
     PatientService,
