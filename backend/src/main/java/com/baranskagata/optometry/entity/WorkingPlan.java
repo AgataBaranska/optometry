@@ -2,6 +2,7 @@ package com.baranskagata.optometry.entity;
 
 import com.baranskagata.optometry.model.DayPlan;
 import com.baranskagata.optometry.model.TimePeriod;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,6 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 @TypeDefs(@TypeDef(name = "json", typeClass = JsonStringType.class))
@@ -27,7 +27,7 @@ public class WorkingPlan {
     @Column(name = "id")
     private Long id;
 
-
+    @JsonBackReference(value = "optometrist-working-plan")
     @OneToOne()
     @JoinColumn(name="id_optometrist")
     private Optometrist optometrist;

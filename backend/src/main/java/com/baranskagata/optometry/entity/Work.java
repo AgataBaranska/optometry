@@ -1,11 +1,11 @@
 package com.baranskagata.optometry.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -33,6 +33,7 @@ public class Work {
     private int duration;
 
 
+    @JsonIgnoreProperties("works")
     @ManyToMany
     @JoinTable(name = "optometrist_work", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_optometrist"))
     private List<Optometrist> optometrists;

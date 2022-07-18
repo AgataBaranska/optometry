@@ -29,8 +29,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
-    public Page<AppointmentPatientOptometrist> getAppointments(Pageable page) {
-        return appointmentRepository.findAllAppointments(page);
+    public Page<AppointmentPatientOptometrist> getAppointments(Pageable pageable) {
+        return appointmentRepository.findAllAppointments(pageable);
     }
 
     @Override

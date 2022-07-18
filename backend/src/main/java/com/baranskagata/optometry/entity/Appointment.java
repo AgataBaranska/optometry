@@ -1,13 +1,12 @@
 package com.baranskagata.optometry.entity;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "appointment")
@@ -32,9 +31,13 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "id_work")
     private Work work;
+
+    @JsonBackReference(value="patient-appointments")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @JsonBackReference(value = "optometrist-appointments")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "optometrist_id")
     private Optometrist optometrist;

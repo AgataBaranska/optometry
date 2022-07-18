@@ -1,2 +1,4 @@
-package com.baranskagata.optometry.controller;public class PatientsController {
+package com.baranskagata.optometry.controller;
+
+public class PatientsController {
 }

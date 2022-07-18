@@ -20,7 +20,7 @@ export class AuthenticationService {
 
   constructor(private httpClient: HttpClient) {
     if (this.getToken()) {
-      this.jwtUser = this.setJWTUser(this.getToken());
+      //  this.jwtUser = this.setJWTUser(this.getToken());
     }
 
     //check if token expired before changing the state od isLoggedIn
@@ -32,8 +32,8 @@ export class AuthenticationService {
 
   isTokenExpired(token: string) {
     if (token != null) {
-      const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-      return Math.floor(new Date().getTime() / 1000) >= expiry;
+      // const expiry = JSON.parse(atob(token.split('.')[1])).exp;
+      // return Math.floor(new Date().getTime() / 1000) >= expiry;
     }
     return true;
   }
@@ -54,7 +54,7 @@ export class AuthenticationService {
           this._isLoggedIn$.next(true);
 
           //save the user data from jwt
-          this.jwtUser = this.setJWTUser(response.access_token);
+          // this.jwtUser = this.setJWTUser(response.access_token);
         })
       );
   }
@@ -101,7 +101,7 @@ export class AuthenticationService {
     );
   }
 
-  public setJWTUser(token: string): JWTUser {
-    return JSON.parse(atob(token.split('.')[1])) as JWTUser;
-  }
+  // public setJWTUser(token: string): JWTUser {
+  //   return JSON.parse(atob(token.split('.')[1])) as JWTUser;
+  // }
 }

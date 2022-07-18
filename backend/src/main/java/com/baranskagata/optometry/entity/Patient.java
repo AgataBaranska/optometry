@@ -1,5 +1,7 @@
 package com.baranskagata.optometry.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,9 +21,11 @@ public class Patient {
     @Column(name = "Id")
     private Long id;
 
+    @JsonManagedReference(value="patient-appointments")
     @OneToMany(mappedBy ="patient", cascade = CascadeType.ALL)
     private List<Appointment> appointmentList;
 
+    @JsonBackReference(value = "app-user-patient")
     @OneToOne()
     @JoinColumn(name="user_id")
     private AppUser appUser;

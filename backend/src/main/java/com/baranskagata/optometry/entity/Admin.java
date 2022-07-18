@@ -1,11 +1,11 @@
 package com.baranskagata.optometry.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -20,7 +20,8 @@ public class Admin {
     private Long id;
 
 
-    @OneToOne
+    @JsonBackReference(value = "app-user-admin")
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private AppUser appUser;
 

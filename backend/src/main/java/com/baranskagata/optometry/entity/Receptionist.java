@@ -1,11 +1,11 @@
 package com.baranskagata.optometry.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -20,6 +20,7 @@ public class Receptionist{
     private Long id;
 
 
+    @JsonBackReference(value = "app-user-receptionist")
     @OneToOne()
     @JoinColumn(name="user_id")
     private AppUser appUser;

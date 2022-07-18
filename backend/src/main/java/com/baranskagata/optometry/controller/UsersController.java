@@ -38,6 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class UsersController {
     private final UserService userService;
 
+
     @GetMapping()
     public ResponseEntity<Page<AppUser>> getAllUsers(Pageable pageable) {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
