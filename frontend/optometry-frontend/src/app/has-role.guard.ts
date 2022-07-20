@@ -22,7 +22,7 @@ export class HasRoleGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const userRoles = this.authenticationService?.jwtUser?.roles;
+    const userRoles = this.authenticationService.getUserRoles();
     console.log(userRoles?.toString());
 
     const routeRoles = route.data['role'];
@@ -32,11 +32,11 @@ export class HasRoleGuard implements CanActivate {
     roleMatchesIndex = userRoles?.findIndex(
       (role) => routeRoles.indexOf(role) != -1
     );
+
+    console.log(userRoles);
     let isAuthorized = roleMatchesIndex >= 0;
 
     if (!isAuthorized) {
-      //redirect?
-
       window.alert('You are not authorized to enter this path');
     }
     return isAuthorized;

@@ -33,7 +33,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: ['ADMIN'] },
+    data: { role: ['ADMIN', 'PATIENT'] },
   },
   {
     path: 'users',

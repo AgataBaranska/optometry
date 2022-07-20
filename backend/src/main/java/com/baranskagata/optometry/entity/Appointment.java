@@ -1,6 +1,8 @@
 package com.baranskagata.optometry.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "appointment")
 @Data
 @NoArgsConstructor
-
+@AllArgsConstructor
+@Builder
 public class Appointment {
 
     @Id
@@ -41,18 +44,6 @@ public class Appointment {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "optometrist_id")
     private Optometrist optometrist;
-
-    public Appointment(Long id, LocalDateTime start, LocalDateTime end, AppointmentStatus status, Work work, Patient patient, Optometrist optometrist) {
-
-        this.id = id;
-        this.start = start;
-        this.end = end;
-        this.status = status;
-        this.work = work;
-        this.patient = patient;
-        this.optometrist = optometrist;
-
-    }
 
 
 }

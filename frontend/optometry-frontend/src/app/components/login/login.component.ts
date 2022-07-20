@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { JWTUser } from 'src/app/common/JWTUser.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({

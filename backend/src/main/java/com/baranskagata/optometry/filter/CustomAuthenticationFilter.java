@@ -2,6 +2,7 @@ package com.baranskagata.optometry.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.baranskagata.optometry.entity.SecurityAppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -56,7 +56,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
        //from auth0 dependency
-        User user = (User)authentication.getPrincipal();
+        SecurityAppUser user = (SecurityAppUser)authentication.getPrincipal();
 
         //TODO save "secret" secure, encrypted and pass it from the utility class
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

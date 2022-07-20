@@ -7,7 +7,14 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./top-bar.component.css'],
 })
 export class TopBarComponent implements OnInit {
-  constructor(private authService: AuthenticationService) {}
+  username: string | undefined;
+  roles: string[];
+  isAdmin: boolean;
+  constructor(private authService: AuthenticationService) {
+    this.username = authService.getUserName();
+    this.roles = authService.getUserRoles();
+    this.isAdmin = authService.hasRole('ADMIN');
+  }
 
   ngOnInit(): void {}
   logout() {

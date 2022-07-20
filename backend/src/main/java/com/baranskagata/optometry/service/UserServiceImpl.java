@@ -2,17 +2,16 @@ package com.baranskagata.optometry.service;
 
 
 import com.baranskagata.optometry.dao.*;
-
+import com.baranskagata.optometry.dto.UpdatePasswordDto;
 import com.baranskagata.optometry.entity.*;
-import com.baranskagata.optometry.exception.RoleAlreadyExistsException;
 import com.baranskagata.optometry.exception.RoleNotFoundException;
 import com.baranskagata.optometry.exception.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,8 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,23 +27,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
+
+//implement userDetailsManager to create delete passwords etc.
 public class UserServiceImpl implements UserService, UserDetailsService {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final PatientRepository patientRepository;
-    private final OptometristRepository optometristRepository;
-    private final ReceptionistRepository receptionistRepository;
-    private final AdminRepository adminRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private OptometristRepository optometristRepository;
+    @Autowired
+    private ReceptionistRepository receptionistRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
     //from UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username: "+ username));
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role ->
-            authorities.add(new SimpleGrantedAuthority(role.getName())));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        AppUser appUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username: " + username));
+        return new SecurityAppUser(appUser);
     }
 
     @Override
@@ -57,8 +60,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public AppUser saveUser(AppUser user) {
         Optional<AppUser> appUser = userRepository.findByUsername(user.getUsername());
-        if(appUser.isPresent()){
-            throw new UsernameAlreadyExistsException("Username already taken: "+user.getUsername());
+        if (appUser.isPresent()) {
+            throw new UsernameAlreadyExistsException("Username already taken: " + user.getUsername());
 
         }
 
@@ -68,27 +71,52 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public AppUser updateUser(Long id, AppUser userData) {
-        AppUser appUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id:"+id));
+        AppUser appUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id:" + id));
 
-        appUser.setFirstName(userData.getFirstName());
-        appUser.setLastName(userData.getLastName());
-        appUser.setPassword(passwordEncoder.encode(userData.getPassword()));
-        appUser.setCity(userData.getCity());
-        appUser.setCountry(userData.getCountry());
-        appUser.setEmail(userData.getEmail());
-        appUser.setPesel(userData.getPesel());
-        return null;
+        if (userData.getFirstName() != null) {
+            appUser.setFirstName(userData.getFirstName());
+        }
+        if (userData.getLastName() != null) {
+            appUser.setLastName(userData.getLastName());
+        }
+        if (userData.getPassword() != null) {
+            appUser.setPassword(passwordEncoder.encode(userData.getPassword()));
+        }
+        if (userData.getCity() != null) {
+            appUser.setCity(userData.getCity());
+        }
+        if (userData.getCountry() != null) {
+            appUser.setCountry(userData.getCountry());
+        }
+        if (userData.getEmail() != null) {
+            appUser.setEmail(userData.getEmail());
+        }
+        if (userData.getPesel() != null) {
+            appUser.setPesel(userData.getPesel());
+        }
+        return userRepository.save(appUser);
     }
 
     @Override
     public void deleteUser(Long id) {
-        AppUser user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id: "+ id));
+        AppUser user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id: " + id));
         userRepository.delete(user);
     }
 
     @Override
+    public AppUser updatePassword(Long userId, UpdatePasswordDto updatePasswordDto) {
+        AppUser user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id: " + userId));
+        if (passwordEncoder.matches(updatePasswordDto.getCurrentPassword(), user.getPassword()) && updatePasswordDto.getNewPassword() != null) {
+            user.setPassword(updatePasswordDto.getNewPassword());
+            return userRepository.save(user);
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Role> getUserRoles(String username) {
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+username));
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
         return user.getRoles();
     }
 
@@ -97,8 +125,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void addRoleToUser(String username, String roleName) {
         log.info("Adding role {} to user {}", roleName, username);
 
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+username));
-        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: "+ roleName));;
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: " + roleName));
+
         user.getRoles().add(role);
         switch (roleName) {
             case "PATIENT": {
@@ -143,8 +172,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void removeRoleFromUser(String username, String roleName) {
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:"+username));
-        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: "+ roleName));;
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: " + roleName));
+        ;
         user.getRoles().remove(role);
     }
 
@@ -164,12 +194,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-
-
-
     @Override
     public AppUser getUser(String username) {
-        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found with username: "+ username));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
 
