@@ -16,10 +16,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { HasRoleGuard } from './has-role.guard';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { UserModule } from './user/user.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AppointmentModule } from './appointment/appointment.module';
-import { PatientModule } from './patient/patient.module';
 import { RoleEnum } from './role-enum';
 
 const routes: Routes = [
@@ -76,7 +73,7 @@ const routes: Routes = [
     data: { role: [RoleEnum.ADMIN] },
   },
 
-  { path: '**', component: PageNotFoundComponent, pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
@@ -95,9 +92,6 @@ const routes: Routes = [
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    UserModule,
-    AppointmentModule,
-    PatientModule,
   ],
   providers: [
     PatientService,

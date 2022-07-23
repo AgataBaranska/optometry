@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: '', component: UsersComponent },
-  { path: 'id', component: UserDetailsComponent },
+  { path: ':username', component: UserDetailsComponent },
 ];
 
 @NgModule({
