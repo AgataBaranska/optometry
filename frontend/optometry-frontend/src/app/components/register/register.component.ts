@@ -7,7 +7,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Registration } from 'src/app/common/registration';
+import { User } from 'src/app/common/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -59,10 +59,10 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    let registration = new Registration();
-    registration.user = this.registerFormGroup.controls['user'].value;
-    registration.address = this.registerFormGroup.controls['address'].value;
-    this.authService.register(registration).subscribe({
+    let user = new User();
+    Object.assign(user, this.registerFormGroup.controls['user'].value);
+    Object.assign(user, this.registerFormGroup.controls['address'].value);
+    this.authService.register(user).subscribe({
       next: (response) => {
         alert('New user registered succesfully');
         this.resetForm();

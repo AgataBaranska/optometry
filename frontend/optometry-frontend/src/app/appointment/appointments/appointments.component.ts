@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Appointment } from 'src/app/common/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-appointments',
@@ -10,6 +11,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 })
 export class AppointmentsComponent implements OnInit {
   appointments: Appointment[] = [];
+
   //pagination properties
   thePageSize: number = 2;
   thePageNumber: number = 1;

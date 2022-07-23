@@ -9,15 +9,27 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class TopBarComponent implements OnInit {
   username: string | undefined;
   roles: string[];
-  isAdmin: boolean;
+  currentRole: string;
+
   constructor(private authService: AuthenticationService) {
     this.username = authService.getUserName();
     this.roles = authService.getUserRoles();
-    this.isAdmin = authService.hasRole('ADMIN');
+
+    //start with first role
+    this.currentRole = authService.getUserRoles()[0];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.currentRole.subscribe((role) => (this.currentRole = role));
+  }
+
   logout() {
     this.authService.logout();
+  }
+
+  switchRole(role: string) {
+    console.log('switching role to: ' + role);
+    this.authService.currentRole.next(role);
+    this.ngOnInit();
   }
 }

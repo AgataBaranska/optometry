@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, subscribeOn, tap } from 'rxjs';
 import { API_URL } from '../app.constants';
-import { Registration } from '../common/registration';
+import { User } from '../common/user';
 const TOKEN_KEY = 'access_token';
 const REFRESHTOKEN_KEY = 'refresh-token';
 const httpOptions = {
@@ -15,13 +15,17 @@ const httpOptions = {
 export class AuthenticationService {
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false); //private to protect from external changes
   isLoggedIn$ = this._isLoggedIn$.asObservable();
+  private currentRole$ = new BehaviorSubject<string>('');
 
   constructor(private httpClient: HttpClient) {
     //check if token expired before changing the state of isLoggedIn
-    if (this.getToken() != null && this.isTokenExpired(this.getToken()!)) {
-      this._isLoggedIn$.next(false);
+    if (this.getToken() != null && !this.isTokenExpired(this.getToken()!)) {
+      this._isLoggedIn$.next(true);
     }
     this._isLoggedIn$.next(!!this.getToken());
+  }
+  get currentRole() {
+    return this.currentRole$;
   }
 
   isTokenExpired(token: string) {
@@ -43,9 +47,13 @@ export class AuthenticationService {
         tap((response: any) => {
           this.saveToken(response.access_token);
           this.saveRefreshToken(response.refresh_token);
+
           console.log('saving token ' + this.getToken());
           console.log('saving refresh token ' + this.getRefreshToken());
           this._isLoggedIn$.next(true);
+
+          //start with first user role
+          this.currentRole$.next(this.getUserRoles()[0]);
         })
       );
   }
@@ -60,9 +68,9 @@ export class AuthenticationService {
     window.localStorage.clear();
   }
 
-  register(registration: Registration): Observable<any> {
+  register(user: User): Observable<any> {
     let url: string = 'http://localhost:8080/api/users';
-    return this.httpClient.post<Registration>(url, registration);
+    return this.httpClient.post<User>(url, user);
   }
 
   public saveToken(token: string) {

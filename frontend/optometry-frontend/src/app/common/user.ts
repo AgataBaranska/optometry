@@ -1,3 +1,5 @@
+import { Role } from './role';
+
 export class User {
   id!: number;
   username!: string;
@@ -7,6 +9,12 @@ export class User {
   pesel!: string;
   email!: string;
   telephone!: string;
-  jwtToken?: string;
+  roles!: Role[];
+
+  street!: string;
+  city!: string;
+  country!: string;
+  zipCode!: string;
+
   constructor() {}
 }

@@ -66,6 +66,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role userRole = roleRepository.findByName("USER").orElseThrow(()->new RoleNotFoundException("Role user not found"));
+        user.getRoles().add(userRole);
         return userRepository.save(user);
     }
 
@@ -128,6 +130,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: " + roleName));
 
+        if(user.getRoles().contains(role)) return;
+        
         user.getRoles().add(role);
         switch (roleName) {
             case "PATIENT": {

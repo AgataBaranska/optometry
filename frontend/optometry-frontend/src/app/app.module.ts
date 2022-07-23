@@ -21,25 +21,40 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AppointmentModule } from './appointment/appointment.module';
 import { AppointmentsComponent } from './appointment/appointments/appointments.component';
 import { PatientModule } from './patient/patient.module';
+import { RoleEnum } from './role-enum';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  // { path: 'search/:keyword', component: PatientsListComponent },
-
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: ['ADMIN', 'PATIENT'] },
+    data: {
+      role: [
+        RoleEnum.USER,
+        RoleEnum.PATIENT,
+        RoleEnum.OPTOMETRIST,
+        RoleEnum.RECEPTIONIST,
+        RoleEnum.ADMIN,
+      ],
+    },
   },
+  {
+    path: 'patients',
+    loadChildren: () =>
+      import('./patient/patient.module').then((m) => m.PatientModule),
+    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
+    data: { role: [RoleEnum.RECEPTIONIST, RoleEnum.OPTOMETRIST] },
+  },
+
   {
     path: 'users',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: ['ADMIN'] },
+    data: { role: [RoleEnum.ADMIN] },
   },
   {
     path: 'appointments',
@@ -48,23 +63,16 @@ const routes: Routes = [
         (m) => m.AppointmentModule
       ),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: ['ADMIN'] },
-  },
-
-  {
-    path: 'patients',
-    loadChildren: () =>
-      import('./patient/patient.module').then((m) => m.PatientModule),
-    canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: ['ADMIN'] },
+    data: { role: [RoleEnum.RECEPTIONIST, RoleEnum.ADMIN] },
   },
   {
     path: 'statistics',
     loadChildren: () =>
       import('./statistics/statistics.module').then((m) => m.StatisticsModule),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: ['ADMIN'] },
+    data: { role: [RoleEnum.ADMIN] },
   },
+
   { path: '**', component: PageNotFoundComponent, pathMatch: 'full' },
 ];
 
