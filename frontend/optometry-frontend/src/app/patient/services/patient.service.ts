@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Patient } from '../common/patient';
+import { Patient } from 'src/app/common/patient';
 import { HttpClient } from '@angular/common/http';
+import { API_URL } from 'src/app/app.constants';
 import { map } from 'rxjs';
-import { API_URL } from '../app.constants';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -48,6 +49,7 @@ export class PatientService {
     return this.httpClient.get<GetResponse>(url);
   }
 }
+
 interface GetResponse {
   _embedded: {
     patients: Patient[];

@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { PatientService } from './services/patient.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SearchComponent } from './components/search/search.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -94,7 +93,6 @@ const routes: Routes = [
     ReactiveFormsModule,
   ],
   providers: [
-    PatientService,
     AuthenticationService,
     [
       {

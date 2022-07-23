@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { API_URL } from 'src/app/app.constants';
+import { Appointment } from 'src/app/common/appointment';
 import { Observable } from 'rxjs';
-import { API_URL } from '../app.constants';
-import { Appointment } from '../common/appointment';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +48,7 @@ export class AppointmentService {
 
   */
 }
+
 interface GetResponse {
   content: Appointment[];
 
