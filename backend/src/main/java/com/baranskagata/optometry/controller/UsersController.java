@@ -44,7 +44,7 @@ public class UsersController {
         return ResponseEntity.ok().body(userService.getUsers(pageable));
     }
 
-    @GetMapping({"username"})
+    @GetMapping({"{username}"})
     public ResponseEntity<AppUser> getUserByUsername(@PathVariable String username){
         return ResponseEntity.ok().body(userService.getUser(username));
     }

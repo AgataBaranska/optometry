@@ -22,10 +22,6 @@ export class LoginComponent implements OnInit {
       username: [''],
       password: [''],
     });
-
-    // if (this.authService.getToken()) {
-    //   this.isLoggedIn = true;
-    // }
   }
 
   login() {

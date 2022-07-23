@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody *ngFor="let tempUser of users">
-      <tr>
+      <tr (click)="showEditUserDetails(tempUser)">
         <td>{{ tempUser.username }}</td>
         <td>{{ tempUser.firstName }}</td>
         <td>{{ tempUser.lastName }}</td>
@@ -28,14 +28,7 @@
             aria-label="Basic outlined example"
           >
             <button
-              routerLink="/roles"
-              type="button"
-              class="btn btn-outline-primary"
-            >
-              Roles
-            </button>
-            <button
-              routerLink="/{{ tempUser.id }}"
+              routerLink="/users/{{ tempUser.id }}"
               type="button"
               class="btn btn-outline-secondary"
             >

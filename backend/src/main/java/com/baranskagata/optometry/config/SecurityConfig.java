@@ -48,8 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(authenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .cors().configurationSource(corsConfigurationSource())
-                .and().authorizeRequests().antMatchers("/login", "/token/refresh/**", "/users").permitAll()
+                .and().authorizeRequests().antMatchers("/login", "/token/refresh/**").permitAll()
                 .and().authorizeRequests().antMatchers("/patients/**").hasAnyAuthority("ADMIN")
+                .and().authorizeRequests().antMatchers("/users/**").hasAnyAuthority("ADMIN")
                 .and().authorizeRequests().antMatchers("/appointments/**").permitAll()
 
                 .and().authorizeRequests().anyRequest().authenticated();

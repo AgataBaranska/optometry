@@ -22,7 +22,6 @@ export class AuthenticationService {
     if (this.getToken() != null && !this.isTokenExpired(this.getToken()!)) {
       this._isLoggedIn$.next(true);
     }
-    this._isLoggedIn$.next(!!this.getToken());
   }
   get currentRole() {
     return this.currentRole$;

@@ -20,8 +20,9 @@ export class UserService {
     return this.httpClient.get<GetResponse>(url);
   }
 
-  getAppointment(theId: number): Observable<User> {
-    const userUrl = `${this.baseUrl}/${theId}`;
+  public getUserByUsername(username: string): Observable<User> {
+    const userUrl = `${this.baseUrl}/${username}`;
+    console.log('request path : ' + userUrl);
     return this.httpClient.get<User>(userUrl);
   }
 

@@ -19,12 +19,15 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { UserModule } from './user/user.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppointmentModule } from './appointment/appointment.module';
-import { AppointmentsComponent } from './appointment/appointments/appointments.component';
 import { PatientModule } from './patient/patient.module';
 import { RoleEnum } from './role-enum';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

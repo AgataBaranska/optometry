@@ -57,7 +57,10 @@
       </a>
     </li>
 
-    <li class="nav-item">
+    <li
+      *ngIf="currentRole == 'RECEPTIONIST' || currentRole == 'ADMIN'"
+      class="nav-item"
+    >
       <a
         class="nav-link active"
         routerLink="/appointments"
@@ -81,10 +84,13 @@
       </a>
     </li>
 
-    <li class="nav-item">
+    <li
+      *ngIf="currentRole == 'RECEPTIONIST' || currentRole == ''"
+      class="nav-item"
+    >
       <a
         class="nav-link active"
-        routerLink="/patient"
+        routerLink="/patients"
         routerLinkActive="active-link"
       >
         <svg
@@ -102,7 +108,7 @@
         </svg>
       </a>
     </li>
-    <li class="nav-item">
+    <li *ngIf="currentRole == 'ADMIN'" class="nav-item">
       <a
         class="nav-link active"
         routerLink="/statistics"
@@ -157,7 +163,7 @@
           id="dropdownBasic1"
           ngbDropdownToggle
         >
-          Switch role
+          {{ currentRole }}
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <button

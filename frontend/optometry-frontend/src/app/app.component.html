@@ -1,11 +1,10 @@
 <div class="container-fluid">
   <!-- Top Nav -->
-  <app-top-bar *ngIf="authenticationService.isLoggedIn$ | async"></app-top-bar>
+  <app-top-bar *ngIf="authService.isLoggedIn$ | async"></app-top-bar>
 
   <!-- End Top Nav   -->
   <div class="container-fluid">
     <div class="row">
-      <div class="col-1"></div>
       <div class="col-12 mt-2">
         <!-- <app-search></app-search> -->
         <!--Main -->
