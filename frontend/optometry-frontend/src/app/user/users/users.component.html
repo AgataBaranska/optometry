@@ -11,7 +11,6 @@
         <th>Last name</th>
         <th>Email</th>
         <th>Telephone</th>
-        <th></th>
       </tr>
     </thead>
     <tbody *ngFor="let tempUser of users">
@@ -26,16 +25,7 @@
             class="btn-group"
             role="group"
             aria-label="Basic outlined example"
-          >
-            <button
-              routerLink="/users/{{ tempUser.id }}"
-              type="button"
-              class="btn btn-outline-secondary"
-            >
-              Edit
-            </button>
-            <button type="button" class="btn btn-outline-danger">Delete</button>
-          </div>
+          ></div>
         </td>
       </tr>
     </tbody>

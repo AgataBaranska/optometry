@@ -8,6 +8,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/app/common/role';
 import { User } from 'src/app/common/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class UserDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,31 @@ export class UserDetailsComponent implements OnInit {
     return this.userDetailsFormGroup.get('user.username');
   }
 
-  save() {
-    //update user
+  updateUser() {
+    if (confirm('Are you sure to update user ' + this.user.username + '?')) {
+      console.log('Updating user ' + this.user.username);
+
+      if (this.userDetailsFormGroup.invalid) {
+        this.userDetailsFormGroup.markAllAsTouched();
+        return;
+      }
+      let user = new User();
+      Object.assign(user, this.userDetailsFormGroup.controls['user'].value);
+      Object.assign(user, this.userDetailsFormGroup.controls['address'].value);
+
+      this.authService.updateUser(user).subscribe({
+        next: (response) => {
+          alert('User updated succesfully');
+        },
+        error: (err) => {
+          alert(`There was an error during user update: ${err.message}`);
+        },
+      });
+    }
+  }
+  deleteUser(user: User) {
+    if (confirm('Are you sure to delete ' + user.username + '?')) {
+      console.log('Deleting user ' + user.username);
+    }
   }
 }

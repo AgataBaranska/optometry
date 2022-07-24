@@ -59,4 +59,10 @@ export class UsersComponent implements OnInit {
       this.theTotalElements = data.totalElements;
     };
   }
+
+  deleteUser(tempUser: User) {
+    if (confirm('Are you sure to delete ' + tempUser.username + '?')) {
+      console.log('Deleting user ' + tempUser.username);
+    }
+  }
 }

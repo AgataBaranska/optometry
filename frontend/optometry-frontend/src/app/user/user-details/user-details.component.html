@@ -6,7 +6,7 @@
     <div class="row justify-content-center mt-3 mb-3">
       <div class="col-12">
         <!--User form group-->
-        <form [formGroup]="userDetailsFormGroup" (submit)="save()">
+        <form [formGroup]="userDetailsFormGroup" (submit)="updateUser()">
           <div formGroupName="user" class="form-area">
             <h3 class="text-start text-muted">User</h3>
             <div class="row mb-3">
@@ -147,13 +147,29 @@
               </div>
             </div>
           </div>
+          <div class="text-center">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger col-3 mx-1"
+              (click)="deleteUser(user)"
+            >
+              Delete User
+            </button>
 
-          <button class="btn btn-sm btn-outline-success col-12" type="submit">
-            Save
-          </button>
-          <button class="btn btn-sm btn-primary col-12 mt-1" type="submit">
-            Cancel
-          </button>
+            <button
+              class="btn btn-sm btn-outline-success col-3 mx-1"
+              type="submit"
+            >
+              Save
+            </button>
+            <button
+              class="btn btn-sm btn-primary col-3 mx-1"
+              type="submit"
+              routerLink="/users"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

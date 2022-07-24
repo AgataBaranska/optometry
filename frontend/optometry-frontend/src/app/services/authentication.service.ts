@@ -76,6 +76,11 @@ export class AuthenticationService {
     return this.httpClient.post<User>(url, user);
   }
 
+  updateUser(user: User): Observable<any> {
+    let url: string = `http://localhost:8080/api/users/${user.id}`;
+    return this.httpClient.put<User>(url, user);
+  }
+
   public saveToken(token: string) {
     window.localStorage.removeItem(TOKEN_KEY);
     window.localStorage.setItem(TOKEN_KEY, token);
