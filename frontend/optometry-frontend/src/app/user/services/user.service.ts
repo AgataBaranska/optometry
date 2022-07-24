@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { API_URL } from 'src/app/app.constants';
 import { User } from 'src/app/common/user';
 import { HttpClient } from '@angular/common/http';
+import { Role } from 'src/app/common/role';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,11 @@ export class UserService {
   ): Observable<GetResponse> {
     const url = `${this.baseUrl}/search/findBylastNameContaining?lastName=${lastName}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<GetResponse>(url);
+  }
+
+  public getAllAppRoles(): Observable<Array<Role>> {
+    const url = `${this.baseUrl}/roles`;
+    return this.httpClient.get<Array<Role>>(url);
   }
 }
 

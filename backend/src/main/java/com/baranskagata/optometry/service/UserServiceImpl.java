@@ -117,6 +117,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public List<Role> getAllAppRoles() {
+       return roleRepository.findAll();
+    }
+
+    @Override
     public List<Role> getUserRoles(String username) {
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
         return user.getRoles();

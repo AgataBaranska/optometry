@@ -1,1 +1,161 @@
-<p>user-details works!</p>
+<div class="card my-1 col-9">
+  <h3 class="mb-4 fw-normal text-center">
+    {{ user.username }}
+  </h3>
+  <div class="container-fluid text-start">
+    <div class="row justify-content-center mt-3 mb-3">
+      <div class="col-12">
+        <!--User form group-->
+        <form [formGroup]="userDetailsFormGroup" (submit)="save()">
+          <div formGroupName="user" class="form-area">
+            <h3 class="text-start text-muted">User</h3>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  formControlName="username"
+                  type="text"
+                  placeholder="Username"
+                />
+                <div
+                  *ngIf="
+                    username?.invalid && (username?.dirty || username?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="username!.errors!['required']">
+                    Username is required
+                  </div>
+                  <div *ngIf="username!.errors!['minlength']">
+                    Username must be at least 3 characters
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  formControlName="password"
+                  type="password"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="First name"
+                  formControlName="firstName"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Last name"
+                  formControlName="lastName"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Pesel"
+                  formControlName="pesel"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Email"
+                  formControlName="email"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-1">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Telephone number"
+                  formControlName="telephone"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-1">
+              <div class="col">
+                <b> User roles:</b>
+                <div *ngFor="let role of availableAppRoles">
+                  <input type="checkbox" [checked]="hasUserRole(role.name)" />
+                  {{ role.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Address form group-->
+          <div formGroupName="address" class="form-area">
+            <h3 class="text-start text-muted">Address</h3>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Street"
+                  formControlName="street"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="City"
+                  formControlName="city"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Country"
+                  formControlName="country"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="row mb-1">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Zip Code"
+                  formControlName="zipCode"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-sm btn-outline-success col-12" type="submit">
+            Save
+          </button>
+          <button class="btn btn-sm btn-primary col-12 mt-1" type="submit">
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -72,7 +72,12 @@ public class UsersController {
         return ResponseEntity.ok().body(userService.getUserRoles(username));
     }
 
-    @PostMapping("/roles")
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllAppRoles(){
+        return ResponseEntity.ok().body(userService.getAllAppRoles());
+    }
+
+    @PostMapping("{username}/roles")
     public ResponseEntity<HttpStatus> addRoleToUser(@RequestParam String username,  @RequestParam String roleName) {
         userService.addRoleToUser(username,roleName);
         return ResponseEntity.ok().build();

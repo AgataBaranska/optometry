@@ -22,6 +22,8 @@ public interface UserService {
 
     AppUser updatePassword(Long userId, UpdatePasswordDto updatePasswordDto);
 
+    List<Role> getAllAppRoles();
+
     List<Role>  getUserRoles(String username);
 
 
