@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -19,8 +24,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginFormGroup = this.formBuilder.group({
-      username: [''],
-      password: [''],
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     });
   }
 
@@ -35,5 +40,12 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/home');
         },
       });
+  }
+
+  get username() {
+    return this.loginFormGroup.get('username');
+  }
+  get password() {
+    return this.loginFormGroup.get('password');
   }
 }
