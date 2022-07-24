@@ -1,10 +1,8 @@
 package com.baranskagata.optometry.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,9 +11,7 @@ import java.util.List;
 
 @Table(name = "user")
 @Data
-@NoArgsConstructor
 @Builder
-@AllArgsConstructor
 
 @Entity
 public class AppUser {
@@ -67,9 +63,12 @@ public class AppUser {
     @OneToOne(mappedBy = "appUser")
     private Receptionist receptionist;
 
-    public AppUser( String username, String password, String firstName, String lastName, String pesel, String telephone,
-                   String email, String street, String city, String postalCode, String country) {
+    public AppUser() {
+        this.roles = new ArrayList<>();
+    }
 
+    public AppUser(Long id, String username, String password, String firstName, String lastName, String pesel, String telephone, String email, String street, String city, String postalCode, String country, List<Role> roles, Optometrist optometrist, Patient patient, Admin admin, Receptionist receptionist) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -82,8 +81,12 @@ public class AppUser {
         this.postalCode = postalCode;
         this.country = country;
         this.roles = new ArrayList<>();
-
+        this.optometrist = optometrist;
+        this.patient = patient;
+        this.admin = admin;
+        this.receptionist = receptionist;
     }
+
 
 
 }

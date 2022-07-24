@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { User } from 'src/app/common/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormValidator } from 'src/app/validators/form-validator';
 
 @Component({
   selector: 'app-register',
@@ -30,27 +31,33 @@ export class RegisterComponent implements OnInit {
         username: new FormControl('', [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern('/^ +$/'),
+          FormValidator.cannotContainSpace,
         ]),
 
-        password: [''],
-        firstName: [''],
-        lastName: [''],
-        pesel: [''],
-        email: [''],
-        telephone: [''],
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(5),
+        ]),
+        firstName: new FormControl('', [Validators.required]),
+        lastName: new FormControl('', [Validators.required]),
+        pesel: new FormControl('', [
+          Validators.minLength(11),
+          Validators.maxLength(11),
+          FormValidator.cannotContainSpace,
+        ]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        telephone: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^[0-9]*$'), //only digits
+        ]),
       }),
       address: this.formBuilder.group({
-        street: [''],
-        city: [''],
-        country: [''],
-        zipCode: [''],
+        street: new FormControl('', [Validators.required]),
+        city: new FormControl('', [Validators.required]),
+        country: new FormControl('', [Validators.required]),
+        zipCode: new FormControl('', [Validators.required]),
       }),
     });
-  }
-
-  get username() {
-    return this.registerFormGroup.get('user.username');
   }
 
   register() {
@@ -65,6 +72,7 @@ export class RegisterComponent implements OnInit {
     this.authService.register(user).subscribe({
       next: (response) => {
         alert('New user registered succesfully');
+        //TODO: does not reset form, does not navigate to login
         this.resetForm();
         this.router.navigateByUrl('/login');
       },
@@ -76,5 +84,40 @@ export class RegisterComponent implements OnInit {
 
   resetForm() {
     this.registerFormGroup.reset();
+  }
+
+  get username() {
+    return this.registerFormGroup.get('user.username');
+  }
+  get password() {
+    return this.registerFormGroup.get('user.password');
+  }
+  get firstName() {
+    return this.registerFormGroup.get('user.firstName');
+  }
+  get lastName() {
+    return this.registerFormGroup.get('user.lastName');
+  }
+  get pesel() {
+    return this.registerFormGroup.get('user.pesel');
+  }
+  get email() {
+    return this.registerFormGroup.get('user.email');
+  }
+  get telephone() {
+    return this.registerFormGroup.get('user.telephone');
+  }
+  get street() {
+    return this.registerFormGroup.get('user.street');
+  }
+  get city() {
+    return this.registerFormGroup.get('user.city');
+  }
+  get country() {
+    return this.registerFormGroup.get('user.country');
+  }
+
+  get zipCode() {
+    return this.registerFormGroup.get('user.zipCode');
   }
 }

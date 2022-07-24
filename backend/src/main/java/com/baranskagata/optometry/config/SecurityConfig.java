@@ -6,6 +6,7 @@ import com.baranskagata.optometry.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,9 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource())
                 .and().authorizeRequests().antMatchers("/login", "/token/refresh/**").permitAll()
                 .and().authorizeRequests().antMatchers("/patients/**").hasAnyAuthority("ADMIN")
+                .and().authorizeRequests().antMatchers(HttpMethod.POST,"/users").permitAll()// for user registration
                 .and().authorizeRequests().antMatchers("/users/**").hasAnyAuthority("ADMIN")
                 .and().authorizeRequests().antMatchers("/appointments/**").permitAll()
-
                 .and().authorizeRequests().anyRequest().authenticated();
 
     }
