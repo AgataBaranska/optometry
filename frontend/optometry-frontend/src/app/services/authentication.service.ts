@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import jwtDecode from 'jwt-decode';
 import { BehaviorSubject, Observable, subscribeOn, tap } from 'rxjs';
 import { API_URL } from '../app.constants';
 import { User } from '../common/user';
@@ -28,9 +29,12 @@ export class AuthenticationService {
   }
 
   isTokenExpired(token: string) {
-    if (token != null) {
-      const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-      return Math.floor(new Date().getTime() / 1000) >= expiry;
+    if (token != null && token.length != 0) {
+      let decodedToken = this.getTokenDecoded();
+      if (decodedToken != null) {
+        const expiry = decodedToken.exp;
+        return Math.floor(new Date().getTime() / 1000) >= expiry;
+      }
     }
     return true;
   }
@@ -77,6 +81,15 @@ export class AuthenticationService {
     window.localStorage.setItem(TOKEN_KEY, token);
   }
 
+  public getTokenDecoded(): any {
+    try {
+      if (this.getToken() != null) {
+        return jwtDecode(this.getToken()!);
+      }
+    } catch (Error) {
+      return null;
+    }
+  }
   public getToken(): string | null {
     return window.localStorage.getItem(TOKEN_KEY);
   }
@@ -92,7 +105,7 @@ export class AuthenticationService {
 
   public refreshToken(token: string) {
     return this.httpClient.post(
-      API_URL + '/api/token/refresh',
+      API_URL + '/api/users/token/refresh',
       {
         refresh_token: token,
       },
@@ -102,13 +115,12 @@ export class AuthenticationService {
 
   public getUserRoles(): string[] {
     if (this.getToken() != null) {
-      let jwtData = this.getToken()?.split('.')[1]!;
-      let decodedJWTJsonData = window.atob(jwtData);
-      let decodedJwtData = JSON.parse(decodedJWTJsonData);
-      let roles = decodedJwtData.roles;
-      console.log('Roles from JWT ' + roles);
+      let decodedToken = this.getTokenDecoded();
 
-      return roles;
+      if (decodedToken != null) {
+        let roles = decodedToken.roles;
+        return roles;
+      }
     }
     return new Array();
   }
@@ -118,11 +130,8 @@ export class AuthenticationService {
   }
 
   public getUserName(): string {
-    let jwtData = this.getToken()?.split('.')[1]!;
-    let decodedJWTJsonData = window.atob(jwtData);
-    let decodedJwtData = JSON.parse(decodedJWTJsonData);
-    let username = decodedJwtData.sub;
-    console.log('Username: ' + username);
+    let decodedToken = this.getTokenDecoded();
+    let username = decodedToken.sub;
     return username;
   }
 }

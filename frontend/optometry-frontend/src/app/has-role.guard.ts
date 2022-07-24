@@ -23,17 +23,14 @@ export class HasRoleGuard implements CanActivate {
     | boolean
     | UrlTree {
     const userRoles = this.authenticationService.getUserRoles();
-    console.log(userRoles?.toString());
 
     const routeRoles = route.data['role'];
-    console.log(routeRoles?.toString());
 
     let roleMatchesIndex = -1;
     roleMatchesIndex = userRoles?.findIndex(
       (role) => routeRoles.indexOf(role) != -1
     );
 
-    console.log(userRoles);
     let isAuthorized = roleMatchesIndex >= 0;
 
     if (!isAuthorized) {

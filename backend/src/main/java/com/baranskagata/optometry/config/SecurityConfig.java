@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().antMatchers("/login", "/token/refresh/**").permitAll()
                 .and().authorizeRequests().antMatchers("/patients/**").hasAnyAuthority("ADMIN")
                 .and().authorizeRequests().antMatchers(HttpMethod.POST,"/users").permitAll()// for user registration
+                .and().authorizeRequests().antMatchers(HttpMethod.POST,"/users/token/refresh").permitAll()// for token refreshing
                 .and().authorizeRequests().antMatchers("/users/**").hasAnyAuthority("ADMIN")
                 .and().authorizeRequests().antMatchers("/appointments/**").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated();
