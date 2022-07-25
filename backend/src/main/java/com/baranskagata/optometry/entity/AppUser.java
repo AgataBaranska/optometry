@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "user")
 @Data
 @Builder
-
 @Entity
 public class AppUser {
     @Id

@@ -20,39 +20,44 @@ public class OptometryApplication {
     @Bean
     CommandLineRunner run(UserService userService, AppointmentService appointmentService, WorkRepository workRepository) {
         return args -> {
+//
+//
+//            AppUser testAdmin1 = AppUser.builder().username("testAdmin1").password("12345").firstName("John").lastName("Doe").pesel("12334567890")
+//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//            AppUser testPatient1 = AppUser.builder().username("testPatient1").password("12345").firstName("Bob").lastName("Doe").pesel("12334567890")
+//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//            AppUser testOptometrist1 = AppUser.builder().username("testOptometrist1").password("12345").firstName("Tom").lastName("Doe").pesel("12334567890")
+//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//            AppUser testReceptionist1 = AppUser.builder().username("testReceptionist1").password("12345").firstName("Hanna").lastName("Doe").pesel("12334567890")
+//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//            AppUser testUser1 = AppUser.builder().username("testUser1").password("12345").firstName("Anna").lastName("Doe").pesel("12334567890")
+//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//
+//
+//            userService.saveUser(testAdmin1);
+//            userService.saveUser(testPatient1);
+//            userService.saveUser(testOptometrist1);
+//            userService.saveUser(testReceptionist1);
+//            userService.saveUser(testUser1);
+//
+//            userService.addRoleToUser("testAdmin1", "ADMIN");
+//            userService.addRoleToUser("testPatient1", "PATIENT");
+//            userService.addRoleToUser("testOptometrist1", "OPTOMETRIST");
+//            userService.addRoleToUser("testReceptionist1", "RECEPTIONIST");
 
- //           userService.addRoleToUser("johnd","PATIENT");
-
-//            userService.saveRole(new Role(null, "PATIENT"));
-//            userService.saveRole(new Role(null, "OPTOMETRIST"));
-//            userService.saveRole(new Role(null, "ADMIN"));
-//            userService.saveRole(new Role(null, "RECEPTION"));
-//
-//
-//            userService.saveUser(new AppUser(null, "johnd", "1234",
-//                    "John", "Doe", "1214234141", "345234233",
-//                    "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
-//            userService.saveUser(new AppUser(null, "olab", "1234", "John", "Doe", "1214234141", "345234233", "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
-//            userService.saveUser(new AppUser(null, "doric", "1234", "John", "Doe", "1214234141", "345234233", "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
-//            userService.saveUser(new AppUser(null, "optim", "1234", "John", "Doe", "1214234141", "345234233", "joe2gmail.com", "Dworska", "Warsaw", "03-321", "Poland", new ArrayList<Role>()));
-//
-//            userService.addRoleToUser("johnd","ADMIN");
-//            userService.addRoleToUser("olab","PATIENT");
-//            userService.addRoleToUser("doric","RECEPTION");
-//            userService.addRoleToUser("optim","OPTOMETRIST");
-//
-//
 //            Work work = new Work(null,"Contact lenses","contacts fitting",150,40,new ArrayList<>());
-//            Appointment appointment = new Appointment(null,LocalDateTime.parse("2022-06-12T12:00:00"), LocalDateTime.parse("2022-06-12T12:30:00"), AppointmentStatus.SCHEDULED,work,null,null);
+//
+//            Appointment appointment = new Appointment(null, LocalDateTime.parse("2022-06-12T12:00:00"), LocalDateTime.parse("2022-06-12T12:30:00"), AppointmentStatus.SCHEDULED,work,testPatient1,null);
 //           workRepository.save(work);
 //            appointmentService.saveAppointment(appointment);
-      };
+        };
 
-
-  }
-  @Bean
-  PasswordEncoder passwordEncoder () {
-      return new BCryptPasswordEncoder();
-  }
 
     }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+}
