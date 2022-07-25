@@ -40,8 +40,14 @@ public class UsersController {
 
 
     @GetMapping()
-    public ResponseEntity<Page<AppUser>> getAllUsers(Pageable pageable) {
-        return ResponseEntity.ok().body(userService.getUsers(pageable));
+    public ResponseEntity<Page<AppUser>> getAllUsers(@RequestParam(required = false) String lastName, Pageable pageable) {
+        if(lastName ==null) {
+            return ResponseEntity.ok().body(userService.getUsers(pageable));
+        }else{
+
+            return ResponseEntity.ok().body( userService.getUsersByLastName(lastName,pageable));
+
+        }
     }
 
     @GetMapping({"{username}"})

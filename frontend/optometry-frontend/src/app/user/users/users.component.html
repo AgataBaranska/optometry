@@ -3,6 +3,24 @@
     <h2>User management</h2>
     <button class="btn btn-outline-success">Add new</button>
   </div>
+
+  <form class="search-form d-flex ml-auto mt-1 mb-5">
+    <input
+      #myInput
+      class="form-control mr-sm-2"
+      type="search"
+      placeholder="Search"
+      aria-label="Search"
+      (keyup.enter)="searchUsers(myInput.value)"
+    />
+    <button
+      class="btn btn-outline-primary my-2 my-sm-0"
+      (click)="searchUsers(myInput.value)"
+    >
+      Search
+    </button>
+  </form>
+
   <table class="table table-striped table-hover">
     <thead>
       <tr>

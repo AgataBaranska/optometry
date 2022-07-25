@@ -32,7 +32,7 @@ export class UserService {
     thePage: number,
     thePageSize: number
   ): Observable<GetResponse> {
-    const url = `${this.baseUrl}/search/findBylastNameContaining?lastName=${lastName}&page=${thePage}&size=${thePageSize}`;
+    const url = `${this.baseUrl}?lastName=${lastName}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<GetResponse>(url);
   }
 

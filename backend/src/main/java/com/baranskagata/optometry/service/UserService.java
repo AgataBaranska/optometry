@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface UserService {
     Page<AppUser> getUsers(Pageable pageable);
+    Page<AppUser> getUsersByLastName(String lastName, Pageable pageable);
+
 
     AppUser saveUser(AppUser user);
 
@@ -37,4 +39,5 @@ public interface UserService {
 
 
     void removeRoleFromUser(String username, String roleName);
+
 }

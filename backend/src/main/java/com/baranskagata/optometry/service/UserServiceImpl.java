@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll(pageable);
     }
 
+
+    @Override
+    public Page<AppUser> getUsersByLastName(String lastName,Pageable pageable){
+        return userRepository.findByLastNameContaining(lastName, pageable);
+    }
     @Override
     public AppUser saveUser(AppUser user) {
         Optional<AppUser> appUser = userRepository.findByUsername(user.getUsername());
@@ -79,6 +84,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findByUsername(userData.getUsername()).isPresent()&& !username.equals(userData.getUsername())) {
             throw new UsernameAlreadyExistsException("Username already taken: " + userData.getUsername());
         }
+
 
         if (userData.getUsername() != null) {
             appUser.setUsername(userData.getUsername());

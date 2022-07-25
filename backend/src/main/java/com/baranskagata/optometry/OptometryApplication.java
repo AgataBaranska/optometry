@@ -21,8 +21,8 @@ public class OptometryApplication {
     @Bean
     CommandLineRunner run(UserService userService, AppointmentService appointmentService, RoleRepository roleRepository, WorkRepository workRepository) {
         return args -> {
-//
-//            Set<Role> appRoles = new HashSet <>();
+
+//            Set<Role> appRoles = new HashSet<>();
 //            appRoles.add(new Role(null, "USER"));
 //            appRoles.add(new Role(null, "ADMIN"));
 //            appRoles.add(new Role(null, "OPTOMETRIST"));
