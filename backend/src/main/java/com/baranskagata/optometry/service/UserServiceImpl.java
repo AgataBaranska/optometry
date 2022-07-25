@@ -66,14 +66,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByName("USER").orElseThrow(()->new RoleNotFoundException("Role user not found"));
+        Role userRole = roleRepository.findByName("USER").orElseThrow(() -> new RoleNotFoundException("Role user not found"));
         user.getRoles().add(userRole);
         return userRepository.save(user);
     }
 
     @Override
-    public AppUser updateUser(Long id, AppUser userData) {
-        AppUser appUser = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id:" + id));
+    public AppUser updateUser(String username, AppUser userData) {
+        AppUser appUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
+
+
+        if (userRepository.findByUsername(userData.getUsername()).isPresent()&& !username.equals(userData.getUsername())) {
+            throw new UsernameAlreadyExistsException("Username already taken: " + userData.getUsername());
+        }
+
+        if (userData.getUsername() != null) {
+            appUser.setUsername(userData.getUsername());
+        }
 
         if (userData.getFirstName() != null) {
             appUser.setFirstName(userData.getFirstName());
@@ -81,20 +90,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userData.getLastName() != null) {
             appUser.setLastName(userData.getLastName());
         }
-        if (userData.getPassword() != null) {
-            appUser.setPassword(passwordEncoder.encode(userData.getPassword()));
+        if (userData.getPesel() != null) {
+            appUser.setPesel(userData.getPesel());
         }
-        if (userData.getCity() != null) {
-            appUser.setCity(userData.getCity());
-        }
-        if (userData.getCountry() != null) {
-            appUser.setCountry(userData.getCountry());
+        if (userData.getTelephone() != null) {
+            appUser.setTelephone(userData.getTelephone());
         }
         if (userData.getEmail() != null) {
             appUser.setEmail(userData.getEmail());
         }
-        if (userData.getPesel() != null) {
-            appUser.setPesel(userData.getPesel());
+        if (userData.getStreet() != null) {
+            appUser.setStreet(userData.getStreet());
+        }
+
+        if (userData.getCity() != null) {
+            appUser.setCity(userData.getCity());
+        }
+        if (userData.getPostalCode() != null) {
+            appUser.setPostalCode(userData.getPostalCode());
+        }
+        if (userData.getCountry() != null) {
+            appUser.setCountry(userData.getCountry());
+        }
+        if (userData.getRoles() != null) {
+            appUser.setRoles(userData.getRoles());
         }
         return userRepository.save(appUser);
     }
@@ -118,7 +137,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<Role> getAllAppRoles() {
-       return roleRepository.findAll();
+        return roleRepository.findAll();
     }
 
     @Override
@@ -135,8 +154,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: " + roleName));
 
-        if(user.getRoles().contains(role)) return;
-        
+        if (user.getRoles().contains(role)) return;
+
         user.getRoles().add(role);
         switch (roleName) {
             case "PATIENT": {

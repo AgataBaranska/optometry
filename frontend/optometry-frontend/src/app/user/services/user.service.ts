@@ -40,6 +40,11 @@ export class UserService {
     const url = `${this.baseUrl}/roles`;
     return this.httpClient.get<Array<Role>>(url);
   }
+
+  updateUser(user: User): Observable<any> {
+    let url: string = `http://localhost:8080/api/users/${user.username}`;
+    return this.httpClient.put<User>(url, user);
+  }
 }
 
 interface GetResponse {

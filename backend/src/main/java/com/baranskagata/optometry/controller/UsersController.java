@@ -55,9 +55,9 @@ public class UsersController {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PutMapping({"{id}"})
-    public ResponseEntity<AppUser> updateUser(@PathVariable Long id, @RequestBody AppUser userData){
-        return ResponseEntity.ok().body(userService.updateUser(id, userData));
+    @PutMapping({"{username}"})
+    public ResponseEntity<AppUser> updateUser(@PathVariable String username, @RequestBody AppUser userData){
+        return ResponseEntity.ok().body(userService.updateUser(username, userData));
     }
 
     @DeleteMapping({"{id}"})

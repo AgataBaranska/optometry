@@ -25,7 +25,7 @@ export class UserDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private authService: AuthenticationService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -40,10 +40,6 @@ export class UserDetailsComponent implements OnInit {
           FormValidator.cannotContainSpace,
         ]),
 
-        password: new FormControl(this.user.password, [
-          Validators.required,
-          Validators.minLength(5),
-        ]),
         firstName: new FormControl(this.user.firstName, [Validators.required]),
         lastName: new FormControl(this.user.lastName, [Validators.required]),
         pesel: new FormControl(this.user.pesel, [
@@ -92,7 +88,7 @@ export class UserDetailsComponent implements OnInit {
       Object.assign(user, this.userDetailsFormGroup.controls['user'].value);
       Object.assign(user, this.userDetailsFormGroup.controls['address'].value);
 
-      this.authService.updateUser(user).subscribe({
+      this.userService.updateUser(user).subscribe({
         next: (response) => {
           alert('User updated succesfully');
         },

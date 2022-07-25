@@ -1,5 +1,6 @@
 package com.baranskagata.optometry;
 
+import com.baranskagata.optometry.dao.RoleRepository;
 import com.baranskagata.optometry.dao.WorkRepository;
 import com.baranskagata.optometry.service.AppointmentService;
 import com.baranskagata.optometry.service.UserService;
@@ -18,20 +19,27 @@ public class OptometryApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService, AppointmentService appointmentService, WorkRepository workRepository) {
+    CommandLineRunner run(UserService userService, AppointmentService appointmentService, RoleRepository roleRepository, WorkRepository workRepository) {
         return args -> {
 //
+//            Set<Role> appRoles = new HashSet <>();
+//            appRoles.add(new Role(null, "USER"));
+//            appRoles.add(new Role(null, "ADMIN"));
+//            appRoles.add(new Role(null, "OPTOMETRIST"));
+//            appRoles.add(new Role(null, "PATIENT"));
+//            appRoles.add(new Role(null, "RECEPTIONIST"));
+//            roleRepository.saveAll(appRoles);
 //
 //            AppUser testAdmin1 = AppUser.builder().username("testAdmin1").password("12345").firstName("John").lastName("Doe").pesel("12334567890")
-//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//                    .email("test@email.com").telephone("123212431").street("Napoleona 2").city("Warsaw").country("Poland").postalCode("02-222").build();
 //            AppUser testPatient1 = AppUser.builder().username("testPatient1").password("12345").firstName("Bob").lastName("Doe").pesel("12334567890")
-//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//                    .email("test@email.com").telephone("123212431").street("Napoleona 2").city("Warsaw").country("Poland").postalCode("02-222").build();
 //            AppUser testOptometrist1 = AppUser.builder().username("testOptometrist1").password("12345").firstName("Tom").lastName("Doe").pesel("12334567890")
-//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//                    .email("test@email.com").telephone("123212431").street("Napoleona 2").city("Warsaw").country("Poland").postalCode("02-222").build();
 //            AppUser testReceptionist1 = AppUser.builder().username("testReceptionist1").password("12345").firstName("Hanna").lastName("Doe").pesel("12334567890")
-//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//                    .email("test@email.com").telephone("123212431").street("Napoleona 2").city("Warsaw").country("Poland").postalCode("02-222").build();
 //            AppUser testUser1 = AppUser.builder().username("testUser1").password("12345").firstName("Anna").lastName("Doe").pesel("12334567890")
-//                    .email("test@email.com").telephone("123212431").city("Warsaw").country("Poland").postalCode("02-222").build();
+//                    .email("test@email.com").telephone("123212431").street("Napoleona 2").city("Warsaw").country("Poland").postalCode("02-222").build();
 //
 //
 //            userService.saveUser(testAdmin1);
