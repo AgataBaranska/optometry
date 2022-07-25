@@ -21,7 +21,7 @@ public class OptometryApplication {
     @Bean
     CommandLineRunner run(UserService userService, AppointmentService appointmentService, RoleRepository roleRepository, WorkRepository workRepository) {
         return args -> {
-
+//uncomment when starting app to create test users, change app.properties:spring.jpa.hibernate.ddl-auto=create to recreate tables in db
 //            Set<Role> appRoles = new HashSet<>();
 //            appRoles.add(new Role(null, "USER"));
 //            appRoles.add(new Role(null, "ADMIN"));
@@ -53,11 +53,6 @@ public class OptometryApplication {
 //            userService.addRoleToUser("testOptometrist1", "OPTOMETRIST");
 //            userService.addRoleToUser("testReceptionist1", "RECEPTIONIST");
 
-//            Work work = new Work(null,"Contact lenses","contacts fitting",150,40,new ArrayList<>());
-//
-//            Appointment appointment = new Appointment(null, LocalDateTime.parse("2022-06-12T12:00:00"), LocalDateTime.parse("2022-06-12T12:30:00"), AppointmentStatus.SCHEDULED,work,testPatient1,null);
-//           workRepository.save(work);
-//            appointmentService.saveAppointment(appointment);
         };
 
 
