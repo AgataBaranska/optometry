@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
         street: new FormControl('', [Validators.required]),
         city: new FormControl('', [Validators.required]),
         country: new FormControl('', [Validators.required]),
-        zipCode: new FormControl('', [Validators.required]),
+        postalCode: new FormControl('', [Validators.required]),
       }),
     });
   }
@@ -117,7 +117,7 @@ export class RegisterComponent implements OnInit {
     return this.registerFormGroup.get('user.country');
   }
 
-  get zipCode() {
-    return this.registerFormGroup.get('user.zipCode');
+  get postalCode() {
+    return this.registerFormGroup.get('user.postalCode');
   }
 }

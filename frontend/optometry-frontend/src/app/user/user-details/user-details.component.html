@@ -29,6 +29,9 @@
                   <div *ngIf="username!.errors!['minlength']">
                     Username must be at least 3 characters
                   </div>
+                  <div *ngIf="username!.errors!['cannotContainSpace']">
+                    Username must not contain white spaces
+                  </div>
                 </div>
               </div>
             </div>
@@ -40,6 +43,19 @@
                   type="password"
                   placeholder="Password"
                 />
+                <div
+                  *ngIf="
+                    password?.invalid && (password?.dirty || password?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="password!.errors!['required']">
+                    Password is required
+                  </div>
+                  <div *ngIf="password!.errors!['minlength']">
+                    Password must be at least 5 characters
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -50,6 +66,17 @@
                   formControlName="firstName"
                   type="text"
                 />
+                <div
+                  *ngIf="
+                    firstName?.invalid &&
+                    (firstName?.dirty || firstName?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="firstName!.errors!['required']">
+                    First name is required
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -60,6 +87,16 @@
                   formControlName="lastName"
                   type="text"
                 />
+                <div
+                  *ngIf="
+                    lastName?.invalid && (lastName?.dirty || lastName?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="lastName!.errors!['required']">
+                    Last name is required
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -70,6 +107,24 @@
                   formControlName="pesel"
                   type="text"
                 />
+                <div
+                  *ngIf="pesel?.invalid && (pesel?.dirty || pesel?.touched)"
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="pesel!.errors!['required']">
+                    Pesel is required
+                  </div>
+                  <div
+                    *ngIf="
+                      pesel!.errors!['minlength'] || pesel!.errors!['maxlength']
+                    "
+                  >
+                    Pesel must be 11 characters long
+                  </div>
+                  <div *ngIf="pesel!.errors!['cannotContainSpace']">
+                    Pesel must not contain white spaces
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -80,6 +135,17 @@
                   formControlName="email"
                   type="text"
                 />
+                <div
+                  *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="email!.errors!['required']">
+                    Email is required
+                  </div>
+                  <div *ngIf="email!.errors!['email']">
+                    Must be valid email pattern
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-1">
@@ -90,6 +156,20 @@
                   formControlName="telephone"
                   type="text"
                 />
+                <div
+                  *ngIf="
+                    telephone?.invalid &&
+                    (telephone?.dirty || telephone?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="telephone!.errors!['required']">
+                    Telephone number is required
+                  </div>
+                  <div *ngIf="telephone!.errors!['pattern']">
+                    Must contain only digits
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-1">
@@ -114,6 +194,14 @@
                   formControlName="street"
                   type="text"
                 />
+                <div
+                  *ngIf="street?.invalid && (street?.dirty || street?.touched)"
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="street!.errors!['required']">
+                    Street is required
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -124,6 +212,12 @@
                   formControlName="city"
                   type="text"
                 />
+                <div
+                  *ngIf="city?.invalid && (city?.dirty || city?.touched)"
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="city!.errors!['required']">City is required</div>
+                </div>
               </div>
             </div>
             <div class="row mb-3">
@@ -134,16 +228,37 @@
                   formControlName="country"
                   type="text"
                 />
+                <div
+                  *ngIf="
+                    country?.invalid && (country?.dirty || country?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="country!.errors!['required']">
+                    Country is required
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row mb-1">
               <div class="col">
                 <input
                   class="form-control form-control-sm"
-                  placeholder="Zip Code"
-                  formControlName="zipCode"
+                  placeholder="postal code"
+                  formControlName="postalCode"
                   type="text"
                 />
+                <div
+                  *ngIf="
+                    postalCode?.invalid &&
+                    (postalCode?.dirty || postalCode?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="postalCode!.errors!['required']">
+                    Postal Code is required
+                  </div>
+                </div>
               </div>
             </div>
           </div>

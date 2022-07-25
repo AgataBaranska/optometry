@@ -14,7 +14,7 @@ export class User {
   street!: string;
   city!: string;
   country!: string;
-  zipCode!: string;
+  postalCode!: string;
 
   constructor() {}
 }

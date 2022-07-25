@@ -227,17 +227,20 @@
             <div class="col">
               <input
                 class="form-control form-control-sm"
-                placeholder="Zip Code"
-                formControlName="zipCode"
+                placeholder="Postal Code"
+                formControlName="postalCode"
                 type="text"
               />
 
               <div
-                *ngIf="zipCode?.invalid && (zipCode?.dirty || zipCode?.touched)"
+                *ngIf="
+                  postalCode?.invalid &&
+                  (postalCode?.dirty || postalCode?.touched)
+                "
                 class="alert alert-danger mt-1"
               >
-                <div *ngIf="zipCode!.errors!['required']">
-                  ZipCode is required
+                <div *ngIf="postalCode!.errors!['required']">
+                  Postal code is required
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/app/common/role';
 import { User } from 'src/app/common/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormValidator } from 'src/app/validators/form-validator';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -36,22 +37,36 @@ export class UserDetailsComponent implements OnInit {
         username: new FormControl(this.user.username, [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern('/^ +$/'),
+          FormValidator.cannotContainSpace,
         ]),
 
-        password: [this.user.password],
-        firstName: [this.user.firstName],
-        lastName: [this.user.lastName],
-        pesel: [this.user.pesel],
-        email: [this.user.email],
-        telephone: [this.user.telephone],
-        roles: [this.availableAppRoles],
+        password: new FormControl(this.user.password, [
+          Validators.required,
+          Validators.minLength(5),
+        ]),
+        firstName: new FormControl(this.user.firstName, [Validators.required]),
+        lastName: new FormControl(this.user.lastName, [Validators.required]),
+        pesel: new FormControl(this.user.pesel, [
+          Validators.minLength(11),
+          Validators.maxLength(11),
+          FormValidator.cannotContainSpace,
+        ]),
+        email: new FormControl(this.user.email, [
+          Validators.required,
+          Validators.email,
+        ]),
+        telephone: new FormControl(this.user.telephone, [
+          Validators.required,
+          Validators.pattern('^[0-9]*$'), //only digits
+        ]),
       }),
       address: this.formBuilder.group({
-        street: [this.user.street],
-        city: [this.user.city],
-        country: [this.user.country],
-        zipCode: [this.user.zipCode],
+        street: new FormControl(this.user.street, [Validators.required]),
+        city: new FormControl(this.user.city, [Validators.required]),
+        country: new FormControl(this.user.country, [Validators.required]),
+        postalCode: new FormControl(this.user.postalCode, [
+          Validators.required,
+        ]),
       }),
     });
   }
@@ -63,10 +78,6 @@ export class UserDetailsComponent implements OnInit {
       }
     }
     return false;
-  }
-
-  get username() {
-    return this.userDetailsFormGroup.get('user.username');
   }
 
   updateUser() {
@@ -95,5 +106,40 @@ export class UserDetailsComponent implements OnInit {
     if (confirm('Are you sure to delete ' + user.username + '?')) {
       console.log('Deleting user ' + user.username);
     }
+  }
+
+  get username() {
+    return this.userDetailsFormGroup.get('user.username');
+  }
+  get password() {
+    return this.userDetailsFormGroup.get('user.password');
+  }
+  get firstName() {
+    return this.userDetailsFormGroup.get('user.firstName');
+  }
+  get lastName() {
+    return this.userDetailsFormGroup.get('user.lastName');
+  }
+  get pesel() {
+    return this.userDetailsFormGroup.get('user.pesel');
+  }
+  get email() {
+    return this.userDetailsFormGroup.get('user.email');
+  }
+  get telephone() {
+    return this.userDetailsFormGroup.get('user.telephone');
+  }
+  get street() {
+    return this.userDetailsFormGroup.get('user.street');
+  }
+  get city() {
+    return this.userDetailsFormGroup.get('user.city');
+  }
+  get country() {
+    return this.userDetailsFormGroup.get('user.country');
+  }
+
+  get postalCode() {
+    return this.userDetailsFormGroup.get('user.postalCode');
   }
 }
