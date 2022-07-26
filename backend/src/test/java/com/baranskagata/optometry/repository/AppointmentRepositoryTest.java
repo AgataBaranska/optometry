@@ -1,6 +1,6 @@
-package com.baranskagata.optometry.dao;
+package com.baranskagata.optometry.repository;
 
-import com.baranskagata.optometry.entity.*;
+import com.baranskagata.optometry.dao.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

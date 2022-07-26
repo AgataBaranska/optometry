@@ -1,8 +1,8 @@
 package com.baranskagata.optometry.service;
 
 import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
-import com.baranskagata.optometry.entity.Appointment;
-import com.baranskagata.optometry.model.TimePeriod;
+import com.baranskagata.optometry.dao.Appointment;
+import com.baranskagata.optometry.datetimeutil.TimePeriod;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

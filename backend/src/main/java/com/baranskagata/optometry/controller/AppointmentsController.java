@@ -1,8 +1,8 @@
 package com.baranskagata.optometry.controller;
 
 import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
-import com.baranskagata.optometry.entity.Appointment;
-import com.baranskagata.optometry.model.TimePeriod;
+import com.baranskagata.optometry.dao.Appointment;
+import com.baranskagata.optometry.datetimeutil.TimePeriod;
 import com.baranskagata.optometry.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

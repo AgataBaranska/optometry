@@ -72,7 +72,7 @@ export class AuthenticationService {
   }
 
   register(user: User): Observable<any> {
-    let url: string = 'http://localhost:8080/api/users';
+    let url: string = 'http://localhost:8080/api/users/register';
     return this.httpClient.post<User>(url, user);
   }
 

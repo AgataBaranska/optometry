@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.baranskagata.optometry.entity.AppUser;
-import com.baranskagata.optometry.entity.Role;
+import com.baranskagata.optometry.dao.AppUser;
+import com.baranskagata.optometry.dao.Role;
 import com.baranskagata.optometry.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +39,11 @@ public class UsersController {
     private final UserService userService;
 
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<AppUser>> getAllUsers(@RequestParam(required = false) String lastName, Pageable pageable) {
+
+       //nie używamy if w contorller, logiki -nie
+        //nie last name = null-> optional
         if(lastName ==null) {
             return ResponseEntity.ok().body(userService.getUsers(pageable));
         }else{
@@ -55,7 +58,7 @@ public class UsersController {
         return ResponseEntity.ok().body(userService.getUser(username));
     }
 
-    @PostMapping()
+    @PostMapping("/register")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
@@ -99,6 +102,8 @@ public class UsersController {
 
     @PostMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        //wydzielić do innnej klasy, podzielić na kilka metod, secret -> application.properties jwtsecret
         try {
 
             Map<String, String> requestMap = new ObjectMapper().readValue(request.getInputStream(), Map.class);
@@ -113,7 +118,7 @@ public class UsersController {
             String username = decodedJWT.getSubject();
             AppUser user = userService.getUser(username);
 
-            String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+
 
             String access_token = JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                     .withIssuer(request.getRequestURL().toString())

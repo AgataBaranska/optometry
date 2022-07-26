@@ -1,8 +1,8 @@
 package com.baranskagata.optometry.service;
 
-import com.baranskagata.optometry.dao.WorkRepository;
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Work;
+import com.baranskagata.optometry.repository.WorkRepository;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Work;
 import com.baranskagata.optometry.exception.WorkNotFoundException;
 import com.baranskagata.optometry.exception.WorkWithNameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;

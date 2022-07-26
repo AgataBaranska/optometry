@@ -1,10 +1,10 @@
 package com.baranskagata.optometry.service;
 
-import com.baranskagata.optometry.dao.WorkingPlanRepository;
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.WorkingPlan;
+import com.baranskagata.optometry.repository.WorkingPlanRepository;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.WorkingPlan;
 import com.baranskagata.optometry.exception.WorkNotFoundException;
-import com.baranskagata.optometry.model.TimePeriod;
+import com.baranskagata.optometry.datetimeutil.TimePeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

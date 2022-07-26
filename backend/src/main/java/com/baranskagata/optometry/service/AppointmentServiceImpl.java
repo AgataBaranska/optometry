@@ -1,12 +1,12 @@
 package com.baranskagata.optometry.service;
 
-import com.baranskagata.optometry.dao.AppointmentRepository;
+import com.baranskagata.optometry.repository.AppointmentRepository;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
-import com.baranskagata.optometry.entity.*;
+import com.baranskagata.optometry.dao.*;
 import com.baranskagata.optometry.exception.AppointmentAvailabilityChangedException;
 import com.baranskagata.optometry.exception.AppointmentNotFoundException;
-import com.baranskagata.optometry.model.DayPlan;
-import com.baranskagata.optometry.model.TimePeriod;
+import com.baranskagata.optometry.datetimeutil.DayPlan;
+import com.baranskagata.optometry.datetimeutil.TimePeriod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -70,7 +70,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> optometristAppointmentsInDay = getOptometristAppointmentsAtDay(optometristId, date);
         List<Appointment> patientAppointmentsInDay = getPatientAppointmentsAtDay(patientId, date);
 
-        List<TimePeriod> availableTimePeriods = new ArrayList<>();
+        List<TimePeriod> availableTimePeriods;
+
+        //getFinalTimePeriods zamiast 4 przypisań
         availableTimePeriods = optometristDayPlan.getTimePeriodsWithoutBreaks();
         availableTimePeriods = excludeAppointmentsFromTimePeriods(availableTimePeriods, optometristAppointmentsInDay);
         availableTimePeriods = excludeAppointmentsFromTimePeriods(availableTimePeriods, patientAppointmentsInDay);
@@ -108,8 +110,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         for (Appointment appointment : appointments) {
             for (TimePeriod period : periods) {
+
+                //wydzielić ify do metod return boolean
                 if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || (appointment.getStart().toLocalTime().equals(period.getStart())) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())))
-                    ;
+
                 {
                     period.setStart(appointment.getEnd().toLocalTime());
                 }

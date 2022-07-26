@@ -1,7 +1,7 @@
-package com.baranskagata.optometry.dao;
+package com.baranskagata.optometry.repository;
 
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Work;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Work;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.baranskagata.optometry.entity;
+package com.baranskagata.optometry.dao;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

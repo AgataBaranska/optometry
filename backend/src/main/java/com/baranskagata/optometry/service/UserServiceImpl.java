@@ -1,9 +1,9 @@
 package com.baranskagata.optometry.service;
 
 
-import com.baranskagata.optometry.dao.*;
+import com.baranskagata.optometry.repository.*;
 import com.baranskagata.optometry.dto.UpdatePasswordDto;
-import com.baranskagata.optometry.entity.*;
+import com.baranskagata.optometry.dao.*;
 import com.baranskagata.optometry.exception.RoleNotFoundException;
 import com.baranskagata.optometry.exception.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameAlreadyExistsException("Username already taken: " + userData.getUsername());
         }
 
-
+//zamienić na optionale, zobaczyć w Optionalach jak zamienić bez if
         if (userData.getUsername() != null) {
             appUser.setUsername(userData.getUsername());
         }
@@ -163,6 +163,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user.getRoles().contains(role)) return;
 
         user.getRoles().add(role);
+
+        //zmienić na metodę
         switch (roleName) {
             case "PATIENT": {
                 Patient patient = new Patient();
@@ -208,9 +210,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void removeRoleFromUser(String username, String roleName) {
         AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
         Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RoleNotFoundException("Role not found in the database with roleName: " + roleName));
-        ;
+
         user.getRoles().remove(role);
     }
+
+
+    //czy potrzebne?
 
     public boolean hasRole(String roleName) {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

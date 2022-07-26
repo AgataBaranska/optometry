@@ -69,17 +69,19 @@ export class RegisterComponent implements OnInit {
     let user = new User();
     Object.assign(user, this.registerFormGroup.controls['user'].value);
     Object.assign(user, this.registerFormGroup.controls['address'].value);
-    this.authService.register(user).subscribe({
-      next: (response) => {
-        alert('New user registered succesfully');
-        //TODO: does not reset form, does not navigate to login
-        this.resetForm();
-        this.router.navigateByUrl('/login');
-      },
-      error: (err) => {
-        alert(`There was an error during registration: ${err.message}`);
-      },
-    });
+    this.router.navigateByUrl('/login');
+
+    // this.authService.register(user).subscribe({
+    //   next: (response) => {
+    //     alert('New user registered succesfully');
+    //     //TODO: does not reset form, does not navigate to login
+
+    //     this.router.navigateByUrl('/login');
+    //   },
+    //   error: (err) => {
+    //     alert(`There was an error during registration: ${err.message}`);
+    //   },
+    // });
   }
 
   resetForm() {

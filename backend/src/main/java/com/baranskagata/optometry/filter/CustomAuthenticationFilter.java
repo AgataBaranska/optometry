@@ -2,7 +2,7 @@ package com.baranskagata.optometry.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.baranskagata.optometry.entity.SecurityAppUser;
+import com.baranskagata.optometry.dao.SecurityAppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

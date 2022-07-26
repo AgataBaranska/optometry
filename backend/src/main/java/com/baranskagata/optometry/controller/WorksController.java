@@ -1,7 +1,7 @@
 package com.baranskagata.optometry.controller;
 
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Work;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Work;
 import com.baranskagata.optometry.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

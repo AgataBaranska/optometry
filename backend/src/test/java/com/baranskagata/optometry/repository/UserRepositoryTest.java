@@ -1,6 +1,6 @@
-package com.baranskagata.optometry.dao;
+package com.baranskagata.optometry.repository;
 
-import com.baranskagata.optometry.entity.AppUser;
+import com.baranskagata.optometry.dao.AppUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

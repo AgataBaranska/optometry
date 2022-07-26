@@ -1,6 +1,6 @@
-package com.baranskagata.optometry.entity;
+package com.baranskagata.optometry.dao;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,19 +8,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "role")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+
+public class Receptionist{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
-    @JsonIgnore
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+
+    @JsonBackReference(value = "app-user-receptionist")
+    @OneToOne()
+    @JoinColumn(name="user_id")
+    private AppUser appUser;
 
 }

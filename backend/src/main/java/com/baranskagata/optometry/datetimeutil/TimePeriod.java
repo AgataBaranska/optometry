@@ -1,4 +1,4 @@
-package com.baranskagata.optometry.model;
+package com.baranskagata.optometry.datetimeutil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.baranskagata.optometry.entity;
+package com.baranskagata.optometry.dao;
 
 public enum AppointmentStatus {
     SCHEDULED,

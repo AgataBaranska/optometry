@@ -1,7 +1,7 @@
-package com.baranskagata.optometry.entity;
+package com.baranskagata.optometry.dao;
 
-import com.baranskagata.optometry.model.DayPlan;
-import com.baranskagata.optometry.model.TimePeriod;
+import com.baranskagata.optometry.datetimeutil.DayPlan;
+import com.baranskagata.optometry.datetimeutil.TimePeriod;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.AllArgsConstructor;

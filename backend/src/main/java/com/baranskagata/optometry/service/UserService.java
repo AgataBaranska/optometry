@@ -1,9 +1,9 @@
 package com.baranskagata.optometry.service;
 
 import com.baranskagata.optometry.dto.UpdatePasswordDto;
-import com.baranskagata.optometry.entity.AppUser;
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Role;
+import com.baranskagata.optometry.dao.AppUser;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

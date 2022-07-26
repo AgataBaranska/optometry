@@ -1,6 +1,6 @@
-package com.baranskagata.optometry.dao;
+package com.baranskagata.optometry.repository;
 
-import com.baranskagata.optometry.entity.WorkingPlan;
+import com.baranskagata.optometry.dao.WorkingPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

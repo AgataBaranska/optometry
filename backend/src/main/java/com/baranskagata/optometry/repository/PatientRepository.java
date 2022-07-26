@@ -1,6 +1,6 @@
-package com.baranskagata.optometry.dao;
+package com.baranskagata.optometry.repository;
 
-import com.baranskagata.optometry.entity.Patient;
+import com.baranskagata.optometry.dao.Patient;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

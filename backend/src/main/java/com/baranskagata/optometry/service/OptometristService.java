@@ -1,8 +1,8 @@
 package com.baranskagata.optometry.service;
 
 import com.baranskagata.optometry.dto.AppUserOptometrist;
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Work;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Work;
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
 package com.baranskagata.optometry.controller;
 
 import com.baranskagata.optometry.dto.AppUserOptometrist;
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Work;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Work;
 import com.baranskagata.optometry.service.OptometristService;
-import com.baranskagata.optometry.service.WorkingPlanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequestMapping("/optometrists")
 public class OptometristsController {
     private final OptometristService optometristService;
-    private final WorkingPlanService workingPlanService;
 
     @GetMapping
     ResponseEntity<List<AppUserOptometrist>> getAllOptometrists(Pageable pageable) {

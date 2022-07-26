@@ -1,7 +1,7 @@
 package com.baranskagata.optometry.service;
 
-import com.baranskagata.optometry.entity.WorkingPlan;
-import com.baranskagata.optometry.model.TimePeriod;
+import com.baranskagata.optometry.dao.WorkingPlan;
+import com.baranskagata.optometry.datetimeutil.TimePeriod;
 
 public interface WorkingPlanService {
     public WorkingPlan getWorkingPlanByOptometristId(Long optometristId);

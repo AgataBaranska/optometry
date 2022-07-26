@@ -1,12 +1,12 @@
 package com.baranskagata.optometry.service;
 
-import com.baranskagata.optometry.dao.OptometristRepository;
-import com.baranskagata.optometry.dao.UserRepository;
-import com.baranskagata.optometry.dao.WorkRepository;
+import com.baranskagata.optometry.repository.OptometristRepository;
+import com.baranskagata.optometry.repository.UserRepository;
+import com.baranskagata.optometry.repository.WorkRepository;
 import com.baranskagata.optometry.dto.AppUserOptometrist;
-import com.baranskagata.optometry.entity.AppUser;
-import com.baranskagata.optometry.entity.Optometrist;
-import com.baranskagata.optometry.entity.Work;
+import com.baranskagata.optometry.dao.AppUser;
+import com.baranskagata.optometry.dao.Optometrist;
+import com.baranskagata.optometry.dao.Work;
 import com.baranskagata.optometry.exception.OptometristNotFoundException;
 import com.baranskagata.optometry.exception.WorkNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +44,13 @@ public class OptometristServiceImpl implements OptometristService {
     public AppUserOptometrist updateAppUserOptometrist(Long appUserId,AppUserOptometrist userOptometristData) {
         AppUser appUser = userRepository.getById(appUserId);
         Optometrist optometrist = appUser.getOptometrist();
+
+        //null na optional
         if (optometrist == null) {
             throw new OptometristNotFoundException("App user does not have optometrist role with appUser id: " + appUserId);
         }
+
+        //builder
         appUser.setFirstName(userOptometristData.getFirstName());
         appUser.setLastName(userOptometristData.getLastName());
         appUser.setPesel(userOptometristData.getPesel());
@@ -62,7 +66,10 @@ public class OptometristServiceImpl implements OptometristService {
 
     @Override
     public Optometrist updateOptometrist(Long optometristId, Optometrist optometristData) {
-        Optometrist optometrist = optometristRepository.findById(optometristId).orElseThrow(() -> new OptometristNotFoundException("Optometrist not found with the id:" + optometristId));
+        Optometrist optometrist = optometristRepository.findById(optometristId).orElseThrow(() -> {
+            String s = "Optometrist not found with the id:";
+            return new OptometristNotFoundException(s + optometristId);
+        });
         optometrist.setOptometristNumber(optometristData.getOptometristNumber());
         optometristRepository.save(optometrist);
         return optometrist;

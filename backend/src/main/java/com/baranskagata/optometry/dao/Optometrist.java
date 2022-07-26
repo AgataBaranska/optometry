@@ -1,4 +1,4 @@
-package com.baranskagata.optometry.entity;
+package com.baranskagata.optometry.dao;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
