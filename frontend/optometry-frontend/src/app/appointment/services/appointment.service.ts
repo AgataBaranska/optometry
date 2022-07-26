@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'src/app/app.constants';
 import { Appointment } from 'src/app/common/appointment';
 import { Observable } from 'rxjs';
+import { Optometrist } from 'src/app/common/optometrist';
+import { Work } from 'src/app/common/work';
 
 @Injectable({
   providedIn: 'root',
@@ -12,21 +14,31 @@ export class AppointmentService {
 
   constructor(private httpClient: HttpClient) {}
 
+  public getOptometristList(): Observable<Optometrist[]> {
+    const url = `${API_URL}/api/optometrists`;
+    return this.httpClient.get<Optometrist[]>(url);
+  }
+
+  public getOptometristWorks(optometristId: number): Observable<Work[]> {
+    const url = `${API_URL}/api/optometrists/${optometristId}/works`;
+    return this.httpClient.get<Work[]>(url);
+  }
+
   public getAppointmentListPaginate(
     thePage: number,
     thePageSize: number
-  ): Observable<GetResponse> {
+  ): Observable<GetAppointmentsPaginateRespone> {
     const url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
-    return this.httpClient.get<GetResponse>(url);
+    return this.httpClient.get<GetAppointmentsPaginateRespone>(url);
   }
 
   public searchAppointmentPaginate(
     work: string,
     thePage: number,
     thePageSize: number
-  ): Observable<GetResponse> {
+  ): Observable<GetAppointmentsPaginateRespone> {
     const url = `${this.baseUrl}/search/findByWorkContaining?work=${work}&page=${thePage}&size=${thePageSize}`;
-    return this.httpClient.get<GetResponse>(url);
+    return this.httpClient.get<GetAppointmentsPaginateRespone>(url);
   }
 
   getAppointment(theId: number): Observable<Appointment> {
@@ -49,7 +61,7 @@ export class AppointmentService {
   */
 }
 
-interface GetResponse {
+interface GetAppointmentsPaginateRespone {
   content: Appointment[];
 
   pageable: {

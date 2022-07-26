@@ -4,7 +4,6 @@ import com.baranskagata.optometry.dao.OptometristRepository;
 import com.baranskagata.optometry.dao.UserRepository;
 import com.baranskagata.optometry.dao.WorkRepository;
 import com.baranskagata.optometry.dto.AppUserOptometrist;
-import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Optometrist;
 import com.baranskagata.optometry.entity.Work;
@@ -12,8 +11,6 @@ import com.baranskagata.optometry.exception.OptometristNotFoundException;
 import com.baranskagata.optometry.exception.WorkNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +27,8 @@ public class OptometristServiceImpl implements OptometristService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<AppUserOptometrist> getAllOptometrists(Pageable pageable) {
-        return optometristRepository.findAllAppUserOptometrist(pageable);
+    public List<AppUserOptometrist> getAllOptometrists() {
+        return optometristRepository.findAllAppUserOptometrist();
     }
 
     @Override

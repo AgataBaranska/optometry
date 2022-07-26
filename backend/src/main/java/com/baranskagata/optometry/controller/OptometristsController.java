@@ -1,14 +1,12 @@
 package com.baranskagata.optometry.controller;
 
 import com.baranskagata.optometry.dto.AppUserOptometrist;
-import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
 import com.baranskagata.optometry.entity.Optometrist;
 import com.baranskagata.optometry.entity.Work;
 import com.baranskagata.optometry.service.OptometristService;
 import com.baranskagata.optometry.service.WorkingPlanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +24,8 @@ public class OptometristsController {
     private final WorkingPlanService workingPlanService;
 
     @GetMapping
-    ResponseEntity<Page<AppUserOptometrist>> getAllOptometrists(Pageable pageable) {
-        return ResponseEntity.ok().body(optometristService.getAllOptometrists(pageable));
+    ResponseEntity<List<AppUserOptometrist>> getAllOptometrists(Pageable pageable) {
+        return ResponseEntity.ok().body(optometristService.getAllOptometrists());
     }
 
     @GetMapping("{optometristNumber}")

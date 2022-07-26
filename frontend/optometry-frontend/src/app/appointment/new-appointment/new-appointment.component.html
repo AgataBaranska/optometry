@@ -1,0 +1,28 @@
+<div class="card my-1 col-9">
+  <h3 class="mb-4 fw-normal text-center">New appointment</h3>
+  <!--Drop down list-->
+  <div>
+    <div class="input-group input-group-sm mb-3">
+      <label for="optometrists">Optometrists</label>
+      <select
+        #optometristSelect
+        (change)="onOptometristSelect(optometristSelect.value)"
+      >
+        <option value="0">--Select optometrist--</option>
+        <option
+          *ngFor="let optometrist of optometrists"
+          [value]="optometrist.id"
+        >
+          {{ optometrist.firstName + " " + optometrist.lastName }}
+        </option>
+      </select>
+      <label for="works">Works</label>
+      <select #worksSelect (change)="onWorkSelect(worksSelect.value)">
+        <option value="0">--Select work--</option>
+        <option *ngFor="let work of works" [value]="work.id">
+          {{ work.name + ", " + work.description + ", price: " + work.price }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
