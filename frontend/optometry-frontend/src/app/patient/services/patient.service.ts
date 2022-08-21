@@ -4,6 +4,8 @@ import { Patient } from 'src/app/common/patient';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'src/app/app.constants';
 import { map } from 'rxjs';
+import { Disease } from 'src/app/common/disease';
+import { AppointmentReason } from 'src/app/common/appointment-reason';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +49,24 @@ export class PatientService {
   ): Observable<GetResponse> {
     const url = `${this.baseUrl}/search/findByLastNameContaining?lastName=${lastName}&page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<GetResponse>(url);
+  }
+
+  public getAvailableEyeDiseases(): Observable<Disease[]> {
+    const url = `${this.baseUrl}/availableDiseases?relatedOrgan=eye`;
+    return this.httpClient.get<Disease[]>(url);
+  }
+  getAvailableGeneralDiseases() {
+    const url = `${this.baseUrl}/availableDiseases?relatedOrgan=general`;
+    return this.httpClient.get<Disease[]>(url);
+  }
+
+  getAvailableVisionConditions() {
+    const url = `${this.baseUrl}/availableDiseases?relatedOrgan=visionCondition`;
+    return this.httpClient.get<Disease[]>(url);
+  }
+  getAvailableAppointmentReasons() {
+    const url = `${this.baseUrl}/availableAppointmentReasons`;
+    return this.httpClient.get<AppointmentReason[]>(url);
   }
 }
 
