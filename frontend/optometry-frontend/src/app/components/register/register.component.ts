@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ReactiveFormsModule,
   FormBuilder,
   FormGroup,
   Validators,
@@ -48,14 +47,8 @@ export class RegisterComponent implements OnInit {
         email: new FormControl('', [Validators.required, Validators.email]),
         telephone: new FormControl('', [
           Validators.required,
-          Validators.pattern('^[0-9]*$'), //only digits
+          Validators.pattern('^[0-9]*$'),
         ]),
-      }),
-      address: this.formBuilder.group({
-        street: new FormControl('', [Validators.required]),
-        city: new FormControl('', [Validators.required]),
-        country: new FormControl('', [Validators.required]),
-        postalCode: new FormControl('', [Validators.required]),
       }),
     });
   }

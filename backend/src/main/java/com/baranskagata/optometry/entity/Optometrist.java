@@ -33,14 +33,13 @@ public class Optometrist{
     @JoinTable(name = "optometrist_work", joinColumns = @JoinColumn(name = "id_optometrist"), inverseJoinColumns = @JoinColumn(name = "id_work"))
     private List<Work> works;
 
+
     @JsonBackReference(value = "app-user-optometrist")
     @OneToOne
     @JoinColumn(name="user_id")
     private AppUser appUser;
 
-    @JsonManagedReference(value = "optometrist-working-plan")
-    @OneToOne(mappedBy = "optometrist", cascade = CascadeType.ALL)
-    private WorkingPlan workingPlan;
+
 
 
 }

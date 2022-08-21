@@ -1,4 +1,4 @@
-package com.baranskagata.optometry.constants;
+package com.baranskagata.optometry.utils;
 
 public class SecurityConstants {
 

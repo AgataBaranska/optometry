@@ -1,32 +1,29 @@
 package com.baranskagata.optometry.service;
 
-import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
+import com.baranskagata.optometry.dto.AppointmentDto;
+import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
 import com.baranskagata.optometry.entity.Appointment;
-import com.baranskagata.optometry.model.TimePeriod;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface AppointmentService {
 
 
-    Page<AppointmentPatientOptometrist> getAppointments(Pageable page);
+    List<AppointmentPatientOptometristDto> getAppointments(Optional<String> patientId, Optional<String> optometristId);
 
-    AppointmentPatientOptometrist getAppointmentById(Long appointmentId);
+    AppointmentPatientOptometristDto getAppointmentById(Long appointmentId);
 
-    Appointment saveAppointment(Appointment appointment);
+    Appointment saveAppointment(AppointmentDto appointmentDto);
 
     void deleteAppointment(Long appointmentId);
 
-    List<TimePeriod> getAvailableTimePeriodsForWork(Long optometristId, Long patientId, Long workId, LocalDate date);
 
     List<Appointment> getOptometristAppointmentsAtDay(Long optometristId, LocalDate day);
 
     List<Appointment> getPatientAppointmentsAtDay(Long patientId, LocalDate day);
 
-    List<TimePeriod> excludeAppointmentsFromTimePeriods(List<TimePeriod> periods, List<Appointment> appointments);
 
-
+    List<Integer> availableSlotsForOptometristForDay(Long optometristId, LocalDate date);
 }

@@ -1,13 +1,11 @@
 package com.baranskagata.optometry.controller;
 
-import com.baranskagata.optometry.dto.AppointmentPatientOptometrist;
+import com.baranskagata.optometry.dto.AppointmentDto;
+import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
 import com.baranskagata.optometry.entity.Appointment;
-import com.baranskagata.optometry.model.TimePeriod;
 import com.baranskagata.optometry.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,20 +25,23 @@ public class AppointmentsController {
     private final AppointmentService appointmentService;
 
     @GetMapping()
-    public ResponseEntity<Page<AppointmentPatientOptometrist>> getAllAppointments(Pageable pageable) {
-        return ResponseEntity.ok().body(appointmentService.getAppointments(pageable));
+    public ResponseEntity<List<AppointmentPatientOptometristDto>> getAllAppointments(@RequestParam(required = false) Optional<String> patientUsername,@RequestParam(required = false)  Optional<String> optometristUsername) {
+
+
+
+        return ResponseEntity.ok().body(appointmentService.getAppointments(patientUsername,optometristUsername));
     }
 
     @GetMapping("{appointmentId}")
-    public ResponseEntity<AppointmentPatientOptometrist> getAppointment(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentPatientOptometristDto> getAppointment(@PathVariable Long appointmentId) {
         return ResponseEntity.ok().body(appointmentService.getAppointmentById(appointmentId)
         );
     }
 
     @PostMapping()
-    public ResponseEntity<Appointment> saveAppointment(@RequestBody Appointment appointment) {
+    public ResponseEntity<Appointment> saveAppointment(@RequestBody AppointmentDto appointmentDTO) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("").toUriString());
-        return ResponseEntity.created(uri).body(appointmentService.saveAppointment(appointment));
+        return ResponseEntity.created(uri).body(appointmentService.saveAppointment(appointmentDTO));
     }
 
     @DeleteMapping("{id}")
@@ -47,15 +49,17 @@ public class AppointmentsController {
         appointmentService.deleteAppointment(id);
         return ResponseEntity.noContent().build();
     }
+//api/appointments/optometristAvailableHours?optometristId=   &patientId=   &workId=    &date=
 
-    @GetMapping("commonAvailableHours/{optometristId}/{patientId}/{workId}/{date}")
-    public ResponseEntity<List<TimePeriod>> getAvailableTimePeriods(@RequestParam Long optometristId, @RequestParam Long patientId, @RequestParam Long workId, @RequestParam String date) {
-        return ResponseEntity.ok().body(appointmentService.getAvailableTimePeriodsForWork(optometristId, patientId, workId, LocalDate.parse(date)));
+    @GetMapping("/slots")
+    public ResponseEntity<List<Integer>> getAvailableSlotsForOptometristForDay(@RequestParam  Long optometristId, @RequestParam String date) {
+        return ResponseEntity.ok().body(appointmentService.availableSlotsForOptometristForDay(optometristId,LocalDate.parse(date)));
     }
 
 
 
 
 }
+
 
 

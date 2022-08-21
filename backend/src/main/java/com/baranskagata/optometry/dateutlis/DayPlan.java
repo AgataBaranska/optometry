@@ -1,7 +1,6 @@
-package com.baranskagata.optometry.model;
+package com.baranskagata.optometry.dateutlis;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

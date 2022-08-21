@@ -5,6 +5,7 @@ import { Appointment } from 'src/app/common/appointment';
 import { Observable } from 'rxjs';
 import { Optometrist } from 'src/app/common/optometrist';
 import { Work } from 'src/app/common/work';
+import { NewAppointmentDTO } from 'src/app/common/new-appointment-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -28,8 +29,17 @@ export class AppointmentService {
     thePage: number,
     thePageSize: number
   ): Observable<GetAppointmentsPaginateRespone> {
-    const url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
+    var url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
+
     return this.httpClient.get<GetAppointmentsPaginateRespone>(url);
+  }
+
+  public getAppointmentListForOptometrist(
+    username: string
+  ): Observable<Appointment[]> {
+    var url = `${this.baseUrl}?optometristUsername=${username}`;
+
+    return this.httpClient.get<Appointment[]>(url);
   }
 
   public searchAppointmentPaginate(
@@ -44,6 +54,16 @@ export class AppointmentService {
   getAppointment(theId: number): Observable<Appointment> {
     const appointmentUrl = `${this.baseUrl}/${theId}`;
     return this.httpClient.get<Appointment>(appointmentUrl);
+  }
+
+  getAppointmentFreeTimeSlotsForDate(date: any, optometristId: any) {
+    const url = `${this.baseUrl}/slots?date=${date}&optometristId=${optometristId}`;
+    return this.httpClient.get<Array<number>[]>(url);
+  }
+
+  saveNewAppointment(appointmentDto: NewAppointmentDTO) {
+    const url = `${this.baseUrl}`;
+    return this.httpClient.post<Appointment>(url, appointmentDto);
   }
   /*
 

@@ -1,7 +1,6 @@
 <div class="card my-1 p-4">
   <div class="d-flex">
     <h2>User management</h2>
-    <button class="btn btn-outline-success">Add new</button>
   </div>
 
   <form class="search-form d-flex mt-1 mb-2">
@@ -19,6 +18,7 @@
     >
       Search
     </button>
+    <button class="btn btn-outline-success my-2 my-sm-0">Add new</button>
   </form>
 
   <table class="table table-striped table-hover">
@@ -60,52 +60,13 @@
   <div class="pagination">
     <div class="row">
       <div class="col-md-6">
-        <!-- <ngb-pagination
+        <ngb-pagination
           [(page)]="thePageNumber"
           [pageSize]="thePageSize"
           [collectionSize]="theTotalElements"
-          (pageChange)="listAppointments()"
+          (pageChange)="listUsers()"
         >
-        </ngb-pagination> -->
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Button trigger modal -->
-<button
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#exampleModal"
->
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">...</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        </ngb-pagination>
       </div>
     </div>
   </div>

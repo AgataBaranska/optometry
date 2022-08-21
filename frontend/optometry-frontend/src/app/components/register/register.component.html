@@ -179,14 +179,6 @@
                 formControlName="street"
                 type="text"
               />
-              <div
-                *ngIf="street?.invalid && (street?.dirty || street?.touched)"
-                class="alert alert-danger mt-1"
-              >
-                <div *ngIf="street!.errors!['required']">
-                  Street is required
-                </div>
-              </div>
             </div>
           </div>
           <div class="row mb-3">
@@ -197,12 +189,6 @@
                 formControlName="city"
                 type="text"
               />
-              <div
-                *ngIf="city?.invalid && (city?.dirty || city?.touched)"
-                class="alert alert-danger mt-1"
-              >
-                <div *ngIf="city!.errors!['required']">City is required</div>
-              </div>
             </div>
           </div>
           <div class="row mb-3">
@@ -213,14 +199,6 @@
                 formControlName="country"
                 type="text"
               />
-              <div
-                *ngIf="country?.invalid && (country?.dirty || country?.touched)"
-                class="alert alert-danger mt-1"
-              >
-                <div *ngIf="country!.errors!['required']">
-                  Country is required
-                </div>
-              </div>
             </div>
           </div>
           <div class="row mb-1">
@@ -231,18 +209,6 @@
                 formControlName="postalCode"
                 type="text"
               />
-
-              <div
-                *ngIf="
-                  postalCode?.invalid &&
-                  (postalCode?.dirty || postalCode?.touched)
-                "
-                class="alert alert-danger mt-1"
-              >
-                <div *ngIf="postalCode!.errors!['required']">
-                  Postal code is required
-                </div>
-              </div>
             </div>
           </div>
         </div>

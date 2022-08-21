@@ -62,17 +62,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Page<AppUser> getUsersByLastName(String lastName,Pageable pageable){
         return userRepository.findByLastNameContaining(lastName, pageable);
     }
+
+
     @Override
     public AppUser saveUser(AppUser user) {
         Optional<AppUser> appUser = userRepository.findByUsername(user.getUsername());
         if (appUser.isPresent()) {
             throw new UsernameAlreadyExistsException("Username already taken: " + user.getUsername());
-
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByName("USER").orElseThrow(() -> new RoleNotFoundException("Role user not found"));
+      //  Role patientRole = roleRepository.findByName("PATIENT").orElseThrow(() -> new RoleNotFoundException("Patient user not found"));
         user.getRoles().add(userRole);
+     //   user.getRoles().add(patientRole);
         return userRepository.save(user);
     }
 
@@ -80,47 +83,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public AppUser updateUser(String username, AppUser userData) {
         AppUser appUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
 
-
         if (userRepository.findByUsername(userData.getUsername()).isPresent()&& !username.equals(userData.getUsername())) {
             throw new UsernameAlreadyExistsException("Username already taken: " + userData.getUsername());
         }
-
-
-        if (userData.getUsername() != null) {
-            appUser.setUsername(userData.getUsername());
-        }
-
-        if (userData.getFirstName() != null) {
-            appUser.setFirstName(userData.getFirstName());
-        }
-        if (userData.getLastName() != null) {
-            appUser.setLastName(userData.getLastName());
-        }
-        if (userData.getPesel() != null) {
-            appUser.setPesel(userData.getPesel());
-        }
-        if (userData.getTelephone() != null) {
-            appUser.setTelephone(userData.getTelephone());
-        }
-        if (userData.getEmail() != null) {
-            appUser.setEmail(userData.getEmail());
-        }
-        if (userData.getStreet() != null) {
-            appUser.setStreet(userData.getStreet());
-        }
-
-        if (userData.getCity() != null) {
-            appUser.setCity(userData.getCity());
-        }
-        if (userData.getPostalCode() != null) {
-            appUser.setPostalCode(userData.getPostalCode());
-        }
-        if (userData.getCountry() != null) {
-            appUser.setCountry(userData.getCountry());
-        }
-        if (userData.getRoles() != null) {
-            appUser.setRoles(userData.getRoles());
-        }
+        appUser = AppUser.builder().username(userData.getUsername())
+                .firstName(userData.getFirstName())
+                .lastName(userData.getLastName())
+                .pesel(userData.getPesel())
+                .telephone(userData.getTelephone())
+                .email(userData.getEmail())
+                .street((userData.getStreet()))
+                .city(userData.getStreet())
+                .postalCode(userData.getPostalCode())
+                .country(userData.getCountry())
+                .roles(userData.getRoles()).build();
         return userRepository.save(appUser);
     }
 
@@ -177,8 +153,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.setAdmin(admin);
                 admin.setAppUser(user);
                 adminRepository.save(admin);
-
-
             }
             break;
             case "RECEPTIONIST": {
@@ -193,9 +167,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.setOptometrist(optometrist);
                 optometrist.setAppUser(user);
 
-                WorkingPlan workingPlan = WorkingPlan.generateDefaultWorkingPlan();
-                workingPlan.setOptometrist(optometrist);
-                optometrist.setWorkingPlan(workingPlan);
                 optometristRepository.save(optometrist);
             }
             break;

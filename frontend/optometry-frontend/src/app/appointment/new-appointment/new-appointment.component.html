@@ -1,10 +1,9 @@
-<div class="card my-1 col-9">
-  <h3 class="mb-4 fw-normal text-center">New appointment</h3>
-  <!--Drop down list-->
-  <div>
+<div class="card my-1 col-12">
+  <h3 class="ms-3 mb-4 fw-normal text-start">New appointment</h3>
+  <div class="ms-3 col-5">
     <div class="input-group input-group-sm mb-3">
-      <label for="optometrists">Optometrists</label>
       <select
+        class="mt-1 col-12"
         #optometristSelect
         (change)="onOptometristSelect(optometristSelect.value)"
       >
@@ -13,16 +12,51 @@
           *ngFor="let optometrist of optometrists"
           [value]="optometrist.id"
         >
-          {{ optometrist.firstName + " " + optometrist.lastName }}
+          {{
+            "Optometrist: " + optometrist.firstName + " " + optometrist.lastName
+          }}
         </option>
       </select>
-      <label for="works">Works</label>
-      <select #worksSelect (change)="onWorkSelect(worksSelect.value)">
-        <option value="0">--Select work--</option>
-        <option *ngFor="let work of works" [value]="work.id">
+
+      <select
+        class="mt-1 col-12"
+        #worksSelect
+        (change)="onWorkSelect(worksSelect.value)"
+      >
+        <option value="0">--Select type of visit--</option>
+        <option *ngFor="let work of works" [value]="work.name">
           {{ work.name + ", " + work.description + ", price: " + work.price }}
         </option>
       </select>
+      <mat-form-field class="col-12" appearance="standard">
+        <mat-label>Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          (dateChange)="ondateSelect($event)"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <select
+        class="col-12"
+        #slotSelect
+        (change)="onSlotSelect(slotSelect.value)"
+      >
+        <option value="0">--Select time slot--</option>
+        <option *ngFor="let slot of slots" [value]="slot">
+          {{ slot + ":00 " + "duration: 1h" }}
+        </option>
+      </select>
+
+      <button
+        (click)="scheduleAppointment()"
+        class="btn btn-sm btn-primary mt-1 col-12"
+        type="button"
+        routerLink="/appointments"
+      >
+        Schedule an appointment
+      </button>
     </div>
   </div>
 </div>

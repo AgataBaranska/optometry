@@ -11,6 +11,7 @@ import { AppointmentService } from '../services/appointment.service';
 })
 export class AppointmentsComponent implements OnInit {
   appointments: Appointment[] = [];
+  currentRole!: string;
 
   //pagination properties
   thePageSize: number = 2;
@@ -21,13 +22,16 @@ export class AppointmentsComponent implements OnInit {
 
   constructor(
     private appointmentService: AppointmentService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => this.listAppointments());
+    this.authService.currentRole.subscribe((role) => (this.currentRole = role));
+
+    this.route.paramMap.subscribe(() => this.listOptometristAppointments());
   }
-  listAppointments(): void {
+  listOptometristAppointments(): void {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
     if (this.previousKeyword != theKeyword) {
@@ -46,8 +50,8 @@ export class AppointmentsComponent implements OnInit {
         .subscribe(this.processResult());
     } else {
       this.appointmentService
-        .getAppointmentListPaginate(this.thePageNumber - 1, this.thePageSize)
-        .subscribe(this.processResult());
+        .getAppointmentListForOptometrist(this.authService.getUserName())
+        .subscribe((data: any) => (this.appointments = data));
     }
   }
 

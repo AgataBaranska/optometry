@@ -46,7 +46,6 @@ public class UsersController {
         }else{
 
             return ResponseEntity.ok().body( userService.getUsersByLastName(lastName,pageable));
-
         }
     }
 

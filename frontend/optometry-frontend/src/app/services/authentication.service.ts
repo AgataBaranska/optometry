@@ -50,12 +50,7 @@ export class AuthenticationService {
         tap((response: any) => {
           this.saveToken(response.access_token);
           this.saveRefreshToken(response.refresh_token);
-
-          console.log('saving token ' + this.getToken());
-          console.log('saving refresh token ' + this.getRefreshToken());
           this._isLoggedIn$.next(true);
-
-          //start with first user role
           this.currentRole$.next(this.getUserRoles()[0]);
         })
       );

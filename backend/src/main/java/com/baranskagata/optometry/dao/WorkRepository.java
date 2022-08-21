@@ -17,4 +17,5 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     @Query(value = "SELECT w.optometrists FROM Work w WHERE w.id=:workId")
     Page<Optometrist> getOptometristForWorkId(@Param("workId") Long workId, Pageable pageable);
 
+
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,6 +19,9 @@ public class Receptionist{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Long id;
+
+    @OneToMany( cascade = CascadeType.ALL)
+    private List<Language> languagesList;
 
 
     @JsonBackReference(value = "app-user-receptionist")

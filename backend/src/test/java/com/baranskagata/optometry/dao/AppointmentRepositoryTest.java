@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -96,8 +96,7 @@ public class AppointmentRepositoryTest {
         Appointment appointment = Appointment.builder()
                 .patient(appUserPatient1.getPatient())
                 .optometrist(appUserOptometrist1.getOptometrist())
-                .start(LocalDateTime.of(2022,10,21,12,00,00,00))
-                .end(LocalDateTime.of(2022,10,21,12,30,00,00))
+                .date(LocalDate.of(2022,10,21))
                 .status(AppointmentStatus.SCHEDULED)
                 .build();
         appointmentRepository.save(appointment);

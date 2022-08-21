@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,9 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Long id;
+
+    @Column(name="registration_date")
+    private LocalDate registrationDate;
 
     @JsonManagedReference(value="patient-appointments")
     @OneToMany(mappedBy ="patient", cascade = CascadeType.ALL)

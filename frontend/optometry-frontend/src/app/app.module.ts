@@ -13,9 +13,9 @@ import { Interceptor } from './helpers/interceptor';
 import { AuthenticationService } from './services/authentication.service';
 import { HasRoleGuard } from './has-role.guard';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RoleEnum } from './role-enum';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   {
@@ -61,7 +61,7 @@ const routes: Routes = [
         (m) => m.AppointmentModule
       ),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: [RoleEnum.RECEPTIONIST, RoleEnum.ADMIN] },
+    data: { role: [RoleEnum.OPTOMETRIST] },
   },
   {
     path: 'statistics',
@@ -77,7 +77,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
     LoginComponent,
     TopBarComponent,
     RegisterComponent,
@@ -89,6 +88,7 @@ const routes: Routes = [
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     AuthenticationService,

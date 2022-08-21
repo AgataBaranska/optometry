@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "appointment")
@@ -22,12 +21,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "start")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime start;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @Column(name = "end")
-    private LocalDateTime end;
+    @Column(name = "date")
+    private LocalDate date;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private AppointmentStatus status;
@@ -45,5 +41,7 @@ public class Appointment {
     @JoinColumn(name = "optometrist_id")
     private Optometrist optometrist;
 
+    @Column(name="slot")
+    private Integer slot;
 
 }
