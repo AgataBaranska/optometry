@@ -29,14 +29,6 @@ export class AppointmentDetailsComponent implements OnInit {
   }
 
   get duration() {
-    let start = new Date(this.appointment.startTime);
-    let end = new Date(this.appointment.endTime);
-    let duration = Math.floor(
-      (Date.UTC(end.getFullYear(), end.getMonth(), end.getDate()) -
-        Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())) /
-        (1000 * 60)
-    );
-    console.log('Duration' + duration);
-    return duration;
+    return 1;
   }
 }

@@ -1,6 +1,10 @@
 <div class="card my-1 p-4">
   <div class="d-flex">
-    <h2>Appointments management</h2>
+    <h2>
+      Appointments management for optometrist
+      {{ appointments[1].optometristFirstName }}
+      {{ appointments[1].optometristLastName }}
+    </h2>
     <button class="btn btn-outline-success" routerLink="new-appointment">
       Add new
     </button>
@@ -8,27 +12,25 @@
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-        <th>Start</th>
-        <th>End</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Duration</th>
         <th>Patient</th>
-        <th>Optometrist</th>
         <th>Status</th>
-        <th>Work</th>
+        <th>Type of appointment</th>
         <th></th>
       </tr>
     </thead>
     <tbody *ngFor="let tempAppointment of appointments">
       <tr>
-        <td>{{ tempAppointment.startTime }}</td>
-        <td>{{ tempAppointment.endTime }}</td>
+        <td>{{ tempAppointment.date }}</td>
+        <td>{{ tempAppointment.slot }}:00</td>
+        <td>1h</td>
         <td>
           {{ tempAppointment.patientFirstName }}
           {{ tempAppointment.patientLastName }}
         </td>
-        <td>
-          {{ tempAppointment.optometristFirstName }}
-          {{ tempAppointment.optometristLastName }}
-        </td>
+
         <td>{{ tempAppointment.status }}</td>
         <td>{{ tempAppointment.workName }}</td>
 
@@ -38,7 +40,13 @@
             role="group"
             aria-label="Basic outlined example"
           >
-            <button type="button" class="btn btn-outline-primary">Start</button>
+            <button
+              type="button"
+              routerLink="/appointments/{{ tempAppointment.id }}/card"
+              class="btn btn-outline-primary"
+            >
+              Start
+            </button>
             <button
               routerLink="/{{ tempAppointment.id }}"
               type="button"

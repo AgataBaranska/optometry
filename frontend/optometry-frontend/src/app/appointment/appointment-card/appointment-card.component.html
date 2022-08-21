@@ -1,0 +1,191 @@
+<div class="card my-1 col-9">
+  <h3 class="mb-4 fw-normal text-center">
+    {{ patient.firstName }}
+  </h3>
+  <div class="container-fluid text-start">
+    <div class="row justify-content-center mt-3 mb-3">
+      <div class="col-12">
+        <!--User form group-->
+        <form
+          [formGroup]="appointmentCartFormGroup"
+          (submit)="saveAppointmentCard()"
+        >
+          <div formGroupName="patient" class="form-area">
+            <h3 class="text-start text-muted">User</h3>
+            <div class="row mb-3">
+              <!-- <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  formControlName="username"
+                  type="text"
+                  placeholder="Username"
+                /> -->
+              <!-- <div
+                    *ngIf="
+                      username?.invalid && (username?.dirty || username?.touched)
+                    "
+                    class="alert alert-danger mt-1"
+                  >
+                    <div *ngIf="username!.errors!['required']">
+                      Username is required
+                    </div>
+                    <div *ngIf="username!.errors!['minlength']">
+                      Username must be at least 3 characters
+                    </div>
+                    <div *ngIf="username!.errors!['cannotContainSpace']">
+                      Username must not contain white spaces
+                    </div> -->
+              <!-- </div> -->
+              <!-- </div> -->
+            </div>
+            <!-- 
+            <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="First name"
+                  formControlName="firstName"
+                  type="text"
+                />
+                <div
+                  *ngIf="
+                    firstName?.invalid &&
+                    (firstName?.dirty || firstName?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="firstName!.errors!['required']">
+                    First name is required
+                  </div>
+                </div>
+              </div> -->
+            <!-- </div> -->
+            <!-- <div class="row mb-3">
+              <div class="col">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Last name"
+                  formControlName="lastName"
+                  type="text"
+                />
+                <div
+                  *ngIf="
+                    lastName?.invalid && (lastName?.dirty || lastName?.touched)
+                  "
+                  class="alert alert-danger mt-1"
+                >
+                  <div *ngIf="lastName!.errors!['required']">
+                    Last name is required
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <!--Address form group-->
+          <!-- <div formGroupName="address" class="form-area">
+              <h3 class="text-start text-muted">Address</h3>
+              <div class="row mb-3">
+                <div class="col">
+                  <input
+                    class="form-control form-control-sm"
+                    placeholder="Street"
+                    formControlName="street"
+                    type="text"
+                  />
+                  <div
+                    *ngIf="street?.invalid && (street?.dirty || street?.touched)"
+                    class="alert alert-danger mt-1"
+                  >
+                    <div *ngIf="street!.errors!['required']">
+                      Street is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col">
+                  <input
+                    class="form-control form-control-sm"
+                    placeholder="City"
+                    formControlName="city"
+                    type="text"
+                  />
+                  <div
+                    *ngIf="city?.invalid && (city?.dirty || city?.touched)"
+                    class="alert alert-danger mt-1"
+                  >
+                    <div *ngIf="city!.errors!['required']">City is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col">
+                  <input
+                    class="form-control form-control-sm"
+                    placeholder="Country"
+                    formControlName="country"
+                    type="text"
+                  />
+                  <div
+                    *ngIf="
+                      country?.invalid && (country?.dirty || country?.touched)
+                    "
+                    class="alert alert-danger mt-1"
+                  >
+                    <div *ngIf="country!.errors!['required']">
+                      Country is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-1">
+                <div class="col">
+                  <input
+                    class="form-control form-control-sm"
+                    placeholder="postal code"
+                    formControlName="postalCode"
+                    type="text"
+                  />
+                  <div
+                    *ngIf="
+                      postalCode?.invalid &&
+                      (postalCode?.dirty || postalCode?.touched)
+                    "
+                    class="alert alert-danger mt-1"
+                  >
+                    <div *ngIf="postalCode!.errors!['required']">
+                      Postal Code is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          <!-- <div class="text-center">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger col-3 mx-1"
+                (click)="deleteUser(user)"
+              >
+                Delete User
+              </button>
+  
+              <button
+                class="btn btn-sm btn-outline-success col-3 mx-1"
+                type="submit"
+              >
+                Save
+              </button>
+              <button
+                class="btn btn-sm btn-primary col-3 mx-1"
+                type="submit"
+                routerLink="/users"
+              >
+                Cancel
+              </button>
+            </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
