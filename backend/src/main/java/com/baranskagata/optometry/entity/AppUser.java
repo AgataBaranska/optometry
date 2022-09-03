@@ -42,6 +42,7 @@ public class AppUser {
     @Basic
     private String country;
 
+    @JsonManagedReference(value = "app-user-roles")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;

@@ -10,6 +10,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { AppointmentCardComponent } from './appointment-card/appointment-card.component';
+import { DiseaseResolver } from './services/disease-resolver';
+import { PatientResolver } from './services/patient-resolver';
 const routes: Routes = [
   { path: '', component: AppointmentsComponent, pathMatch: 'full' },
   {
@@ -19,6 +21,10 @@ const routes: Routes = [
   {
     path: ':id/card',
     component: AppointmentCardComponent,
+    resolve: {
+      availableEyeDiseases: DiseaseResolver,
+      patient: PatientResolver,
+    },
   },
   { path: 'new-appointment', component: NewAppointmentComponent },
 ];
@@ -41,5 +47,6 @@ const routes: Routes = [
     ReactiveFormsModule,
   ],
   exports: [AppointmentsComponent, AppointmentDetailsComponent],
+  providers: [DiseaseResolver, PatientResolver],
 })
 export class AppointmentModule {}

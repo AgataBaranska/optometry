@@ -29,6 +29,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
     private final WorkRepository workRepository;
     private final UserRepository userRepository;
+    private final ContactLensesRepository contactLensesRepository;
 
 
     @Override
@@ -113,5 +114,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<Integer> availableSlotsForOptometristForDay(Long optometristId,LocalDate date) {
        List<Appointment> optometristAppointmentsSlots =appointmentRepository.findAppointmentsSlotsByOptometristIdByDay(optometristId,date);
         return optometristSlots.stream().filter(slot->!optometristAppointmentsSlots.contains(slot)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContactLenses> getAvailableContactLenses() {
+        return contactLensesRepository.findAll();
     }
 }

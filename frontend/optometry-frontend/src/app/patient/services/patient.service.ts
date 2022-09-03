@@ -6,6 +6,7 @@ import { API_URL } from 'src/app/app.constants';
 import { map } from 'rxjs';
 import { Disease } from 'src/app/common/disease';
 import { AppointmentReason } from 'src/app/common/appointment-reason';
+import { ContactLense } from 'src/app/common/contact-lense';
 
 @Injectable({
   providedIn: 'root',
@@ -67,6 +68,11 @@ export class PatientService {
   getAvailableAppointmentReasons() {
     const url = `${this.baseUrl}/availableAppointmentReasons`;
     return this.httpClient.get<AppointmentReason[]>(url);
+  }
+
+  getAvailableContactLenses() {
+    const url = `${API_URL}/api/appointments/contactLenses`;
+    return this.httpClient.get<ContactLense[]>(url);
   }
 }
 

@@ -4,7 +4,7 @@
     <b> {{ patient.pesel }}</b> age: <b>{{ patientAge }}</b>
   </h3>
   <div class="container-fluid text-start">
-    <div class="row justify-content-center mt-3 mb">
+    <div class="row justify-content-center mt-3">
       <div class="col-12">
         <!--User form group-->
         <form
@@ -15,30 +15,30 @@
             <h3 class="text-start text-muted">Interview</h3>
             <div class="row mb-2">
               <b>Appointment reason</b>
-              <div class="col-12">
-                <div
-                  class="col-2 mt-2 form-check form-check-inline"
-                  *ngFor="let reason of availableAppointmentReasons"
-                >
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="inlineCheckbox1"
-                    value="option1"
-                  />
-                  <label class="form-check-label" for="inlineCheckbox1">{{
-                    reason.name
-                  }}</label>
-                </div>
 
-                <div class="col-11">
-                  <input
-                    class="form-control form-control-sm"
-                    placeholder="write other appointment reason"
-                    formControlName="otherEyeDisease"
-                    type="text"
-                  />
-                </div>
+              <div
+                class="col-3 mt-1 mb-1 form-group form-check form-check-inline"
+                *ngFor="let reason of availableAppointmentReasons"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="appointmentReason"
+                  id="inlineCheckbox1"
+                  value="option1"
+                />
+                <label class="form-check-label" for="inlineCheckbox1">{{
+                  reason.name
+                }}</label>
+              </div>
+
+              <div class="col-11">
+                <input
+                  class="form-control form-group form-control-sm"
+                  placeholder="write other appointment reason"
+                  formControlName="otherAppointmentReason"
+                  type="text"
+                />
               </div>
             </div>
 
@@ -47,14 +47,20 @@
                 <b> Eye diseases:</b>
                 <div>
                   <input
-                    class="form-control form-control-sm"
+                    class="form-control form-group form-control-sm"
                     placeholder="write other"
                     formControlName="otherEyeDisease"
                     type="text"
                   />
                 </div>
-                <div *ngFor="let disease of availableEyeDiseases">
-                  <input type="checkbox" />
+                <div
+                  class="form-group form-check mb-1 mt-1"
+                  *ngFor="let disease of availableEyeDiseases"
+                >
+                  <input
+                    type="checkbox"
+                    formControlName="availableEyeDiseases"
+                  />
                   {{ disease.name }}
                 </div>
               </div>
@@ -68,7 +74,10 @@
                     type="text"
                   />
                 </div>
-                <div *ngFor="let disease of availableGeneralDiseases">
+                <div
+                  class="form-group form-check mb-1 mt-1"
+                  *ngFor="let disease of availableGeneralDiseases"
+                >
                   <input type="checkbox" />
                   {{ disease.name }}
                 </div>
@@ -83,7 +92,10 @@
                     type="text"
                   />
                 </div>
-                <div *ngFor="let disease of availableVsionConditions">
+                <div
+                  class="form-group form-check mb-1 mt-1"
+                  *ngFor="let disease of availableVsionConditions"
+                >
                   <input type="checkbox" />
                   {{ disease.name }}
                 </div>
@@ -144,9 +156,10 @@
             </div> -->
           </div>
 
+          <!-- refraction-->
+          <!--current glasses correction-->
           <div formGroupName="refraction" class="form-area">
             <h3 class="text-start text-muted">Refraction</h3>
-            <!--current glasses correction-->
             <b>Current glasses correction</b>
             <div class="row mb-2">
               <div class="col-12">
@@ -165,7 +178,7 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="cylinder eye"
+                      placeholder="cylinder right eye"
                       formControlName="cylinderEyeSphere"
                       type="text"
                     />
@@ -214,15 +227,15 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="right eye sphere"
-                      formControlName="rightEyeSphere"
+                      placeholder="left eye sphere"
+                      formControlName="leftEyeSphere"
                       type="text"
                     />
                   </div>
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="cylinder eye"
+                      placeholder="cylinder left eye"
                       formControlName="cylinderEyeSphere"
                       type="text"
                     />
@@ -284,7 +297,7 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="cylinder eye"
+                      placeholder="cylinder right eye"
                       formControlName="cylinderEyeSphere"
                       type="text"
                     />
@@ -333,8 +346,8 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="right eye sphere"
-                      formControlName="rightEyeSphere"
+                      placeholder="left eye sphere"
+                      formControlName="leftEyeSphere"
                       type="text"
                     />
                   </div>
@@ -436,7 +449,7 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="cylinder eye"
+                      placeholder="cylinder right eye"
                       formControlName="cylinderEyeSphere"
                       type="text"
                     />
@@ -485,7 +498,7 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="right eye sphere"
+                      placeholder="left eye sphere"
                       formControlName="rightEyeSphere"
                       type="text"
                     />
@@ -493,7 +506,7 @@
                   <div class="col-2">
                     <input
                       class="form-control form-control-sm"
-                      placeholder="cylinder eye"
+                      placeholder="cylinder left eye"
                       formControlName="cylinderEyeSphere"
                       type="text"
                     />
@@ -535,6 +548,27 @@
             </div>
 
             <!--End Contact lenses correction-->
+
+            <div ngbDropdown class="d-inline-block">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBasic1"
+                ngbDropdownToggle
+              >
+                Acuvue oasys, monthly, dk/t:150
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button
+                  *ngFor="let lense of availableContactLenses"
+                  ngbDropdownItem
+                  routerLink="/home"
+                >
+                  {{ lense.name }}, {{ lense.mode }}
+                  {{ lense.oxygenPermeability }}
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class="text-center">

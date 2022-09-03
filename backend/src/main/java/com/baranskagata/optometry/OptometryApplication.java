@@ -1,9 +1,6 @@
 package com.baranskagata.optometry;
 
-import com.baranskagata.optometry.dao.AppointmentReasonsRepository;
-import com.baranskagata.optometry.dao.DiseaseRepository;
-import com.baranskagata.optometry.dao.RoleRepository;
-import com.baranskagata.optometry.dao.WorkRepository;
+import com.baranskagata.optometry.dao.*;
 import com.baranskagata.optometry.dto.AppointmentDto;
 import com.baranskagata.optometry.entity.*;
 import com.baranskagata.optometry.service.AppointmentService;
@@ -29,7 +26,7 @@ public class OptometryApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService, AppointmentService appointmentService, OptometristService optometristService, RoleRepository roleRepository, WorkRepository workRepository, DiseaseRepository diseaseRepository, AppointmentReasonsRepository appointmentReasonsRepository) {
+    CommandLineRunner run(UserService userService, AppointmentService appointmentService, OptometristService optometristService, RoleRepository roleRepository, WorkRepository workRepository, DiseaseRepository diseaseRepository, AppointmentReasonsRepository appointmentReasonsRepository, ContactLensesRepository contactLensesRepository) {
         return args -> {
 
             Set<Role> appRoles = new HashSet<>();
@@ -125,7 +122,7 @@ public class OptometryApplication {
             AppointmentReasons appointmentReasons4 = AppointmentReasons.builder().name("Worse distance vision").build();
             AppointmentReasons appointmentReasons5 = AppointmentReasons.builder().name("Worse near vision").build();
             AppointmentReasons appointmentReasons6 = AppointmentReasons.builder().name("Control visit").build();
-            AppointmentReasons appointmentReasons7 = AppointmentReasons.builder().name("Coontact lenses fitting").build();
+            AppointmentReasons appointmentReasons7 = AppointmentReasons.builder().name("Contact lenses fitting").build();
             appointmentReasons.add(appointmentReasons1);
             appointmentReasons.add(appointmentReasons2);
             appointmentReasons.add(appointmentReasons3);
@@ -136,8 +133,18 @@ public class OptometryApplication {
             appointmentReasonsRepository.saveAll(appointmentReasons);
 
 
+            List<ContactLenses> contactLenses = new ArrayList<>();
+            ContactLenses contactLenses1 = ContactLenses.builder().name("Acuvue Oasys").mode("dwutygodniowy").oxygenPermeability(140).build();
+            ContactLenses contactLenses2 = ContactLenses.builder().name("Biofinity").mode("miesięczny").oxygenPermeability(160).build();
+            ContactLenses contactLenses3 = ContactLenses.builder().name("MyDay").mode("jednodniowy").oxygenPermeability(160).build();
+            ContactLenses contactLenses4 = ContactLenses.builder().name("Clarity").mode("jednodniowy").oxygenPermeability(160).build();
+    contactLenses.add(contactLenses1);
+    contactLenses.add(contactLenses2);
+    contactLenses.add(contactLenses3);
+    contactLenses.add(contactLenses4);
+     contactLensesRepository.saveAll(contactLenses);
 
-     };
+       };
 
 
     }

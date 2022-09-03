@@ -1,6 +1,7 @@
 package com.baranskagata.optometry.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,8 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private AppointmentStatus status;
+
+    @JsonManagedReference(value="appointment-work")
     @ManyToOne
     @JoinColumn(name = "id_work")
     private Work work;
@@ -43,5 +46,12 @@ public class Appointment {
 
     @Column(name="slot")
     private Integer slot;
+
+    @JsonManagedReference("appointment-appointment-card")
+    @OneToOne(mappedBy = "appointment")
+    private AppointmentCard appointmentCard;
+
+
+
 
 }

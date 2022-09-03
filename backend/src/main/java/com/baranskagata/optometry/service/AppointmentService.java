@@ -3,6 +3,7 @@ package com.baranskagata.optometry.service;
 import com.baranskagata.optometry.dto.AppointmentDto;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
 import com.baranskagata.optometry.entity.Appointment;
+import com.baranskagata.optometry.entity.ContactLenses;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface AppointmentService {
 
 
     List<Integer> availableSlotsForOptometristForDay(Long optometristId, LocalDate date);
+
+    List<ContactLenses> getAvailableContactLenses();
 }

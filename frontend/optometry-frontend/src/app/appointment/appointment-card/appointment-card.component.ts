@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppointmentReason } from 'src/app/common/appointment-reason';
+import { ContactLense } from 'src/app/common/contact-lense';
 import { Disease } from 'src/app/common/disease';
 import { Patient } from 'src/app/common/patient';
 import { PatientService } from 'src/app/patient/services/patient.service';
@@ -18,6 +19,7 @@ export class AppointmentCardComponent implements OnInit {
   availableGeneralDiseases!: Disease[];
   availableVsionConditions!: Disease[];
   availableAppointmentReasons!: AppointmentReason[];
+  availableContactLenses!: ContactLense[];
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -25,16 +27,23 @@ export class AppointmentCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => {
-      this.handlePatientsDetails();
-    });
+    this.patient = this.route.snapshot.data['patient'];
+    this.availableEyeDiseases =
+      this.route.snapshot.data['availableEyeDiseases'];
 
-    this.handleAvailableEyeDiseases();
     this.handleAvailableGeneralDiseases();
     this.handleAvailableVisionConditions();
     this.handleAvailableAppointmentReasons();
+    this.handleAvailableContactLenses();
+    console.log(this.availableContactLenses);
 
     this.buildForm();
+  }
+  handleAvailableContactLenses() {
+    this.patientService.getAvailableContactLenses().subscribe((data) => {
+      console.log(data);
+      this.availableContactLenses = data;
+    });
   }
   handleAvailableEyeDiseases() {
     this.patientService.getAvailableEyeDiseases().subscribe((data) => {
@@ -64,7 +73,13 @@ export class AppointmentCardComponent implements OnInit {
   }
   buildForm() {
     this.appointmentCartFormGroup = this.formBuilder.group({
-      patient: this.formBuilder.group({}),
+      interview: this.formBuilder.group({
+        appointmentReason: [false, ''],
+        otherAppointmentReason: [''],
+        otherEyeDisease: [''],
+        otherGeneralDisease: [''],
+        availableEyeDiseases: [false],
+      }),
     });
   }
   get patientAge() {

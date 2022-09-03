@@ -1,6 +1,6 @@
 package com.baranskagata.optometry.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +35,7 @@ public class Work {
     private int duration;
 
 
-    @JsonIgnoreProperties("works")
+    @JsonBackReference(value="appointment-work")
     @ManyToMany
     @JoinTable(name = "optometrist_work", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_optometrist"))
     private List<Optometrist> optometrists;

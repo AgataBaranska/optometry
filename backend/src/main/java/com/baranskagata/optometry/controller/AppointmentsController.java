@@ -3,6 +3,7 @@ package com.baranskagata.optometry.controller;
 import com.baranskagata.optometry.dto.AppointmentDto;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
 import com.baranskagata.optometry.entity.Appointment;
+import com.baranskagata.optometry.entity.ContactLenses;
 import com.baranskagata.optometry.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,13 +50,17 @@ public class AppointmentsController {
         appointmentService.deleteAppointment(id);
         return ResponseEntity.noContent().build();
     }
-//api/appointments/optometristAvailableHours?optometristId=   &patientId=   &workId=    &date=
+
 
     @GetMapping("/slots")
     public ResponseEntity<List<Integer>> getAvailableSlotsForOptometristForDay(@RequestParam  Long optometristId, @RequestParam String date) {
         return ResponseEntity.ok().body(appointmentService.availableSlotsForOptometristForDay(optometristId,LocalDate.parse(date)));
     }
 
+    @GetMapping("/contactLenses")
+    public ResponseEntity<List<ContactLenses>> getAvailableContactLenses() {
+        return ResponseEntity.ok().body(appointmentService.getAvailableContactLenses());
+    }
 
 
 

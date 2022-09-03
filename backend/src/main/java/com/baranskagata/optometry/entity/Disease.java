@@ -1,13 +1,16 @@
 package com.baranskagata.optometry.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Table(name = "eyeDisease")
+@Table(name = "disease")
 @Data
 @Builder
 @Entity
@@ -24,4 +27,10 @@ public class Disease {
     @Basic
     @Column(name="related_organ")
     private String relatedOrgan;
+    @JsonManagedReference(value="appointment-card-diseases")
+
+    @JsonBackReference(value="appointment-card-diseases")
+    @ManyToMany
+    @JoinTable(name = "appointment_diseases", joinColumns = @JoinColumn(name = "id_disease"), inverseJoinColumns = @JoinColumn(name = "id_appointment_card"))
+    private List<AppointmentCard> appointmentCards;
 }
