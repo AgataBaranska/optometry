@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppointmentsComponent } from './appointments/appointments.component';
-import { AppointmentDetailsComponent } from './appointment-details/appointment-details.component';
 import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -14,10 +13,7 @@ import { DiseaseResolver } from './services/disease-resolver';
 import { PatientResolver } from './services/patient-resolver';
 const routes: Routes = [
   { path: '', component: AppointmentsComponent, pathMatch: 'full' },
-  {
-    path: ':id',
-    component: AppointmentDetailsComponent,
-  },
+
   {
     path: ':id/card',
     component: AppointmentCardComponent,
@@ -32,7 +28,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppointmentsComponent,
-    AppointmentDetailsComponent,
+
     NewAppointmentComponent,
     AppointmentCardComponent,
   ],
@@ -46,7 +42,7 @@ const routes: Routes = [
     MatInputModule,
     ReactiveFormsModule,
   ],
-  exports: [AppointmentsComponent, AppointmentDetailsComponent],
+  exports: [AppointmentsComponent],
   providers: [DiseaseResolver, PatientResolver],
 })
 export class AppointmentModule {}

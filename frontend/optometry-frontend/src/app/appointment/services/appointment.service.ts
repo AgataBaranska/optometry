@@ -25,13 +25,9 @@ export class AppointmentService {
     return this.httpClient.get<Work[]>(url);
   }
 
-  public getAppointmentListPaginate(
-    thePage: number,
-    thePageSize: number
-  ): Observable<GetAppointmentsPaginateRespone> {
-    var url = `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
-
-    return this.httpClient.get<GetAppointmentsPaginateRespone>(url);
+  public getAppointmentList(): Observable<Appointment[]> {
+    var url = `${this.baseUrl}`;
+    return this.httpClient.get<Appointment[]>(url);
   }
 
   public getAppointmentListForOptometrist(
@@ -39,6 +35,13 @@ export class AppointmentService {
   ): Observable<Appointment[]> {
     var url = `${this.baseUrl}?optometristUsername=${username}`;
 
+    return this.httpClient.get<Appointment[]>(url);
+  }
+
+  getAppointmentListForPatient(
+    patientUsername: string
+  ): Observable<Appointment[]> {
+    var url = `${this.baseUrl}?patientUsername=${patientUsername}`;
     return this.httpClient.get<Appointment[]>(url);
   }
 
@@ -63,7 +66,12 @@ export class AppointmentService {
 
   saveNewAppointment(appointmentDto: NewAppointmentDTO) {
     const url = `${this.baseUrl}`;
-    return this.httpClient.post<Appointment>(url, appointmentDto);
+    return this.httpClient.post<NewAppointmentDTO>(url, appointmentDto);
+  }
+
+  cancelAppointment(id: number) {
+    const url = `${this.baseUrl}/${id}`;
+    return this.httpClient.delete(url);
   }
   /*
 

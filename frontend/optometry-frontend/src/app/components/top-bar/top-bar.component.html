@@ -58,7 +58,15 @@
       </a>
     </li>
 
-    <li *ngIf="currentRole == 'OPTOMETRIST'" class="nav-item">
+    <li
+      *ngIf="
+        currentRole == 'PATIENT' ||
+        currentRole == 'OPTOMETRIST' ||
+        currentRole == 'RECEPTIONIST' ||
+        currentRole == 'ADMIN'
+      "
+      class="nav-item"
+    >
       <a
         class="nav-link active"
         routerLink="/appointments"

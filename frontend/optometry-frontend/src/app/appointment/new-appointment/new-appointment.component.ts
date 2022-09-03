@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NewAppointmentDTO } from 'src/app/common/new-appointment-dto';
 import { Optometrist } from 'src/app/common/optometrist';
 import { Patient } from 'src/app/common/patient';
+import { User } from 'src/app/common/user';
 import { Work } from 'src/app/common/work';
 import { PatientService } from 'src/app/patient/services/patient.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AppointmentService } from '../services/appointment.service';
 
 @Component({
@@ -14,7 +17,8 @@ import { AppointmentService } from '../services/appointment.service';
 export class NewAppointmentComponent implements OnInit {
   optometrists: Optometrist[] = [];
   patients: Patient[] = [];
-
+  currentRole!: string;
+  currentUser!: string;
   works: Work[] = [];
   slots: Array<number>[] = [];
   selectedpatientId: number | undefined;
@@ -25,21 +29,34 @@ export class NewAppointmentComponent implements OnInit {
 
   constructor(
     private appointmentService: AppointmentService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private authService: AuthenticationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.showAll();
+    this.authService.currentRole.subscribe((role) => (this.currentRole = role));
+    this.currentUser = this.authService.getUserName();
+
+    if (this.currentRole == 'PATIENT') {
+      //initialize selectedPatientId
+      this.patientService
+        .getPatientByUsername(this.currentUser)
+        .subscribe((data) => {
+          this.selectedpatientId = data.id;
+        });
+    }
   }
 
   private showAll() {
-    this.appointmentService.getOptometristList().subscribe((data) => {
-      console.log(data);
-      this.optometrists = data;
-    });
     this.patientService.getPatientList().subscribe((data) => {
-      console.log(data);
+      console.log('patients', data);
       this.patients = data;
+    });
+    this.appointmentService.getOptometristList().subscribe((data) => {
+      console.log('optometrists', data);
+      this.optometrists = data;
     });
   }
   onPatientSelect(id: any) {
@@ -78,6 +95,18 @@ export class NewAppointmentComponent implements OnInit {
       this.selectedWorkname,
       this.selectedSlot
     );
-    this.appointmentService.saveNewAppointment(appointmentdto);
+    console.log('appointmentDTo', appointmentdto);
+    this.appointmentService.saveNewAppointment(appointmentdto).subscribe({
+      next: (response) => {
+        alert(
+          `New appointment scheduled succesfully for ${response.workName} at date: ${response.date}, time: ${response.slot}`
+        );
+        this.router.navigateByUrl('/appointments');
+        this.ngOnInit();
+      },
+      error: (err) => {
+        alert(`There was an error during registration: ${err.message}`);
+      },
+    });
   }
 }

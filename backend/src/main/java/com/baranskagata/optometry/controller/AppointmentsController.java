@@ -2,7 +2,6 @@ package com.baranskagata.optometry.controller;
 
 import com.baranskagata.optometry.dto.AppointmentDto;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
-import com.baranskagata.optometry.entity.Appointment;
 import com.baranskagata.optometry.entity.ContactLenses;
 import com.baranskagata.optometry.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -28,19 +27,18 @@ public class AppointmentsController {
     @GetMapping()
     public ResponseEntity<List<AppointmentPatientOptometristDto>> getAllAppointments(@RequestParam(required = false) Optional<String> patientUsername,@RequestParam(required = false)  Optional<String> optometristUsername) {
 
-
-
         return ResponseEntity.ok().body(appointmentService.getAppointments(patientUsername,optometristUsername));
     }
 
     @GetMapping("{appointmentId}")
     public ResponseEntity<AppointmentPatientOptometristDto> getAppointment(@PathVariable Long appointmentId) {
+
         return ResponseEntity.ok().body(appointmentService.getAppointmentById(appointmentId)
         );
     }
 
     @PostMapping()
-    public ResponseEntity<Appointment> saveAppointment(@RequestBody AppointmentDto appointmentDTO) {
+    public ResponseEntity<AppointmentDto> saveAppointment(@RequestBody AppointmentDto appointmentDTO) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("").toUriString());
         return ResponseEntity.created(uri).body(appointmentService.saveAppointment(appointmentDTO));
     }

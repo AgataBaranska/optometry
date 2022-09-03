@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface PatientService {
 
-    PatientDto getPatient(Long id);
+    PatientDto getPatient(String id);
 
     List<Disease> getAvailableDiseases(String relatedOrgan);
 
     List<AppointmentReasons> getAvailableAppointmentReasons();
+
+    List<PatientDto> getAllPatients();
 }

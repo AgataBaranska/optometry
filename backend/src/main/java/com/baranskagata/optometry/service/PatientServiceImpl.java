@@ -9,13 +9,14 @@ import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.AppointmentReasons;
 import com.baranskagata.optometry.entity.Disease;
 import com.baranskagata.optometry.entity.Patient;
-import com.baranskagata.optometry.exception.PatientNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,10 +39,10 @@ public class PatientServiceImpl implements PatientService{
 
 
     @Override
-    public PatientDto getPatient(Long patientId) {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(()-> new PatientNotFoundException("Patient not found in db with id: " + patientId));
-        AppUser appUser = patient.getAppUser();
+    public PatientDto getPatient(String username) {
 
+        AppUser appUser = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("user not found in db with username " + username));
+        Patient patient = appUser.getPatient();
        return mapToPatientDto(patient,appUser);
     }
 
@@ -53,6 +54,18 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public List<AppointmentReasons> getAvailableAppointmentReasons() {
         return appointmentReasonsRepository.findAll();
+    }
+
+    @Override
+    public List<PatientDto> getAllPatients() {
+        List<Patient> patients = patientRepository.findAll();
+        List<PatientDto> patientDtos = new ArrayList<>();
+        for (Patient patient: patients){
+            AppUser appUser = patient.getAppUser();
+            patientDtos.add(mapToPatientDto(patient,appUser));
+
+        }
+        return patientDtos;
     }
 
     private PatientDto mapToPatientDto(Patient patient, AppUser appUser) {

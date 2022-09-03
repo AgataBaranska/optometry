@@ -2,6 +2,7 @@ package com.baranskagata.optometry.service;
 
 import com.baranskagata.optometry.dto.AppointmentDto;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
+import com.baranskagata.optometry.dto.PatientDto;
 import com.baranskagata.optometry.entity.Appointment;
 import com.baranskagata.optometry.entity.ContactLenses;
 
@@ -16,7 +17,7 @@ public interface AppointmentService {
 
     AppointmentPatientOptometristDto getAppointmentById(Long appointmentId);
 
-    Appointment saveAppointment(AppointmentDto appointmentDto);
+    AppointmentDto saveAppointment(AppointmentDto appointmentDto);
 
     void deleteAppointment(Long appointmentId);
 
@@ -29,4 +30,6 @@ public interface AppointmentService {
     List<Integer> availableSlotsForOptometristForDay(Long optometristId, LocalDate date);
 
     List<ContactLenses> getAvailableContactLenses();
+
+    PatientDto getPatientByAppointmentId(Long appointmentId);
 }

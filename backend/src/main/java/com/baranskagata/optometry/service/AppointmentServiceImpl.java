@@ -3,8 +3,11 @@ package com.baranskagata.optometry.service;
 import com.baranskagata.optometry.dao.*;
 import com.baranskagata.optometry.dto.AppointmentDto;
 import com.baranskagata.optometry.dto.AppointmentPatientOptometristDto;
+import com.baranskagata.optometry.dto.PatientDto;
 import com.baranskagata.optometry.entity.*;
 import com.baranskagata.optometry.exception.AppointmentNotFoundException;
+import com.baranskagata.optometry.exception.PatientNotFoundException;
+import com.baranskagata.optometry.exception.WorkNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +36,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final ContactLensesRepository contactLensesRepository;
 
 
+
     @Override
     public List<AppointmentPatientOptometristDto> getAppointments(Optional<String> patientUsername,Optional<String> optometristUsername) {
         if (patientUsername.isEmpty() && optometristUsername.isEmpty()) {
@@ -41,22 +46,21 @@ public class AppointmentServiceImpl implements AppointmentService {
             List<AppointmentPatientOptometristDto> appointmentPatientOptometrists = new ArrayList<>();
 
             AppUser patientAppUser = userRepository.findByUsername(patientUsername.get()).orElseThrow(()->new UsernameNotFoundException("Username not found in database " + patientUsername));
-            AppUser optometristAppUser = userRepository.findByUsername(optometristUsername.get()).orElseThrow(()->new UsernameNotFoundException("Username not found in database " + optometristUsername));
             Patient patient = patientAppUser.getPatient();
-            Optometrist optometrist = optometristAppUser.getOptometrist();
             List<Appointment> appointments = appointmentRepository.findByPatientId(patient.getId());
             for (Appointment appointment : appointments) {
 
-                appointmentPatientOptometrists.add(AppointmentPatientOptometristDto.builder().patientFirstName(patient.getAppUser().getFirstName())
+                appointmentPatientOptometrists.add(AppointmentPatientOptometristDto.builder()
+                        .patientFirstName(patient.getAppUser().getFirstName())
                         .patientLastName(patient.getAppUser().getLastName())
-                        .optometristFirstName(optometrist.getAppUser().getFirstName())
-                        .optometristLastName(optometrist.getAppUser().getLastName())
+                        .optometristFirstName(appointment.getOptometrist().getAppUser().getFirstName())
+                        .optometristLastName(appointment.getOptometrist().getAppUser().getLastName())
                         .status(appointment.getStatus())
                         .workName(appointment.getWork().getName()).slot(appointment.getSlot()).
                                 date(appointment.getDate()).id(appointment.getId()).
                                 build());
             }
-            return appointmentPatientOptometrists;
+            return appointmentPatientOptometrists.stream().sorted(Comparator.comparing(AppointmentPatientOptometristDto::getDate)).collect(Collectors.toList());
         }
         if (patientUsername.isEmpty() && optometristUsername.isPresent()) {
             List<AppointmentPatientOptometristDto> appointmentPatientOptometrists = new ArrayList<>();
@@ -75,8 +79,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                         .status(appointment.getStatus())
                         .workName(appointment.getWork().getName()).slot(appointment.getSlot()).date(appointment.getDate()).id(appointment.getId()).build());
             }
-            return appointmentPatientOptometrists;
+            return appointmentPatientOptometrists.stream().sorted(Comparator.comparing(AppointmentPatientOptometristDto::getDate)).collect(Collectors.toList());
         }
+
+
+
         return new ArrayList<>();
     }
 
@@ -86,13 +93,28 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment saveAppointment(AppointmentDto appointmentDto) {
+    public AppointmentDto saveAppointment(AppointmentDto appointmentDto) {
         log.info("Saving new appointment to db {}", appointmentDto);
-        Optometrist optometrist = optometristRepository.getById(appointmentDto.getOptometristId());
-        Patient patient= patientRepository.getById(appointmentDto.getPatientId());
-        Work work = workRepository.findByName(appointmentDto.getWorkName()).orElse(workRepository.getById(1L));
-        Appointment appointment =Appointment.builder().date(LocalDate.parse(appointmentDto.getDate())).patient(patient).optometrist(optometrist).status(AppointmentStatus.SCHEDULED).work(work).slot(appointmentDto.getSlot()).build();
-        return appointmentRepository.save(appointment);
+        AppUser appUserOptometrist =userRepository.findById(appointmentDto.getOptometristId()).orElseThrow(()->new UsernameNotFoundException("Optometrist not found with appUser id: " + appointmentDto.getOptometristId()));
+        Optometrist optometrist = appUserOptometrist.getOptometrist();
+        Patient patient= patientRepository.findById(appointmentDto.getPatientId()).orElseThrow(()->new PatientNotFoundException("patient not found in db: "+ appointmentDto.getPatientId()));
+        Work work = workRepository.findByName(appointmentDto.getWorkName()).orElseThrow(()->new WorkNotFoundException("Work not found in db "+ appointmentDto.getWorkName()));
+        Appointment appointment =Appointment.builder()
+                .date(LocalDate.parse(appointmentDto.getDate()))
+                .patient(patient)
+                .optometrist(optometrist)
+                .status(AppointmentStatus.SCHEDULED)
+                .work(work).slot(appointmentDto.getSlot())
+                .build();
+        Appointment savedAppointment= appointmentRepository.save(appointment);
+        AppointmentDto appointmentDtoReturn = AppointmentDto.builder()
+                .date(savedAppointment.getDate().toString())
+                .slot(savedAppointment.getSlot())
+                .workName(savedAppointment.getWork().getName())
+                .optometristId(savedAppointment.getOptometrist().getId())
+                .patientId((savedAppointment.getPatient().getId()))
+                .build();
+        return appointmentDtoReturn;
     }
 
     @Override
@@ -119,5 +141,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<ContactLenses> getAvailableContactLenses() {
         return contactLensesRepository.findAll();
+    }
+
+    @Override
+    public PatientDto getPatientByAppointmentId(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException("Appointment not found with id: " + appointmentId));
+
+        Patient patient = appointment.getPatient();
+        AppUser appUser = patient.getAppUser();
+        return PatientDto.builder()
+                .id(patient.getId())
+                .firstName(appUser.getFirstName())
+                .lastName(appUser.getLastName())
+                .email(appUser.getEmail())
+                .telephone(appUser.getTelephone())
+                .pesel(appUser.getPesel()).build();
     }
 }

@@ -1,10 +1,21 @@
 <div class="card my-1 p-4">
   <div class="d-flex">
-    <h2>
-      Appointments management for optometrist
-      {{ appointments[1].optometristFirstName }}
-      {{ appointments[1].optometristLastName }}
-    </h2>
+    <div>
+      <h2 *ngIf="currentRole == 'OPTOMETRIST'">
+        Appointments management for
+        {{ appointments[1].optometristFirstName }}
+        {{ appointments[1].optometristLastName }}
+      </h2>
+
+      <h2 *ngIf="currentRole == 'RECEPTIONIST' || currentRole == 'ADMIN'">
+        All appointments for all patients
+      </h2>
+      <h2 *ngIf="currentRole == 'PATIENT'">
+        Appointments for patient:
+        {{ currentUserName }}
+      </h2>
+    </div>
+
     <button class="btn btn-outline-success" routerLink="new-appointment">
       Add new
     </button>
@@ -41,13 +52,20 @@
             aria-label="Basic outlined example"
           >
             <button
+              *ngIf="currentRole == 'OPTOMETRIST'"
               type="button"
               routerLink="/appointments/{{ tempAppointment.id }}/card"
               class="btn btn-outline-primary"
             >
               Start
             </button>
-            <button type="button" class="btn btn-outline-danger">Cancel</button>
+            <button
+              (click)="onCancel(tempAppointment)"
+              type="button"
+              class="btn btn-outline-danger"
+            >
+              Cancel
+            </button>
           </div>
         </td>
       </tr>

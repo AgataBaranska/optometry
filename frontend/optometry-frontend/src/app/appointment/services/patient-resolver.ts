@@ -15,7 +15,7 @@ export class PatientResolver implements Resolve<Patient> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Patient> {
-    const patientId: number = +route.paramMap.get('id')!;
-    return this.patientService.getPatient(patientId);
+    const appointmentId: number = +route.paramMap.get('id')!;
+    return this.patientService.getPatientByAppointmentId(appointmentId);
   }
 }

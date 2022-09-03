@@ -61,7 +61,14 @@ const routes: Routes = [
         (m) => m.AppointmentModule
       ),
     canActivate: [HasRoleGuard, IsAuthenticatedGuard],
-    data: { role: [RoleEnum.OPTOMETRIST] },
+    data: {
+      role: [
+        RoleEnum.OPTOMETRIST,
+        RoleEnum.ADMIN,
+        RoleEnum.PATIENT,
+        RoleEnum.RECEPTIONIST,
+      ],
+    },
   },
   {
     path: 'statistics',

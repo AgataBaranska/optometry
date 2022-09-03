@@ -28,13 +28,20 @@ export class PatientService {
   }
 
   private getPatients(url: string): Observable<Patient[]> {
-    return this.httpClient
-      .get<GetResponse>(url)
-      .pipe(map((response) => response._embedded.patients));
+    return this.httpClient.get<Patient[]>(url);
   }
 
+  getPatientByUsername(username: string): Observable<Patient> {
+    const patientUrl = `${this.baseUrl}/${username}`;
+    return this.httpClient.get<Patient>(patientUrl);
+  }
   getPatient(theId: number): Observable<Patient> {
     const patientUrl = `${this.baseUrl}/${theId}`;
+    return this.httpClient.get<Patient>(patientUrl);
+  }
+
+  getPatientByAppointmentId(appointmentId: number): Observable<Patient> {
+    const patientUrl = `${this.baseUrl}/appointment/${appointmentId}`;
     return this.httpClient.get<Patient>(patientUrl);
   }
 

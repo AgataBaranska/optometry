@@ -3,6 +3,22 @@
   <div class="ms-3 col-5">
     <div class="input-group input-group-sm mb-3">
       <select
+        *ngIf="
+          currentRole == 'RECEPTIONIST' ||
+          currentRole == 'ADMIN' ||
+          currentRole == 'OPTOMETRIST'
+        "
+        class="mt-1 col-12"
+        #patientSelect
+        (change)="onPatientSelect(patientSelect.value)"
+      >
+        <option value="0">--Select patient--</option>
+        <option *ngFor="let patient of patients" [value]="patient.id">
+          {{ "Patient: " + patient.firstName + " " + patient.lastName }}
+        </option>
+      </select>
+
+      <select
         class="mt-1 col-12"
         #optometristSelect
         (change)="onOptometristSelect(optometristSelect.value)"
