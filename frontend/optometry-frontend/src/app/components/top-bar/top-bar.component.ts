@@ -14,6 +14,7 @@ export class TopBarComponent implements OnInit {
   constructor(private authService: AuthenticationService) {
     this.username = authService.getUserName();
     this.roles = authService.getUserRoles();
+    console.log('ROLES:', this.roles);
 
     //start with first role
     this.currentRole = authService.getUserRoles()[0];
