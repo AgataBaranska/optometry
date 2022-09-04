@@ -18,17 +18,19 @@
 
               <div
                 class="col-3 mt-1 mb-1 form-group form-check form-check-inline"
-                *ngFor="let reason of availableAppointmentReasons"
+                *ngFor="
+                  let control of availableAppointmentReasonsArray.controls;
+                  let i = index
+                "
               >
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  formControlName="appointmentReason"
-                  id="inlineCheckbox1"
-                  value="option1"
+                  [formControl]="$any(control)"
+                  id="inlineCheckbox{{ i }}"
                 />
-                <label class="form-check-label" for="inlineCheckbox1">{{
-                  reason.name
+                <label class="form-check-label" for="inlineCheckbox{{ i }}">{{
+                  availableAppointmentReasons[i].name
                 }}</label>
               </div>
 
@@ -55,13 +57,21 @@
                 </div>
                 <div
                   class="form-group form-check mb-1 mt-1"
-                  *ngFor="let disease of availableEyeDiseases"
+                  *ngFor="
+                    let control of availableEyeDiseasesArray.controls;
+                    let i = index
+                  "
                 >
                   <input
+                    class="form-check-input"
+                    [formControl]="$any(control)"
                     type="checkbox"
-                    formControlName="availableEyeDiseases"
+                    id="inlineCheckbox{{ i }}"
                   />
-                  {{ disease.name }}
+
+                  <label class="form-check-label" for="inlineCheckbox{{ i }}">{{
+                    availableEyeDiseases[i].name
+                  }}</label>
                 </div>
               </div>
               <div class="col-4">
@@ -76,10 +86,20 @@
                 </div>
                 <div
                   class="form-group form-check mb-1 mt-1"
-                  *ngFor="let disease of availableGeneralDiseases"
+                  *ngFor="
+                    let control of availableGeneralDiseasesArray.controls;
+                    let i = index
+                  "
                 >
-                  <input type="checkbox" />
-                  {{ disease.name }}
+                  <input
+                    class="form-check-input"
+                    [formControl]="$any(control)"
+                    type="checkbox"
+                    id="inlineCheckbox{{ i }}"
+                  />
+                  <label class="form-check-label" for="inlineCheckbox{{ i }}">
+                    {{ availableGeneralDiseases[i].name }}
+                  </label>
                 </div>
               </div>
               <div class="col-4">
@@ -88,16 +108,25 @@
                   <input
                     class="form-control form-control-sm"
                     placeholder="write other"
-                    formControlName="otherGeneralDisease"
+                    formControlName="otherVisionConditions"
                     type="text"
                   />
                 </div>
                 <div
-                  class="form-group form-check mb-1 mt-1"
-                  *ngFor="let disease of availableVsionConditions"
+                  *ngFor="
+                    let control of availableVisionConditionsArray.controls;
+                    let i = index
+                  "
                 >
-                  <input type="checkbox" />
-                  {{ disease.name }}
+                  <input
+                    class="form-check-input"
+                    [formControl]="$any(control)"
+                    type="checkbox"
+                    id="inlineCheckbox{{ i }}"
+                  />
+                  <label class="form-check-label" for="inlineCheckbox{{ i }}">{{
+                    availableVisonConditions[i].name
+                  }}</label>
                 </div>
               </div>
             </div>
@@ -106,60 +135,17 @@
                 <textarea
                   class="form-control form-control-sm"
                   placeholder="other notes, comments"
-                  formControlName="otherGeneralDisease"
+                  formControlName="otherNotes"
                   rows="4"
                 ></textarea>
               </div>
             </div>
-
-            <!-- 
-            <div class="row mb-3">
-              <div class="col">
-                <input
-                  class="form-control form-control-sm"
-                  placeholder="First name"
-                  formControlName="firstName"
-                  type="text"
-                />
-                <div
-                  *ngIf="
-                    firstName?.invalid &&
-                    (firstName?.dirty || firstName?.touched)
-                  "
-                  class="alert alert-danger mt-1"
-                >
-                  <div *ngIf="firstName!.errors!['required']">
-                    First name is required
-                  </div>
-                </div>
-              </div> -->
-            <!-- </div> -->
-            <!-- <div class="row mb-3">
-              <div class="col">
-                <input
-                  class="form-control form-control-sm"
-                  placeholder="Last name"
-                  formControlName="lastName"
-                  type="text"
-                />
-                <div
-                  *ngIf="
-                    lastName?.invalid && (lastName?.dirty || lastName?.touched)
-                  "
-                  class="alert alert-danger mt-1"
-                >
-                  <div *ngIf="lastName!.errors!['required']">
-                    Last name is required
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
 
           <!-- refraction-->
           <!--current glasses correction-->
-          <div formGroupName="refraction" class="form-area">
-            <h3 class="text-start text-muted">Refraction</h3>
+          <div formGroupName="currentCorrection" class="form-area">
+            <h3 class="text-start text-muted">Current correction</h3>
             <b>Current glasses correction</b>
             <div class="row mb-2">
               <div class="col-12">
@@ -171,7 +157,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="right eye sphere"
-                      formControlName="rightEyeSphere"
+                      formControlName="rightEyeSphereCurrent"
                       type="text"
                     />
                   </div>
@@ -179,7 +165,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="cylinder right eye"
-                      formControlName="cylinderEyeSphere"
+                      formControlName="cylinderRightEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -187,7 +173,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="axis"
-                      formControlName="axis"
+                      formControlName="axisRightEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -195,7 +181,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="add"
-                      formControlName="add"
+                      formControlName="addRightEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -203,7 +189,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vcc"
-                      formControlName="Vcc"
+                      formControlName="VccRightEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -211,7 +197,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vsc"
-                      formControlName="Vsc"
+                      formControlName="VscRightEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -228,7 +214,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="left eye sphere"
-                      formControlName="leftEyeSphere"
+                      formControlName="leftEyeSphereCurrent"
                       type="text"
                     />
                   </div>
@@ -236,7 +222,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="cylinder left eye"
-                      formControlName="cylinderEyeSphere"
+                      formControlName="cylinderLeftEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -244,7 +230,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="axis"
-                      formControlName="axis"
+                      formControlName="axisLeftEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -252,7 +238,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="add"
-                      formControlName="add"
+                      formControlName="addLeftEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -260,7 +246,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vcc"
-                      formControlName="Vcc"
+                      formControlName="VccLeftEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -268,7 +254,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vsc"
-                      formControlName="Vsc"
+                      formControlName="VscLeftEyeCurrent"
                       type="text"
                     />
                   </div>
@@ -276,10 +262,17 @@
               </div>
             </div>
             <!--END current glasses correction-->
-
+          </div>
+          <div formGroupName="newCorrection" class="form-area">
+            <h3 class="text-start text-muted">New correction</h3>
             <!--new glasses correction-->
             <b>New glasses correction</b>
-            <button class="btn btn-sm btn-outline-success">Copy current</button>
+            <button
+              (click)="onCopyCurrent()"
+              class="btn btn-sm btn-outline-success"
+            >
+              Copy current
+            </button>
             <div class="row mb-2 mt-1">
               <div class="col-12">
                 <div class="row">
@@ -290,7 +283,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="right eye sphere"
-                      formControlName="rightEyeSphere"
+                      formControlName="rightEyeSphereNew"
                       type="text"
                     />
                   </div>
@@ -298,7 +291,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="cylinder right eye"
-                      formControlName="cylinderEyeSphere"
+                      formControlName="cylinderRightEyeNew"
                       type="text"
                     />
                   </div>
@@ -306,7 +299,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="axis"
-                      formControlName="axis"
+                      formControlName="axisRightEyeNew"
                       type="text"
                     />
                   </div>
@@ -314,7 +307,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="add"
-                      formControlName="add"
+                      formControlName="addRightEyeNew"
                       type="text"
                     />
                   </div>
@@ -322,7 +315,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vcc"
-                      formControlName="Vcc"
+                      formControlName="VccRightEyeNew"
                       type="text"
                     />
                   </div>
@@ -330,7 +323,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vsc"
-                      formControlName="Vsc"
+                      formControlName="VscRightEyeNew"
                       type="text"
                     />
                   </div>
@@ -347,7 +340,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="left eye sphere"
-                      formControlName="leftEyeSphere"
+                      formControlName="leftEyeSphereNew"
                       type="text"
                     />
                   </div>
@@ -355,7 +348,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="cylinder eye"
-                      formControlName="cylinderEyeSphere"
+                      formControlName="cylinderLeftEyeNew"
                       type="text"
                     />
                   </div>
@@ -363,7 +356,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="axis"
-                      formControlName="axis"
+                      formControlName="axisLeftEyeNew"
                       type="text"
                     />
                   </div>
@@ -371,7 +364,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="add"
-                      formControlName="add"
+                      formControlName="addLeftEyeNew"
                       type="text"
                     />
                   </div>
@@ -379,7 +372,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vcc"
-                      formControlName="Vcc"
+                      formControlName="VccLeftEyeNew"
                       type="text"
                     />
                   </div>
@@ -387,7 +380,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vsc"
-                      formControlName="Vsc"
+                      formControlName="VscLeftEyeNew"
                       type="text"
                     />
                   </div>
@@ -401,7 +394,7 @@
                 <textarea
                   class="form-control form-control-sm"
                   placeholder="other notes, comments"
-                  formControlName="otherGeneralDisease"
+                  formControlName="otherNewCorrectionComments"
                   rows="4"
                 ></textarea>
               </div>
@@ -409,11 +402,17 @@
 
             <div>
               <div>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  (change)="onAddContactLensesCorrectionCheckbox()"
+                />
                 Add contact lenses correction
               </div>
             </div>
+          </div>
 
+          <div formGroupName="contactLensesCorrection" class="form-area">
+            <h3 class="text-start text-muted">Contact lenses correction</h3>
             <!--Contact lenses correction-->
             <b>Contact lenses correction</b>
             <div class="row">
@@ -442,7 +441,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="right eye sphere"
-                      formControlName="rightEyeSphere"
+                      formControlName="rightEyeSphereLenses"
                       type="text"
                     />
                   </div>
@@ -450,7 +449,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="cylinder right eye"
-                      formControlName="cylinderEyeSphere"
+                      formControlName="cylinderRightEyeLenses"
                       type="text"
                     />
                   </div>
@@ -458,7 +457,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="axis"
-                      formControlName="axis"
+                      formControlName="axisRightEyeLenses"
                       type="text"
                     />
                   </div>
@@ -466,7 +465,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="add"
-                      formControlName="add"
+                      formControlName="addRightEyeLenses"
                       type="text"
                     />
                   </div>
@@ -474,7 +473,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vcc"
-                      formControlName="Vcc"
+                      formControlName="VccRightEyeLenses"
                       type="text"
                     />
                   </div>
@@ -482,7 +481,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vsc"
-                      formControlName="Vsc"
+                      formControlName="VscRightEyeLenses"
                       type="text"
                     />
                   </div>
@@ -499,7 +498,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="left eye sphere"
-                      formControlName="rightEyeSphere"
+                      formControlName="leftEyeSphereLenses"
                       type="text"
                     />
                   </div>
@@ -507,7 +506,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="cylinder left eye"
-                      formControlName="cylinderEyeSphere"
+                      formControlName="cylinderLeftEyeLenses"
                       type="text"
                     />
                   </div>
@@ -515,7 +514,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="axis"
-                      formControlName="axis"
+                      formControlName="axisLeftEyeLenses"
                       type="text"
                     />
                   </div>
@@ -523,7 +522,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="add"
-                      formControlName="add"
+                      formControlName="addLeftEyeLenses"
                       type="text"
                     />
                   </div>
@@ -531,7 +530,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vcc"
-                      formControlName="Vcc"
+                      formControlName="VccLeftEyeLenses"
                       type="text"
                     />
                   </div>
@@ -539,7 +538,7 @@
                     <input
                       class="form-control form-control-sm"
                       placeholder="Vsc"
-                      formControlName="Vsc"
+                      formControlName="VscLeftEyeLenses"
                       type="text"
                     />
                   </div>

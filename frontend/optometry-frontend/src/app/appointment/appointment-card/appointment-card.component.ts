@@ -16,11 +16,16 @@ export class AppointmentCardComponent implements OnInit {
   appointmentCartFormGroup!: FormGroup;
   patient!: Patient;
   availableEyeDiseases!: Disease[];
+  selectedEyeDiseases!: Disease[];
   availableGeneralDiseases!: Disease[];
-  availableVsionConditions!: Disease[];
+  selectedGeneralDiseases!: Disease[];
+  availableVisonConditions!: Disease[];
+  selectedVsionConditions!: Disease[];
 
   availableAppointmentReasons!: AppointmentReason[];
   selectedAppointmentReasons!: AppointmentReason[];
+
+  isAddContactLensesCorrectionCheckbox: boolean = true;
 
   availableContactLenses!: ContactLense[];
   constructor(
@@ -37,7 +42,7 @@ export class AppointmentCardComponent implements OnInit {
       this.route.snapshot.data['availableAppointmentReasons'];
     this.availableGeneralDiseases =
       this.route.snapshot.data['availableGeneralDiseases'];
-    this.availableVsionConditions =
+    this.availableVisonConditions =
       this.route.snapshot.data['availableVsionConditions'];
     this.handleAvailableContactLenses();
 
@@ -48,13 +53,15 @@ export class AppointmentCardComponent implements OnInit {
       interview: this.formBuilder.group({
         appointmentReason: this.addAvailableAppointmentReasonsControl(),
         otherAppointmentReason: [''],
-        otherEyeDisease: [''],
-        otherGeneralDisease: [''],
+        otherEyeDisease: [],
         availableEyeDiseases: this.addAvailableEyeDiseasesControl(),
-        availableVsionConditions: [],
-        otherNotes: [],
+        otherGeneralDisease: [''],
+        availableGeneralDiseases: this.addAvailableGeneralDiseases(),
+        otherVisionConditions: [''],
+        availableVsionConditions: this.addAvailableVisionConditionsControl(),
+        otherNotes: [''],
       }),
-      refraction: this.formBuilder.group({
+      currentCorrection: this.formBuilder.group({
         rightEyeSignCurrent: [],
         rightEyeSphereCurrent: [],
         cylinderRightEyeCurrent: [],
@@ -69,7 +76,8 @@ export class AppointmentCardComponent implements OnInit {
         addLeftEyeCurrent: [],
         VccLeftEyeCurrent: [],
         VscLeftEyeCurrent: [],
-
+      }),
+      newCorrection: this.formBuilder.group({
         rightEyeSignNew: [],
         rightEyeSphereNew: [],
         cylinderRightEyeNew: [],
@@ -79,22 +87,47 @@ export class AppointmentCardComponent implements OnInit {
         VscRightEyeNew: [],
         leftEyeSignNew: [],
         leftEyeSphereNew: [],
-        cylinderLeftEyeSphereNew: [],
+        cylinderLeftEyeNew: [],
         axisLeftEyeNew: [],
         addLeftEyeNew: [],
         VccLeftEyeNew: [],
         VscLeftEyeNew: [],
+
+        otherNewCorrectionComments: [],
+      }),
+      contactLensesCorrection: this.formBuilder.group({
+        vertexDistance: [],
+        rightEyeSignLenses: [],
+        rightEyeSphereLenses: [],
+        cylinderRightEyeLenses: [],
+        axisRightEyeLenses: [],
+        addRightEyeLenses: [],
+        VccRightEyeLenses: [],
+        VscRightEyeLenses: [],
+        leftEyeSignLenses: [],
+        leftEyeSphereLenses: [],
+        cylinderLeftEyeLenses: [],
+        axisLeftEyeLenses: [],
+        addLeftEyeLenses: [],
+        VccLeftEyeLenses: [],
+        VscLeftEyeLenses: [],
       }),
     });
   }
-
+  //Appointment reasons
   addAvailableAppointmentReasonsControl() {
     const arr = this.availableAppointmentReasons.map((element) => {
       return this.formBuilder.control(false);
     });
     return this.formBuilder.array(arr);
   }
-  getSelectedAppointmentReasonsValue() {
+  get availableAppointmentReasonsArray() {
+    return <FormArray>(
+      this.appointmentCartFormGroup.get('interview.appointmentReason')
+    );
+  }
+
+  getAvailableAppointmentReasonValue() {
     this.selectedAppointmentReasons = [];
     this.availableAppointmentReasonsArray.controls.forEach((control, i) => {
       if (control.value) {
@@ -105,35 +138,75 @@ export class AppointmentCardComponent implements OnInit {
     });
     return this.selectedAppointmentReasons;
   }
+  //Eye diseases
   addAvailableEyeDiseasesControl() {
     const arr = this.availableEyeDiseases.map((element) => {
       return this.formBuilder.control(false);
     });
     return this.formBuilder.array(arr);
   }
-
   get availableEyeDiseasesArray() {
-    return this.appointmentCartFormGroup.get(
-      'interview.availableEyeDiseases'
-    ) as FormArray;
+    return <FormArray>(
+      this.appointmentCartFormGroup.get('interview.availableEyeDiseases')
+    );
   }
-  get availableAppointmentReasonsArray() {
-    return this.appointmentCartFormGroup.get(
-      'interview.appointmentReason'
-    ) as FormArray;
+  getSelectedEyeDiseasesValue() {
+    this.selectedEyeDiseases = [];
+    this.availableAppointmentReasonsArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedEyeDiseases.push(this.availableEyeDiseases[i]);
+      }
+    });
+    return this.selectedEyeDiseases;
   }
 
+  //General diseases
+  addAvailableGeneralDiseases() {
+    const arr = this.availableEyeDiseases.map((element) => {
+      return this.formBuilder.control(false);
+    });
+    return this.formBuilder.array(arr);
+  }
+  get availableGeneralDiseasesArray() {
+    return <FormArray>(
+      this.appointmentCartFormGroup.get('interview.availableGeneralDiseases')
+    );
+  }
+  getSelectedGeneralDiseasesValue() {
+    this.selectedGeneralDiseases = [];
+    this.availableGeneralDiseasesArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedGeneralDiseases.push(this.availableGeneralDiseases[i]);
+      }
+    });
+    return this.selectedGeneralDiseases;
+  }
+
+  //Vision conditions
+  addAvailableVisionConditionsControl() {
+    const arr = this.availableVisonConditions.map((element) => {
+      return this.formBuilder.control(false);
+    });
+    return this.formBuilder.array(arr);
+  }
+  get availableVisionConditionsArray() {
+    return <FormArray>(
+      this.appointmentCartFormGroup.get('interview.availableVsionConditions')
+    );
+  }
+  getSelectedVisionConditionsValue() {
+    this.selectedVsionConditions = [];
+    this.availableVisionConditionsArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedVsionConditions.push(this.availableVisonConditions[i]);
+      }
+    });
+    return this.selectedVsionConditions;
+  }
   handleAvailableContactLenses() {
     this.patientService.getAvailableContactLenses().subscribe((data) => {
       console.log(data);
       this.availableContactLenses = data;
-    });
-  }
-
-  handlePatientsDetails() {
-    const theId: number = +this.route.snapshot.paramMap.get('id')!;
-    this.patientService.getPatient(theId).subscribe((data) => {
-      this.patient = data;
     });
   }
 
@@ -170,6 +243,60 @@ export class AppointmentCardComponent implements OnInit {
       element.textContent = '-';
     } else {
       element.textContent = '+';
+    }
+  }
+  onCopyCurrent() {
+    this.appointmentCartFormGroup.get('newCorrection')?.patchValue({
+      rightEyeSignNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.rightEyeSignCurrent'
+      )?.value,
+      rightEyeSphereNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.cylinderRightEyeCurrent'
+      )?.value,
+      cylinderRightEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.cylinderRightEyeCurrent'
+      )?.value,
+      axisRightEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.axisRightEyeCurrent'
+      )?.value,
+      addRightEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.addRightEyeCurrent'
+      )?.value,
+      VccRightEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.VccRightEyeCurrent'
+      )?.value,
+      VscRightEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.VscRightEyeCurrent'
+      )?.value,
+      leftEyeSignNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.leftEyeSignCurrent'
+      )?.value,
+      leftEyeSphereNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.leftEyeSphereCurrent'
+      )?.value,
+      cylinderLeftEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.cylinderLeftEyeCurrent'
+      )?.value,
+      axisLeftEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.axisLeftEyeCurrent'
+      )?.value,
+      addLeftEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.addLeftEyeCurrent'
+      )?.value,
+      VccLeftEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.VccLeftEyeCurrent'
+      )?.value,
+      VscLeftEyeNew: this.appointmentCartFormGroup.get(
+        'currentCorrection.VscLeftEyeCurrent'
+      )?.value,
+    });
+  }
+
+  onAddContactLensesCorrectionCheckbox() {
+    if (this.isAddContactLensesCorrectionCheckbox) {
+      this.isAddContactLensesCorrectionCheckbox = false;
+    } else {
+      this.isAddContactLensesCorrectionCheckbox = true;
     }
   }
   saveAppointmentCard() {}
