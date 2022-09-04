@@ -45,6 +45,10 @@ export class UserService {
     let url: string = `http://localhost:8080/api/users/${user.username}`;
     return this.httpClient.put<User>(url, user);
   }
+  deleteUser(user: User): Observable<any> {
+    let url: string = `http://localhost:8080/api/users/${user.username}`;
+    return this.httpClient.delete<User>(url);
+  }
 }
 
 interface GetResponse {

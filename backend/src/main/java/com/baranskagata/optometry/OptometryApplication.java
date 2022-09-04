@@ -62,7 +62,7 @@ public class OptometryApplication {
             userService.addRoleToUser("testOptometrist1", "OPTOMETRIST");
             userService.addRoleToUser("testAdmin1", "OPTOMETRIST");
             userService.addRoleToUser("testReceptionist1", "RECEPTIONIST");
-            userService.addRoleToUser("testAdmin1", "RECEPTIONIST");
+        //    userService.addRoleToUser("testAdmin1", "RECEPTIONIST");
 
             Work work1 = Work.builder().name("Contact lenses").description("contacts fitting").price(150).build();
             workRepository.save(work1);

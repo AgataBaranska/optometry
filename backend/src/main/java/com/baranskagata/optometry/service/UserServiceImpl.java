@@ -2,6 +2,7 @@ package com.baranskagata.optometry.service;
 
 
 import com.baranskagata.optometry.dao.*;
+import com.baranskagata.optometry.dto.AppUserDto;
 import com.baranskagata.optometry.dto.UpdatePasswordDto;
 import com.baranskagata.optometry.entity.*;
 import com.baranskagata.optometry.exception.RoleNotFoundException;
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private AdminRepository adminRepository;
 
+
     //from UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -80,29 +82,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public AppUser updateUser(String username, AppUser userData) {
-        AppUser appUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
+    public AppUserDto updateUser(String username, AppUserDto userData) {
 
         if (userRepository.findByUsername(userData.getUsername()).isPresent()&& !username.equals(userData.getUsername())) {
             throw new UsernameAlreadyExistsException("Username already taken: " + userData.getUsername());
         }
-        appUser = AppUser.builder().username(userData.getUsername())
-                .firstName(userData.getFirstName())
-                .lastName(userData.getLastName())
-                .pesel(userData.getPesel())
-                .telephone(userData.getTelephone())
-                .email(userData.getEmail())
-                .street((userData.getStreet()))
-                .city(userData.getStreet())
-                .postalCode(userData.getPostalCode())
-                .country(userData.getCountry())
-                .roles(userData.getRoles()).build();
-        return userRepository.save(appUser);
+        AppUser appUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username:" + username));
+
+        appUser.setUsername(userData.getUsername());
+            appUser.setFirstName(userData.getFirstName());
+            appUser.setLastName(userData.getLastName());
+            appUser.setPesel(userData.getPesel());
+            appUser.setTelephone(userData.getTelephone());
+            appUser.setEmail(userData.getEmail());
+            appUser.setPostalCode(userData.getPostalCode());
+            appUser.setStreet(userData.getStreet());
+            appUser.setCountry(userData.getCountry());
+            appUser.setCity(userData.getCity());
+        for (Role role:userData.getRoles()
+             ) {
+          addRoleToUser(appUser.getUsername(),role.getName());
+        }
+
+        return userData;
     }
 
     @Override
-    public void deleteUser(Long id) {
-        AppUser user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with id: " + id));
+    public void deleteUser(String username ) {
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found in the database with username: " + username));
         userRepository.delete(user);
     }
 

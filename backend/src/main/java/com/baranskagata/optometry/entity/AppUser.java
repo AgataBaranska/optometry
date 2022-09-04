@@ -48,19 +48,19 @@ public class AppUser {
     private List<Role> roles;
 
     @JsonManagedReference(value = "app-user-optometrist")
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Optometrist optometrist;
 
     @JsonManagedReference(value = "app-user-patient")
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Patient patient;
 
     @JsonManagedReference(value = "app-user-admin")
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Admin admin;
 
     @JsonManagedReference(value = "app-user-receptionist")
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "appUser",cascade = CascadeType.ALL)
     private Receptionist receptionist;
 
     public AppUser() {

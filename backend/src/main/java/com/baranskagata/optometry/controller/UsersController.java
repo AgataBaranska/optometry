@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baranskagata.optometry.dto.AppUserDto;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Role;
 import com.baranskagata.optometry.service.UserService;
@@ -61,13 +62,13 @@ public class UsersController {
     }
 
     @PutMapping({"{username}"})
-    public ResponseEntity<AppUser> updateUser(@PathVariable String username, @RequestBody AppUser userData){
+    public ResponseEntity<AppUserDto> updateUser(@PathVariable String username, @RequestBody AppUserDto userData){
         return ResponseEntity.ok().body(userService.updateUser(username, userData));
     }
 
-    @DeleteMapping({"{id}"})
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id){
-        userService.deleteUser(id);
+    @DeleteMapping({"{username}"})
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable String username){
+        userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 

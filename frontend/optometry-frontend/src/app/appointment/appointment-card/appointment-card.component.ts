@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppointmentReason } from 'src/app/common/appointment-reason';
 import { ContactLense } from 'src/app/common/contact-lense';
@@ -18,7 +18,10 @@ export class AppointmentCardComponent implements OnInit {
   availableEyeDiseases!: Disease[];
   availableGeneralDiseases!: Disease[];
   availableVsionConditions!: Disease[];
+
   availableAppointmentReasons!: AppointmentReason[];
+  selectedAppointmentReasons!: AppointmentReason[];
+
   availableContactLenses!: ContactLense[];
   constructor(
     private route: ActivatedRoute,
@@ -30,58 +33,110 @@ export class AppointmentCardComponent implements OnInit {
     this.patient = this.route.snapshot.data['patient'];
     this.availableEyeDiseases =
       this.route.snapshot.data['availableEyeDiseases'];
-
-    this.handleAvailableGeneralDiseases();
-    this.handleAvailableVisionConditions();
-    this.handleAvailableAppointmentReasons();
+    this.availableAppointmentReasons =
+      this.route.snapshot.data['availableAppointmentReasons'];
+    this.availableGeneralDiseases =
+      this.route.snapshot.data['availableGeneralDiseases'];
+    this.availableVsionConditions =
+      this.route.snapshot.data['availableVsionConditions'];
     this.handleAvailableContactLenses();
-    console.log(this.availableContactLenses);
 
     this.buildForm();
   }
+  buildForm() {
+    this.appointmentCartFormGroup = this.formBuilder.group({
+      interview: this.formBuilder.group({
+        appointmentReason: this.addAvailableAppointmentReasonsControl(),
+        otherAppointmentReason: [''],
+        otherEyeDisease: [''],
+        otherGeneralDisease: [''],
+        availableEyeDiseases: this.addAvailableEyeDiseasesControl(),
+        availableVsionConditions: [],
+        otherNotes: [],
+      }),
+      refraction: this.formBuilder.group({
+        rightEyeSignCurrent: [],
+        rightEyeSphereCurrent: [],
+        cylinderRightEyeCurrent: [],
+        axisRightEyeCurrent: [],
+        addRightEyeCurrent: [],
+        VccRightEyeCurrent: [],
+        VscRightEyeCurrent: [],
+        leftEyeSignCurrent: [],
+        leftEyeSphereCurrent: [],
+        cylinderLeftEyeCurrent: [],
+        axisLeftEyeCurrent: [],
+        addLeftEyeCurrent: [],
+        VccLeftEyeCurrent: [],
+        VscLeftEyeCurrent: [],
+
+        rightEyeSignNew: [],
+        rightEyeSphereNew: [],
+        cylinderRightEyeNew: [],
+        axisRightEyeNew: [],
+        addRightEyeNew: [],
+        VccRightEyeNew: [],
+        VscRightEyeNew: [],
+        leftEyeSignNew: [],
+        leftEyeSphereNew: [],
+        cylinderLeftEyeSphereNew: [],
+        axisLeftEyeNew: [],
+        addLeftEyeNew: [],
+        VccLeftEyeNew: [],
+        VscLeftEyeNew: [],
+      }),
+    });
+  }
+
+  addAvailableAppointmentReasonsControl() {
+    const arr = this.availableAppointmentReasons.map((element) => {
+      return this.formBuilder.control(false);
+    });
+    return this.formBuilder.array(arr);
+  }
+  getSelectedAppointmentReasonsValue() {
+    this.selectedAppointmentReasons = [];
+    this.availableAppointmentReasonsArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedAppointmentReasons.push(
+          this.availableAppointmentReasons[i]
+        );
+      }
+    });
+    return this.selectedAppointmentReasons;
+  }
+  addAvailableEyeDiseasesControl() {
+    const arr = this.availableEyeDiseases.map((element) => {
+      return this.formBuilder.control(false);
+    });
+    return this.formBuilder.array(arr);
+  }
+
+  get availableEyeDiseasesArray() {
+    return this.appointmentCartFormGroup.get(
+      'interview.availableEyeDiseases'
+    ) as FormArray;
+  }
+  get availableAppointmentReasonsArray() {
+    return this.appointmentCartFormGroup.get(
+      'interview.appointmentReason'
+    ) as FormArray;
+  }
+
   handleAvailableContactLenses() {
     this.patientService.getAvailableContactLenses().subscribe((data) => {
       console.log(data);
       this.availableContactLenses = data;
     });
   }
-  handleAvailableEyeDiseases() {
-    this.patientService.getAvailableEyeDiseases().subscribe((data) => {
-      this.availableEyeDiseases = data;
-    });
-  }
-  handleAvailableGeneralDiseases() {
-    this.patientService.getAvailableGeneralDiseases().subscribe((data) => {
-      this.availableGeneralDiseases = data;
-    });
-  }
-  handleAvailableVisionConditions() {
-    this.patientService.getAvailableVisionConditions().subscribe((data) => {
-      this.availableVsionConditions = data;
-    });
-  }
-  handleAvailableAppointmentReasons() {
-    this.patientService.getAvailableAppointmentReasons().subscribe((data) => {
-      this.availableAppointmentReasons = data;
-    });
-  }
+
   handlePatientsDetails() {
     const theId: number = +this.route.snapshot.paramMap.get('id')!;
     this.patientService.getPatient(theId).subscribe((data) => {
       this.patient = data;
     });
   }
-  buildForm() {
-    this.appointmentCartFormGroup = this.formBuilder.group({
-      interview: this.formBuilder.group({
-        appointmentReason: [false, ''],
-        otherAppointmentReason: [''],
-        otherEyeDisease: [''],
-        otherGeneralDisease: [''],
-        availableEyeDiseases: [false],
-      }),
-    });
-  }
+
   get patientAge() {
     var rok = parseInt(this.patient.pesel.substring(0, 2), 10);
     var miesiac = parseInt(this.patient.pesel.substring(2, 4), 10) - 1;

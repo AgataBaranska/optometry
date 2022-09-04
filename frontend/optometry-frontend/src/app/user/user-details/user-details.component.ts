@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -21,6 +22,7 @@ export class UserDetailsComponent implements OnInit {
   user!: User;
   userDetailsFormGroup!: FormGroup;
   availableAppRoles: Array<Role> = [];
+  selectedAppRoles: Array<Role> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +57,7 @@ export class UserDetailsComponent implements OnInit {
           Validators.required,
           Validators.pattern('^[0-9]*$'), //only digits
         ]),
+        roles: this.addAvailableAppRoles(),
       }),
       address: this.formBuilder.group({
         street: new FormControl(this.user.street, [Validators.required]),
@@ -87,6 +90,7 @@ export class UserDetailsComponent implements OnInit {
       let user = new User();
       Object.assign(user, this.userDetailsFormGroup.controls['user'].value);
       Object.assign(user, this.userDetailsFormGroup.controls['address'].value);
+      user.roles = this.getSelectedAppRolesValue();
 
       this.userService.updateUser(user).subscribe({
         next: (response) => {
@@ -98,10 +102,39 @@ export class UserDetailsComponent implements OnInit {
       });
     }
   }
-  deleteUser(user: User) {
+  deleteUser() {
+    let user: User = this.userDetailsFormGroup.controls['user'].value;
+
     if (confirm('Are you sure to delete ' + user.username + '?')) {
-      console.log('Deleting user ' + user.username);
+      this.userService.deleteUser(this.user).subscribe({
+        next: (response) => {
+          alert('User deleted succesfully');
+        },
+        error: (err) => {
+          alert(`There was an error during user deletion: ${err.message}`);
+        },
+      });
     }
+  }
+
+  addAvailableAppRoles() {
+    const arr = this.availableAppRoles.map((element) => {
+      return this.formBuilder.control(this.hasUserRole(element.name));
+    });
+    return this.formBuilder.array(arr);
+  }
+  getSelectedAppRolesValue() {
+    this.selectedAppRoles = [];
+    this.availableAppRolesArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedAppRoles.push(this.availableAppRoles[i]);
+      }
+    });
+    return this.selectedAppRoles;
+  }
+
+  get availableAppRolesArray() {
+    return <FormArray>this.userDetailsFormGroup.get('user.roles');
   }
 
   get username() {

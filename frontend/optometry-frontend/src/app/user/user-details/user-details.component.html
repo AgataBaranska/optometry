@@ -153,9 +153,21 @@
             <div class="row mb-1">
               <div class="col">
                 <b> User roles:</b>
-                <div *ngFor="let role of availableAppRoles">
-                  <input type="checkbox" [checked]="hasUserRole(role.name)" />
-                  {{ role.name }}
+                <div
+                  *ngFor="
+                    let control of availableAppRolesArray.controls;
+                    let i = index
+                  "
+                >
+                  <input
+                    class="form-check-input"
+                    [formControl]="$any(control)"
+                    type="checkbox"
+                    id="inlineCheckbox{{ i }}"
+                  />
+                  <label class="form-check-label" for="inlineCheckbox{{ i }}">{{
+                    availableAppRoles[i].name
+                  }}</label>
                 </div>
               </div>
             </div>
@@ -244,7 +256,7 @@
             <button
               type="button"
               class="btn btn-sm btn-outline-danger col-3 mx-1"
-              (click)="deleteUser(user)"
+              (click)="deleteUser()"
             >
               Delete User
             </button>

@@ -1,5 +1,6 @@
 package com.baranskagata.optometry.service;
 
+import com.baranskagata.optometry.dto.AppUserDto;
 import com.baranskagata.optometry.dto.UpdatePasswordDto;
 import com.baranskagata.optometry.entity.AppUser;
 import com.baranskagata.optometry.entity.Optometrist;
@@ -17,9 +18,9 @@ public interface UserService {
 
     AppUser saveUser(AppUser user);
 
-    AppUser updateUser(String username, AppUser userData);
+    AppUserDto updateUser(String username, AppUserDto userData);
 
-    void deleteUser(Long id);
+    void deleteUser(String username);
 
 
     AppUser updatePassword(Long userId, UpdatePasswordDto updatePasswordDto);

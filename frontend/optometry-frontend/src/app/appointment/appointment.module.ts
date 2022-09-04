@@ -11,6 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { AppointmentCardComponent } from './appointment-card/appointment-card.component';
 import { DiseaseResolver } from './services/disease-resolver';
 import { PatientResolver } from './services/patient-resolver';
+import { AppointmentReasonsResolver } from './services/appointment-reasons-resolver';
+import { AvailableGeneralDiseases } from './services/available-general-diseases';
+import { AvailableVisionConditionsResolver } from './services/available-vision-conditions-resolver';
 const routes: Routes = [
   { path: '', component: AppointmentsComponent, pathMatch: 'full' },
 
@@ -19,6 +22,9 @@ const routes: Routes = [
     component: AppointmentCardComponent,
     resolve: {
       availableEyeDiseases: DiseaseResolver,
+      availableAppointmentReasons: AppointmentReasonsResolver,
+      availableGeneralDiseases: AvailableGeneralDiseases,
+      availableVsionConditions: AvailableVisionConditionsResolver,
       patient: PatientResolver,
     },
   },
@@ -43,6 +49,12 @@ const routes: Routes = [
     ReactiveFormsModule,
   ],
   exports: [AppointmentsComponent],
-  providers: [DiseaseResolver, PatientResolver],
+  providers: [
+    DiseaseResolver,
+    PatientResolver,
+    AppointmentReasonsResolver,
+    AvailableGeneralDiseases,
+    AvailableVisionConditionsResolver,
+  ],
 })
 export class AppointmentModule {}
